@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/vannizhang/hurricane#readme",
   "dependencies": {
+    "calcite-web": "github:Esri/calcite-web#v1.0.3",
+    "d3": "^5.7.0",
     "esri-loader": "^2.4.0",
     "npm": "^6.4.1"
   },
@@ -31,7 +33,6 @@
     "babel-loader": "^8.0.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
-    "calcite-web": "github:Esri/calcite-web#v1.0.3",
     "css-loader": "^1.0.0",
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
