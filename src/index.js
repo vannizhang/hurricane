@@ -8,6 +8,8 @@ import * as calcite from 'calcite-web';
 import "./style/index.scss";
 import { rejects } from 'assert';
 
+import WeatherViewer from './components/weather-viewer';
+
 // import other files
 
 // app configs
@@ -39,6 +41,11 @@ esriLoader.loadModules([
         // private variables
         let mapView = null;
 
+        const init = ()=>{
+            mapView = initMapView();
+            initMapEventHandlers();
+        };
+
         // private methods
         const initMapView = ()=>{
                     
@@ -58,12 +65,9 @@ esriLoader.loadModules([
             console.log('init map view event handlers', mapView);
         };
 
-        const init = (()=>{
-            mapView = initMapView();
-            initMapEventHandlers();
-        })();
-
-        console.log(this);
+        return {
+            init
+        };
 
     };
 
@@ -185,8 +189,13 @@ esriLoader.loadModules([
     const dataModel = new AppDataModel();
     const hurricaneMap = new HurricaneMap();
     const helper = new Helper();
+    const weatherViewer = new WeatherViewer();
 
+    hurricaneMap.init();
     dataModel.init();
+    weatherViewer.init();
+
+    // weatherViewer.queryByLatLon();
 
 }).catch(err => {
     // handle any errors
