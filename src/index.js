@@ -2,7 +2,7 @@
 // import $ from 'jquery';
 // import * as d3 from "d3";
 import * as esriLoader from 'esri-loader';
-import * as calcite from 'calcite-web';
+// import * as calcite from 'calcite-web';
 
 // import style files
 import "./style/index.scss";
@@ -36,14 +36,18 @@ esriLoader.loadModules([
 ])=>{
 
     // map view and controls
-    const HurricaneMap = function(){
+    const HurricaneMap = function(options={
+        onClickHandler: null
+    }){
 
         // private variables
         let mapView = null;
 
+        const onClickHandler = options.onClickHandler;
+
         const init = ()=>{
             mapView = initMapView();
-            initMapEventHandlers();
+            initMapEventHandlers(mapView);
         };
 
         // private methods
@@ -61,8 +65,16 @@ esriLoader.loadModules([
             });
         };
 
-        const initMapEventHandlers = ()=>{
-            console.log('init map view event handlers', mapView);
+        const initMapEventHandlers = (view)=>{
+            // console.log('init map view event handlers', view);
+
+            view.on('click', (evt)=>{
+                // console.log(evt.mapPoint);
+
+                if(onClickHandler){
+                    onClickHandler(evt.mapPoint);
+                }
+            });
         };
 
         return {
@@ -187,9 +199,16 @@ esriLoader.loadModules([
 
     // initiate core modules
     const dataModel = new AppDataModel();
-    const hurricaneMap = new HurricaneMap();
+
     const helper = new Helper();
+
     const weatherViewer = new WeatherViewer();
+
+    const hurricaneMap = new HurricaneMap({
+        onClickHandler: (mapPoint)=>{
+            weatherViewer.queryByLatLon(mapPoint);
+        }
+    });
 
     hurricaneMap.init();
     dataModel.init();
