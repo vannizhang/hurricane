@@ -108,7 +108,7 @@ esriLoader.loadModules([
                 };
             });
 
-            console.log(activeStormNames);
+            // console.log(activeStormNames);
         };
 
         const setObservedPosition = ()=>{
@@ -135,7 +135,7 @@ esriLoader.loadModules([
             };
 
             queryFeatures(LayerURL, queryParam).then(res=>{
-                console.log('distinct storm names', res);
+                // console.log('distinct storm names', res);
                 setActiveStormNames(res.features);
             }).catch(err=>{
                 console.error("cannot get distinct storm names", err);
@@ -197,24 +197,29 @@ esriLoader.loadModules([
         };
     };
 
-    // initiate core modules
-    const dataModel = new AppDataModel();
+    const init = ()=>{
+        // initiate core modules
+        const dataModel = new AppDataModel();
 
-    const helper = new Helper();
+        const helper = new Helper();
 
-    const weatherViewer = new WeatherViewer();
+        const weatherViewer = new WeatherViewer();
 
-    const hurricaneMap = new HurricaneMap({
-        onClickHandler: (mapPoint)=>{
-            weatherViewer.queryByLatLon(mapPoint);
-        }
-    });
+        const hurricaneMap = new HurricaneMap({
+            onClickHandler: (mapPoint)=>{
+                weatherViewer.queryByLatLon(mapPoint);
+            }
+        });
 
-    hurricaneMap.init();
-    dataModel.init();
-    weatherViewer.init();
+        hurricaneMap.init();
+        dataModel.init();
+        weatherViewer.init();
 
-    // weatherViewer.queryByLatLon();
+        // weatherViewer.queryByLatLon();
+    };
+
+    init();
+
 
 }).catch(err => {
     // handle any errors
