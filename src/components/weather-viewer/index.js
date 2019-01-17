@@ -29,12 +29,25 @@ export default function(){
         view.init();
 
         getTimeInfo();
+
+        window.renderChart = (chartType)=>{
+
+            if(chartType === 'precip'){
+                view.render(weatherData.precip.features, 'precip');
+            } else if (chartType === 'wind'){
+                view.render(weatherData.windGust.features, 'wind');
+            } else {
+                console.error('chart type (precip or wind) is required');
+            }
+            
+        };
+
         // console.log(config);
     };
 
     const setWeatherDataFeatures = (key='', features=[])=>{
         weatherData[key].features = key === 'windGust' ? prepareWindGustData(features) : preparePrecipData(features, weatherData[key].timeInfo);
-        console.log(weatherData[key].features);
+        console.log('setWeatherDataFeatures', key, weatherData[key].features);
     };
 
     const setWeatherDataTimeInfo = (key='', timeInfo={})=>{
@@ -45,7 +58,7 @@ export default function(){
         // Query time data that overlaps the (>=) time extent's start time and (=<) time extent's end time.
 
         weatherData[key].timeInfo = timeInfo;
-        console.log(weatherData[key].timeInfo);
+        // console.log(weatherData[key].timeInfo);
     };
 
     const preparePrecipData = (features, timeInfo)=>{
@@ -72,7 +85,7 @@ export default function(){
             }
 
             return {
-                'fromdate': d,
+                'fromdate': t,
                 'data': data
             }
         });
@@ -165,7 +178,7 @@ export default function(){
             fetchData(requestUrlPrcipData, params), 
             fetchData(requestUrlWindData, params)
         ]).then(function(arrOfResponses) {
-            console.log(arrOfResponses);
+            // console.log(arrOfResponses);
             setWeatherDataFeatures('precip', arrOfResponses[0]);
             setWeatherDataFeatures('windGust', arrOfResponses[1]);
         });

@@ -9,3 +9,17 @@ body,
     height: 100%;
     width: 100%;
 }
+
+#chartDiv {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background-color: rgba(0,0,0,.7);
+
+    svg {
+        text {
+            fill: #efefef;
+        }
+    }
+}

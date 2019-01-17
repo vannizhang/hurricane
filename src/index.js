@@ -28,10 +28,12 @@ const DOM_ID_MAP_VIEW_CONTAINER = 'viewDiv';
 esriLoader.loadModules([
     'esri/views/MapView', 
     'esri/WebMap',
+    "esri/Graphic",
     "esri/request"
 ]).then(([
     MapView, 
     WebMap,
+    Graphic,
     esriRequest
 ])=>{
 
@@ -73,8 +75,30 @@ esriLoader.loadModules([
 
                 if(onClickHandler){
                     onClickHandler(evt.mapPoint);
+                    addPointGraphic(evt.mapPoint);
                 }
             });
+        };
+
+        const addPointGraphic = (point)=>{
+
+            const markerSymbol = {
+                type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+                color: [226, 119, 40],
+                size: '10px',
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [255, 255, 255, .7],
+                    width: 1
+                }
+            };
+
+            const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: markerSymbol
+            });
+
+            mapView.graphics.removeAll();
+            mapView.graphics.add(pointGraphic);
         };
 
         return {
@@ -199,9 +223,10 @@ esriLoader.loadModules([
 
     const init = ()=>{
         // initiate core modules
-        const dataModel = new AppDataModel();
 
-        const helper = new Helper();
+        // const dataModel = new AppDataModel();
+
+        // const helper = new Helper();
 
         const weatherViewer = new WeatherViewer();
 
@@ -211,9 +236,12 @@ esriLoader.loadModules([
             }
         });
 
+
         hurricaneMap.init();
-        dataModel.init();
+        
         weatherViewer.init();
+
+        // dataModel.init();
 
         // weatherViewer.queryByLatLon();
     };
