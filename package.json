@@ -23,13 +23,17 @@
   "dependencies": {
     "axios": "^0.18.0",
     "calcite-web": "github:Esri/calcite-web#v1.2.0",
-    "d3": "^5.7.0",
+    "d3": "^5.9.2",
     "esri-loader": "^2.6.0",
-    "npm": "^6.5.0"
+    "npm": "^6.9.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
@@ -43,8 +47,8 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
-    "webpack": "^4.28.3",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
   }
 }

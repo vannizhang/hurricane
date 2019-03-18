@@ -1,53 +1,38 @@
-import View from './view';
-import config from './config.json';
-
 import axios from 'axios';
+
+const config = {
+    "precipitation-layer-url": "https://utility.arcgis.com/usrsvcs/servers/d9835527647f4419ab113c95d29fce88/rest/services/LiveFeeds/NDFD_Precipitation/MapServer",
+    "wind-gust-layer-url": "https://utility.arcgis.com/usrsvcs/servers/abfa29364f074c1dafa0e253217ef472/rest/services/LiveFeeds/NDFD_WindGust/MapServer"
+};
 
 export default function(){
 
     const weatherData = {
         precip: {
             timeInfo: null,
-            features: [
-                // {
-                //     time: 1547661600000,
-                //     data: {
+            // features: [
+            //     // {
+            //     //     time: 1547661600000,
+            //     //     data: {
 
-                //     }
-                // }
-            ]
+            //     //     }
+            //     // }
+            // ]
         },
         windGust: {
             timeInfo: null,
-            features: []
+            // features: []
         }
     }
 
-    // const view = new View();
-
-    const init = (options={ container:null })=>{
-        // view.init();
-
+    const init = ()=>{
         getTimeInfo();
-
-        // window.renderChart = (chartType)=>{
-
-        //     if(chartType === 'precip'){
-        //         view.render(weatherData.precip.features, 'precip');
-        //     } else if (chartType === 'wind'){
-        //         view.render(weatherData.windGust.features, 'wind');
-        //     } else {
-        //         console.error('chart type (precip or wind) is required');
-        //     }
-            
-        // };
-
-        // console.log(config);
     };
 
     const setWeatherDataFeatures = (key='', features=[])=>{
-        weatherData[key].features = key === 'windGust' ? prepareWindGustData(features) : preparePrecipData(features, weatherData[key].timeInfo);
-        console.log('setWeatherDataFeatures', key, weatherData[key].features);
+        // weatherData[key].features = (key === 'windGust') ? prepareWindGustData(features) : preparePrecipData(features, weatherData[key].timeInfo);
+        // console.log('setWeatherDataFeatures', key, weatherData[key].features);
+        return (key === 'windGust') ? prepareWindGustData(features) : preparePrecipData(features, weatherData[key].timeInfo);
     };
 
     const setWeatherDataTimeInfo = (key='', timeInfo={})=>{
@@ -113,6 +98,8 @@ export default function(){
 
                 if(response.data && response.data.features){
                     resolve(response.data.features)
+                } else {
+                    reject('no features returned', response.data);
                 }
 
             }).catch(err=>{
@@ -156,16 +143,12 @@ export default function(){
         });
     };
 
-    const queryByLatLon = (mapPoint)=>{
+    const queryByLocation = (mapPoint={})=>{
 
         const params = {
             f: 'json',
             returnGeometry: false,
-            geometry: {
-                "x": mapPoint.x,
-                "y": mapPoint.y,
-                "spatialReference":{"wkid":102100,"latestWkid":3857}
-            },
+            geometry: mapPoint,
             geometryType: 'esriGeometryPoint',
             spatialRel: 'esriSpatialRelIntersects',
             outFields: '*'
@@ -174,19 +157,34 @@ export default function(){
         const requestUrlPrcipData = config['precipitation-layer-url'] + '/0/query';
         const requestUrlWindData = config['wind-gust-layer-url'] + '/0/query'; 
 
-        Promise.all([
-            fetchData(requestUrlPrcipData, params), 
-            fetchData(requestUrlWindData, params)
-        ]).then(function(arrOfResponses) {
-            // console.log(arrOfResponses);
-            setWeatherDataFeatures('precip', arrOfResponses[0]);
-            setWeatherDataFeatures('windGust', arrOfResponses[1]);
-        });
+        return new Promise((resolve, reject)=>{
+
+            Promise.all([
+                fetchData(requestUrlPrcipData, params), 
+                fetchData(requestUrlWindData, params)
+            ]).then(function(arrOfResponses) {
+                // console.log(arrOfResponses);
+                const precipData = setWeatherDataFeatures('precip', arrOfResponses[0]);
+                const windGustData = setWeatherDataFeatures('windGust', arrOfResponses[1]);
+
+                resolve({
+                    precip: precipData,
+                    windGust: windGustData
+                });
+
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+
 
     };
 
     return {
         init,
-        queryByLatLon
+        queryByLocation
     }
-};
+}
+
+
+
