@@ -1,6 +1,7 @@
 'use strict';
 
 import axios from 'axios';
+import { format as formatDate } from 'date-fns';
 import { capitalizeFirstLetter } from '../utils/Helper'
 
 const URL_HURRICANE_LAYER = 'https://utility.arcgis.com/usrsvcs/servers/4693f2a1d2e348c193ce5ec4d1d887a5/rest/services/LiveFeeds/Hurricane_Active/MapServer';
@@ -37,7 +38,8 @@ const HurricaneData = function(){
         };
 
         try {
-            const features = await queryFeatures(requestUrl, queryParam);
+            let features = await queryFeatures(requestUrl, queryParam);
+            features = features.length > 6 ? features.slice(0, 6) : features;
 
             const data = features.map(d=>{
                 
@@ -45,19 +47,20 @@ const HurricaneData = function(){
                 const dateLabel = d.attributes[fieldNameDateLabel];
                 const maxWind = d.attributes[fieldNameMaxWind];
                 const category = getHurricaneCategory(maxWind, stormType);
+                const forecastTimeInLocal = convertForecastTimeInLocal(dateLabel);
+
+                // console.log(`forecastTimeInLocal`, forecastTimeInLocal);
 
                 return {
                     attributes: {
                         stormType,
-                        dateLabel,
+                        dateLabel: forecastTimeInLocal,
                         maxWind,
                         category
                     },
                     geometry: d.geometry
                 }
             });
-
-            console.log(`forecast hurricane data for ${name}`, features);
 
             return data;
 
@@ -123,6 +126,32 @@ const HurricaneData = function(){
             });
         });
 
+    };
+
+    const convertForecastTimeInLocal = (dateLabel)=>{
+        const dateParts = dateLabel.split(' ');
+        const yyyymmdd = dateParts[0].split('-');
+        const year = +yyyymmdd[0];
+        const month = +yyyymmdd[1] - 1;
+        const day = +yyyymmdd[2];
+        const hour = +dateParts[1].split(':')[0];
+        const ampm = dateParts[2];
+
+        let hourIn24Format = 0;
+
+        if(hour===12 && ampm==='AM'){
+            hourIn24Format = 0;
+        } else if (hour < 12 && ampm === 'PM'){
+            hourIn24Format = hour + 12;
+        } else {
+            hourIn24Format = hour;
+        }
+
+        const localDate = new Date(Date.UTC(year, month, day, hourIn24Format));
+
+        const formattedDate = formatDate(localDate, 'MMM-D, h a');
+
+        return formattedDate;
     };
 
     const getHurricaneCategory = (maxWind=0, stormType='')=>{

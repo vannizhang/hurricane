@@ -1,6 +1,8 @@
 import React from 'react';
 
+import StormInfoWindow from '../StormInfoWindow';
 import StormSelector from './StormSelector';
+
 
 const styles = {
     controlPanelDiv: {
@@ -14,7 +16,7 @@ const styles = {
         border: 'solid 1px #999'
     },
     controlPanelContent: {
-        width: '300px'
+        width: '330px'
     }
 };
 
@@ -37,9 +39,13 @@ class ControlPanel extends React.Component {
             <div id='addressLocatorDiv' className='trailer-half' style={styles.addressLocatorDiv}></div>
             <p className='trailer-half'>Look up a specific storm to find out more information here.</p>
             
-            <StormSelector 
+            <StormSelector
                 data={this.props.activeStorms}
                 onSelect={this.props.stormSelectorOnChange}
+            />
+
+            <StormInfoWindow
+                data={this.props.stormData}
             />
 
         </div>);

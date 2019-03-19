@@ -10,20 +10,22 @@ class App extends React.Component {
     constructor(props){
         super(props);
 
-        console.log('init App component >>> props', props);
+        // console.log('init App component >>> props', props);
 
         this.state = {
-            activeStorm: '',
+            activeStorm: '', // selected storm name
             precipData: [],
-            windGustData: []
+            windGustData: [],
+            stormData: [] // forecast data for selected storm
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
         this.stormSelectorOnChange = this.stormSelectorOnChange.bind(this);
+        this.updateStormData = this.updateStormData.bind(this);
     };
 
     initControllerActionHandlers(){
-        console.log('calling initControllerActionHandlers', this);
+        // console.log('calling initControllerActionHandlers', this);
 
         const actionHandlers = {
             precipDataOnReceive: (data)=>{
@@ -32,12 +34,17 @@ class App extends React.Component {
             windGustDataOnReceive: (data)=>{
 
             },
-            hurricaneDataOnReceive: (data)=>{
-                console.log('hurricaneDataReceived', data);
-            }
+            hurricaneDataOnReceive: this.updateStormData
         }
 
         this.props.controller.initActionHandlers(actionHandlers);
+    }
+
+    updateStormData(data){
+        console.log('calling updateStormData', data);
+        this.setState({
+            stormData: data
+        });
     }
 
     mapOnClick(mapPoint){
@@ -47,7 +54,11 @@ class App extends React.Component {
 
     stormSelectorOnChange(stormName=''){
         // console.log('stormSelectorOnChange', stormName);
-        this.props.controller.fecthHurricaneForecastDataByName(stormName);
+        this.setState({
+            activeStorm: stormName
+        },()=>{
+            this.props.controller.fecthHurricaneForecastDataByName(stormName);
+        });
     }
 
     componentDidMount(){
@@ -67,7 +78,7 @@ class App extends React.Component {
                     stormSelectorOnChange={this.stormSelectorOnChange}
 
                     activeStorms={this.props.activeStorms}
-                    
+                    stormData={this.state.stormData}
                 />
                 {/* <InfoPanel /> */}
             </div>

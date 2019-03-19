@@ -24,6 +24,7 @@
     "axios": "^0.18.0",
     "calcite-web": "github:Esri/calcite-web#v1.2.0",
     "d3": "^5.9.2",
+    "date-fns": "^1.30.1",
     "esri-loader": "^2.6.0",
     "npm": "^6.9.0",
     "react": "^16.8.4",
