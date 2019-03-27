@@ -2,6 +2,7 @@
 
 import WeatherDataManager from './WeatherData';
 import HurricaneDataManager from './HurricaneData';
+import DemographicDataManager from './DemographicData';
 
 const Controller = function(){
 
@@ -11,6 +12,7 @@ const Controller = function(){
 
     const weatherDataManager = new WeatherDataManager();
     const hurricaneDataManager = new HurricaneDataManager();
+    const demographicDataManager = new DemographicDataManager();
 
     const init = async()=>{
         weatherDataManager.init();
@@ -58,7 +60,10 @@ const Controller = function(){
 
         const weatherData = await weatherDataManager.queryByLocation(mapPoint);
 
+        const demographicData = await demographicDataManager.queryByLocation(mapPoint);
+
         console.log('weatherData', weatherData);
+        console.log('demographicData', demographicData);
     };
 
     return {

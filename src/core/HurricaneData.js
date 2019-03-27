@@ -4,17 +4,24 @@ import axios from 'axios';
 import { format as formatDate } from 'date-fns';
 import { capitalizeFirstLetter } from '../utils/Helper'
 
-const URL_HURRICANE_LAYER = 'https://utility.arcgis.com/usrsvcs/servers/4693f2a1d2e348c193ce5ec4d1d887a5/rest/services/LiveFeeds/Hurricane_Active/MapServer';
+const URL_HURRICANE_LAYER = 'https://utility.arcgis.com/usrsvcs/servers/9a052d8ae34741dcada2c0247121bbe5/rest/services/LiveFeeds/Hurricane_Active/MapServer';
 
 const config = {
 
-    "forecasted-position": {
+    "forecast-position": {
         url: URL_HURRICANE_LAYER + '/0',
         fields: {
             stormName: 'STORMNAME',
             stormType: 'TCDVLP',
             dateLabel: 'FLDATELBL',
             maxWind: 'MAXWIND'
+        }
+    },
+
+    "forecast-error-cone": {
+        url: URL_HURRICANE_LAYER + '/4',
+        fields: {
+            stormName: 'STORMNAME',
         }
     }
 
@@ -24,12 +31,12 @@ const HurricaneData = function(){
 
     const fecthForecastDataByName = async(name='')=>{
 
-        const fieldNameStormName = config["forecasted-position"].fields.stormName;
-        const fieldNameStormType = config["forecasted-position"].fields.stormType;
-        const fieldNameDateLabel = config["forecasted-position"].fields.dateLabel;
-        const fieldNameMaxWind = config["forecasted-position"].fields.maxWind
+        const fieldNameStormName = config["forecast-position"].fields.stormName;
+        const fieldNameStormType = config["forecast-position"].fields.stormType;
+        const fieldNameDateLabel = config["forecast-position"].fields.dateLabel;
+        const fieldNameMaxWind = config["forecast-position"].fields.maxWind
 
-        const requestUrl = config["forecasted-position"].url + '/query';
+        const requestUrl = config["forecast-position"].url + '/query';
 
         const queryParam = {
             where: `${fieldNameStormName} = '${name}'`,
@@ -72,9 +79,9 @@ const HurricaneData = function(){
 
     const fetchActiveHurricanes = async()=>{
 
-        const requestUrl = config["forecasted-position"].url + '/query';
+        const requestUrl = config["forecast-position"].url + '/query';
 
-        const fieldNameStormName = config["forecasted-position"].fields.stormName;
+        const fieldNameStormName = config["forecast-position"].fields.stormName;
 
         const queryParam = {
             where: '1=1',
