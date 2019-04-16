@@ -5,10 +5,10 @@ loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: 'c500379cb42d4ba28407502563505e3e'
+    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd'
 }
 
-export default class Map extends React.Component {
+export default class Map extends React.PureComponent {
     constructor(props){
         super(props);
         // console.log('Map props >>>', props);

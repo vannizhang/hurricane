@@ -18,7 +18,7 @@ const Controller = function(){
         weatherDataManager.init();
 
         const activeStorms = await hurricaneDataManager.fetchActiveHurricanes();
-        // console.log(activeStorms);
+        console.log(activeStorms);
 
         return {
             activeStorms
@@ -62,7 +62,15 @@ const Controller = function(){
 
         const demographicData = await demographicDataManager.queryByLocation(mapPoint);
 
-        console.log('weatherData', weatherData);
+        if(state.actionHandlers.precipDataOnReceive){
+            state.actionHandlers.precipDataOnReceive(weatherData.precip);
+        };
+
+        if(state.actionHandlers.windGustDataOnReceive){
+            state.actionHandlers.windGustDataOnReceive(weatherData.windGust);
+        };
+
+        // console.log('weatherData', weatherData);
         console.log('demographicData', demographicData);
     };
 

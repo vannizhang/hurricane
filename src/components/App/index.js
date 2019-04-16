@@ -22,18 +22,16 @@ class App extends React.Component {
         this.mapOnClick = this.mapOnClick.bind(this);
         this.stormSelectorOnChange = this.stormSelectorOnChange.bind(this);
         this.updateStormData = this.updateStormData.bind(this);
+        this.updatePrecipData = this.updatePrecipData.bind(this);
+        this.updateWindGustData = this.updateWindGustData.bind(this);
     };
 
     initControllerActionHandlers(){
         // console.log('calling initControllerActionHandlers', this);
 
         const actionHandlers = {
-            precipDataOnReceive: (data)=>{
-                
-            },
-            windGustDataOnReceive: (data)=>{
-
-            },
+            precipDataOnReceive: this.updatePrecipData,
+            windGustDataOnReceive: this.updateWindGustData,
             hurricaneDataOnReceive: this.updateStormData
         }
 
@@ -45,7 +43,21 @@ class App extends React.Component {
         this.setState({
             stormData: data
         });
-    }
+    };
+
+    updatePrecipData(data=[]){
+        console.log('calling updatePrecipData', data);
+        this.setState({
+            precipData: data
+        });
+    };
+
+    updateWindGustData(data=[]){
+        console.log('calling updateWindGustData', data);
+        this.setState({
+            windGustData: data
+        });
+    };
 
     mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
@@ -80,7 +92,9 @@ class App extends React.Component {
                     activeStorms={this.props.activeStorms}
                     stormData={this.state.stormData}
                 />
-                {/* <InfoPanel /> */}
+                <InfoPanel 
+                    precipData={this.state.precipData}
+                />
             </div>
         );
     };

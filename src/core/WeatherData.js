@@ -1,7 +1,31 @@
 import axios from 'axios';
 
 const config = {
-    "precipitation-layer-url": "https://utility.arcgis.com/usrsvcs/servers/d9835527647f4419ab113c95d29fce88/rest/services/LiveFeeds/NDFD_Precipitation/MapServer",
+    "precipitation-layer": {
+        url: "https://utility.arcgis.com/usrsvcs/servers/d9835527647f4419ab113c95d29fce88/rest/services/LiveFeeds/NDFD_Precipitation/MapServer",
+        category2value:[
+            .01,
+            .10,
+            .25,
+            .50,
+            .75,
+            1,
+            1.5,
+            2,
+            2.5,
+            3,
+            4,
+            5,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20
+        ]
+    },
     "wind-gust-layer-url": "https://utility.arcgis.com/usrsvcs/servers/abfa29364f074c1dafa0e253217ef472/rest/services/LiveFeeds/NDFD_WindGust/MapServer"
 };
 
@@ -62,16 +86,25 @@ export default function(){
 
         // loop through all start time and find if the first item in features match the time  
         return startTimes.map(t=>{
-            const data = features[0] && features[0].attributes.fromdate === t ? features[0].attributes : null;
+            const data = features[0] && features[0].attributes.fromdate === t ? features[0].attributes : {};
+
+            const label = data.label ? data.label : '0 inches';
+
+            // the precip data only come with the label and category, need to decode the category into a real precip amount in inches
+            const value = data.category !== undefined ? config['precipitation-layer'].category2value[data.category] : 0
 
             // remove the matched item from features
             if(data){
                 features = features.slice(1);
             }
 
+            // console.log(data);
+
             return {
-                'fromdate': t,
-                'data': data
+                fromdate: t,
+                label,
+                value
+                // data
             }
         });
     };
@@ -130,7 +163,7 @@ export default function(){
 
     // get the time info for the weather data
     const getTimeInfo = ()=>{
-        const itemInfoUrlPrcipData = config['precipitation-layer-url'] + '/?f=json';
+        const itemInfoUrlPrcipData = config['precipitation-layer'].url + '/?f=json';
         const itemInfoUrlWindData = config['wind-gust-layer-url'] + '/?f=json'; 
 
         Promise.all([
@@ -154,7 +187,7 @@ export default function(){
             outFields: '*'
         };
 
-        const requestUrlPrcipData = config['precipitation-layer-url'] + '/0/query';
+        const requestUrlPrcipData = config['precipitation-layer'].url + '/0/query';
         const requestUrlWindData = config['wind-gust-layer-url'] + '/0/query'; 
 
         return new Promise((resolve, reject)=>{
