@@ -94,6 +94,7 @@ class App extends React.Component {
                 />
                 <InfoPanel 
                     precipData={this.state.precipData}
+                    windGustData={this.state.windGustData}
                 />
             </div>
         );

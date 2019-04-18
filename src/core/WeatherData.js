@@ -112,10 +112,15 @@ export default function(){
     const prepareWindGustData = (features)=>{
         return features.map(d=>{
 
-            return {
-                'fromdate': d.attributes.fromdate,
-                'data': d.attributes
-            }
+            const fromdate = d.attributes.fromdate;
+
+            const featureData = {
+                fromdate,
+                label: d.attributes.label,
+                force: d.attributes.force
+            };
+
+            return featureData
             
         });
     }

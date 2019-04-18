@@ -6,4 +6,20 @@
     padding: 1rem;
     height: 200px;
     background: rgba(0,0,0,.7);
+
+    .item-container {
+        height: 100%;
+    }
+
+    .axis text {
+        font: 9px sans-serif;
+        fill: rgba(255,255,255,.7);
+    }
+      
+    .axis line,
+    .axis path {
+        fill: none;
+        stroke: rgba(255,255,255,.3);
+        shape-rendering: crispEdges;
+    }
 }
