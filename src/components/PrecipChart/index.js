@@ -1,43 +1,107 @@
 'use strict';
 import './style.scss';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-class PrecipChart extends React.PureComponent {
+export default function PrecipChart({
+    containerID='',
+    containerWidth='',
+    containerHeight='',
 
-    constructor(props){
-        super(props);
+    fieldNameForXAxis = '',
+    fieldNameForYAxis = '',
+    data = []
+}={}){
 
-        this.svg = null;
-        this.height = 0;
-        this.width = 0;
+    const containerDivRef = useRef(null);
+   
+    const [ svg, setSvg ] = useState(null);
+    const [ width, setWidth ] = useState(0);
+    const [ height, setHeight ] = useState(0);
+    const [ scales, setScales ] = useState({});
+    const [ axis, setAxis ] = useState({});
 
-        // console.log('init Bar Chart', this.props);
+    const initSvg = ()=>{
+
+        const container = containerDivRef.current;
+        const margin = {top: 5, right: 10, bottom: 20, left: 30};
+        const width = container.offsetWidth - margin.left - margin.right;
+        const height = container.offsetHeight - margin.top - margin.bottom;
+
+        const svg = d3.select("#" + containerID).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        setSvg(svg);
+        setWidth(width);
+        setHeight(height);
     };
 
-    drawChart(){
+    const initScales = ()=>{
 
-        // const containerId = this.props.id;
-        // const container = document.getElementById(containerId);
+        const scales = {};
 
-        // container.innerHTML = '';
+        const x = d3.scaleBand().rangeRound([0, width], .05).padding(0.05);
+        scales.x = x;
 
-        // const margin = {top: 5, right: 10, bottom: 20, left: 30};
-        // const width = container.offsetWidth - margin.left - margin.right;
-        // const height = container.offsetHeight - margin.top - margin.bottom;
+        const y = d3.scaleLinear().range([height, 0]);
+        scales.y = y;
 
-        const height = this.height;
-        const width = this.width;
+        setScales(scales);
+    };
+
+    const initAxis = ()=>{
+        
+        const axis = {};
+
+        axis.x = d3.axisBottom().scale(scales.x).tickFormat(d3.timeFormat("%a %m/%d"));
+
+        axis.y = d3.axisLeft().scale(scales.y).ticks(5);
+
+        setAxis(axis);
+    }
+
+    const draw = ()=>{
 
         const parseDate = d3.isoParse;
-        const fieldNameForXAxis = this.props.fieldNameForXAxis;
-        const fieldNameForYAxis = this.props.fieldNameForYAxis;
-        const xAxisValue = {};
-        const data = this.props.data.map(d=>{
-            
-            d[fieldNameForXAxis] = parseDate(d[fieldNameForXAxis]);
 
+        data = data.map(d=>{
+            d[fieldNameForXAxis] = parseDate(d[fieldNameForXAxis]);
+            return d;
+        });
+
+        updateDomainForXScale();
+
+        updateDomainForYScale();
+
+        updateXAxisTickValues(data);
+
+        drawXLabels();
+
+        drawYLabels();
+
+        drawBars();
+    }; 
+
+    const updateDomainForXScale = ()=>{
+        scales.x.domain(data.map(function(d) { return d[fieldNameForXAxis]; }));
+    };
+
+    const updateDomainForYScale = ()=>{
+        const yScaleMax = d3.max(data, function(d) { return d[fieldNameForYAxis]; });
+        const yScaleMaxBeautified = beautifyMaxValueForYAxis(yScaleMax);
+        scales.y.domain([0, yScaleMaxBeautified]);
+    };
+
+    const updateXAxisTickValues = (data)=>{
+
+        const xAxisValue = {};
+
+        data = data.map(d=>{
+            
             const day = d[fieldNameForXAxis].getDay();
 
             if(!xAxisValue[day]){
@@ -50,68 +114,69 @@ class PrecipChart extends React.PureComponent {
         const xAxisTickVals = Object.keys(xAxisValue).map(key=>{
             return xAxisValue[key];
         });
-        
-        const xScale = d3.scaleBand().rangeRound([0, width], .05).padding(0.05);
-        const yScale = d3.scaleLinear().range([height, 0]);
-        const yScaleMax = d3.max(data, function(d) { return d[fieldNameForYAxis]; });
-        const yScaleMaxBeautified = this.beautifyMaxValueForYAxis(yScaleMax);
-        xScale.domain(data.map(function(d) { return d[fieldNameForXAxis]; }));
-        // TODO: need to calc the max value fo y scale
-        yScale.domain([0, yScaleMaxBeautified]);
 
-        const xAxis = d3.axisBottom()
-            .scale(xScale)
-            .tickValues(xAxisTickVals)
-            .tickFormat(d3.timeFormat("%a %m/%d"));
+        axis.x.tickValues(xAxisTickVals);
+    }
 
-        const yAxis = d3.axisLeft()
-            .scale(yScale)
-            .ticks(5);
-        
-        // const svg = d3.select("#" + containerId).append("svg")
-        //     .attr("width", width + margin.left + margin.right)
-        //     .attr("height", height + margin.top + margin.bottom)
-        //     .append("g")
-        //         .attr("transform",
-        //             "translate(" + margin.left + "," + margin.top + ")");
-
-        this.svg.append("g")
+    const drawXLabels = ()=>{
+        const xAxisLabel = svg.selectAll('.x.axis');
+        if(!xAxisLabel.size()){
+            svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+            .call(axis.x);
             // .selectAll("text")
             // .style("text-anchor", "end")
             // .attr("dx", "-.8em")
             // .attr("dy", "-.55em")
             // .attr("transform", "rotate(-90)" );
+        } else {
+            xAxisLabel.attr("transform", "translate(0," + height + ")").call(axis.x);
+        }
+    };
 
-        this.svg.append("g")
+    const drawYLabels = ()=>{
+        const yAxisLabel = svg.selectAll('.y.axis');
+
+        if(!yAxisLabel.size()){
+            svg.append("g")
             .attr("class", "y axis")
-            .call(yAxis);
+            .call(axis.y);
             // .append("text")
             // .attr("transform", "rotate(-90)")
             // .attr("y", 6)
             // .attr("dy", ".71em")
             // .style("text-anchor", "end")
             // .text(chartType);
+        } else {
+            yAxisLabel.call(axis.y);
+        }
+    };
 
-        this.svg.selectAll("bar")
-            .data(data)
+    const drawBars = ()=>{
+
+        const bars = svg.selectAll('.bar');
+
+        // check the number of existing bars, if greater than 0; remove all existing ones
+        if(bars.size()){
+            bars.remove().exit();
+        }
+
+        bars.data(data)
             .enter().append("rect")
             .style("fill", "steelblue")
-            .attr("x", function(d) { return xScale(d[fieldNameForXAxis]); })
-            .attr("width", xScale.bandwidth())
-            .attr("y", function(d) { return yScale(d[fieldNameForYAxis]); })
-            .attr("height", function(d) { return height - yScale(d[fieldNameForYAxis]); })
+            .attr("class", "bar")
+            .attr("x", function(d) { return scales.x(d[fieldNameForXAxis]); })
+            .attr("width", scales.x.bandwidth())
+            .attr("y", function(d) { return scales.y(d[fieldNameForYAxis]); })
+            .attr("height", function(d) { return height - scales.y(d[fieldNameForYAxis]); })
             .on('click', function(d){
                 // console.log('chart on click >>>', d.date.getTime(), d.date);
             });
+    };
 
-        // console.log(container.offsetWidth, container.offsetHeight);
-    }; 
-
-    beautifyMaxValueForYAxis(value=0){
-        const beautifiedValues = [.5, 2.5, 5, 10, 20];
+    const beautifyMaxValueForYAxis = (value=0)=>{
+        const beautifiedValues = [.5, 1, 1.5, 2.5, 5, 10, 20];
         let beautifiedVal = 0;
 
         for(let i = beautifiedValues.length; i >=0; i--){
@@ -123,50 +188,34 @@ class PrecipChart extends React.PureComponent {
         return beautifiedVal || val;
     }
 
-    updateChart(){
+    // init svg when component is ready
+    useEffect(()=>{
+        // console.log('component did mount', containerDivRef);
+        initSvg();
+    },[]);
 
-    };
+    // init scales and axis when svg is ready
+    useEffect(()=>{
+        initScales();
+    }, [svg]);
 
-    
-    initSvg(){
-        const container = document.getElementById(this.props.id);
+    // init axis when scales is ready
+    useEffect(()=>{
+        initAxis();
+    }, [scales]);
 
-        const margin = this.props.margin || {top: 5, right: 10, bottom: 20, left: 30};
-        const width = container.offsetWidth - margin.left - margin.right;
-        const height = container.offsetHeight - margin.top - margin.bottom;
-
-        const svg = d3.select("#" + this.props.id).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        
-        this.svg = svg;
-        this.height = height;
-        this.width = width;
-    }
-
-    componentDidMount(){
-        this.initSvg();
-    };
-
-    componentDidUpdate(prevProps){
-
-        if(prevProps.data !== this.props.data){
-            // console.log('PrecipChart chart data is updated', this.props.data);
-            this.drawChart();
+    // draw chart when data is updated
+    useEffect(()=>{
+        if(data && data.length && svg){
+            draw();
         }
-    }
+    }, [data]);
 
-    render(){
-        return (
-            <div id={this.props.id} 
-                style={{
-                    width: this.props.width,
-                    height: this.props.height,
-            }}></div>);
-    };
-
+    return (
+        <div id={containerID} ref={containerDivRef}
+            style={{
+                width: containerWidth,
+                height: containerHeight,
+        }}></div>
+    );
 };
-
-export default PrecipChart;

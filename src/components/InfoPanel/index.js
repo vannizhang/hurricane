@@ -16,9 +16,9 @@ class InfoPanel extends React.Component {
             <div id='infoPanelDiv'>
                 <div className='inline-block item-container '>
                     <PrecipChart 
-                        id={'precipChartDiv'}
-                        width={'300px'}
-                        height={'100%'}
+                        containerID={'precipChartDiv'}
+                        containerWidth={'350px'}
+                        containerHeight={'100%'}
                         fieldNameForXAxis={'fromdate'}
                         fieldNameForYAxis={'value'}
                         data={this.props.precipData}
@@ -27,9 +27,9 @@ class InfoPanel extends React.Component {
 
                 <div className='inline-block item-container '>
                     <WindChart 
-                        id={'windChartDiv'}
-                        width={'350px'}
-                        height={'100%'}
+                        containerID={'windChartDiv'}
+                        containerWidth={'350px'}
+                        containerHeight={'100%'}
                         fieldNameForXAxis={'fromdate'}
                         fieldNameForYAxis={'force'}
                         data={this.props.windGustData}
