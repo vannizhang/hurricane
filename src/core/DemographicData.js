@@ -5,7 +5,7 @@ import axios from 'axios';
 const config = {
     layers: [
         {
-            title: 'Language Sopken at Home',
+            title: 'Language',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Language_by_Age_Boundaries/FeatureServer/2',
             fields: [
                 {
@@ -49,12 +49,12 @@ const config = {
                 {
                     name: 'B18101_calc_pctMDE',
                     alias: 'Percent of Male Population with a disability',
-                    label: 'Has Disability'
+                    label: 'Has Disability Male'
                 },
                 {
                     name: 'B18101_calc_pctFDE',
                     alias: 'Percent of Female Population with a disability',
-                    label: 'Has Disability'
+                    label: 'Has Disability Female'
                 }
             ]
         },
@@ -152,15 +152,15 @@ export default function(){
 
         });
 
-        if(beautifiedData['Language Sopken at Home']){
+        if(beautifiedData['Language']){
 
             const pctSpeakOtherLanguage = {
                 fieldAlias: 'Percent of Total Population Age 5+ Who Speaks Other Languages at Home',
                 fieldLabel: 'Other Languages',
-                fieldValue: 100 - beautifiedData['Language Sopken at Home'][0].fieldValue
+                fieldValue: 100 - beautifiedData['Language'][0].fieldValue
             };
 
-            beautifiedData['Language Sopken at Home'].push(pctSpeakOtherLanguage);
+            beautifiedData['Language'].push(pctSpeakOtherLanguage);
         }
 
         if(beautifiedData['Population']){

@@ -7,7 +7,7 @@ import DemographicDataManager from './DemographicData';
 const Controller = function(){
 
     const state = {
-        actionHandlers: null
+        // actionHandlers: null
     };
 
     const weatherDataManager = new WeatherDataManager();
@@ -26,11 +26,11 @@ const Controller = function(){
         
     };
 
-    const initActionHandlers = (handlers={
+    // const initActionHandlers = (handlers={
 
-    })=>{
-        state.actionHandlers = handlers;
-    };
+    // })=>{
+    //     state.actionHandlers = handlers;
+    // };
 
     const fecthHurricaneForecastDataByName = async(stormName='')=>{
         const data = await hurricaneDataManager.fecthForecastDataByName(stormName);
@@ -51,9 +51,11 @@ const Controller = function(){
         */
         // console.log('ForecastDataByName', data);
 
-        if(state.actionHandlers.hurricaneDataOnReceive){
-            state.actionHandlers.hurricaneDataOnReceive(data);
-        }
+        // if(state.actionHandlers.hurricaneDataOnReceive){
+        //     state.actionHandlers.hurricaneDataOnReceive(data);
+        // }
+
+        return data;
     }
 
     const fetchDataForInfoPanel = async(mapPoint=null)=>{
@@ -62,21 +64,28 @@ const Controller = function(){
 
         const demographicData = await demographicDataManager.queryByLocation(mapPoint);
 
-        if(state.actionHandlers.precipDataOnReceive){
-            state.actionHandlers.precipDataOnReceive(weatherData.precip);
-        };
+        // if(state.actionHandlers.precipDataOnReceive){
+        //     state.actionHandlers.precipDataOnReceive(weatherData.precip);
+        // };
 
-        if(state.actionHandlers.windGustDataOnReceive){
-            state.actionHandlers.windGustDataOnReceive(weatherData.windGust);
-        };
+        // if(state.actionHandlers.windGustDataOnReceive){
+        //     state.actionHandlers.windGustDataOnReceive(weatherData.windGust);
+        // };
 
         // console.log('weatherData', weatherData);
         console.log('demographicData', demographicData);
+
+        return {
+            precip: weatherData.precip,
+            windGust: weatherData.windGust,
+            ...demographicData
+        }
+
     };
 
     return {
         init,
-        initActionHandlers,
+        // initActionHandlers,
         fetchDataForInfoPanel,
         fecthHurricaneForecastDataByName
     };

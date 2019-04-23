@@ -14,9 +14,12 @@ class App extends React.Component {
 
         this.state = {
             activeStorm: '', // selected storm name
+            stormData: [], // forecast data for selected storm,
+
             precipData: [],
             windGustData: [],
-            stormData: [] // forecast data for selected storm
+            populationData: [],
+            languageData: [],
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -26,57 +29,87 @@ class App extends React.Component {
         this.updateWindGustData = this.updateWindGustData.bind(this);
     };
 
-    initControllerActionHandlers(){
-        // console.log('calling initControllerActionHandlers', this);
+    // initControllerActionHandlers(){
+    //     // console.log('calling initControllerActionHandlers', this);
 
-        const actionHandlers = {
-            precipDataOnReceive: this.updatePrecipData,
-            windGustDataOnReceive: this.updateWindGustData,
-            hurricaneDataOnReceive: this.updateStormData
-        }
+    //     const actionHandlers = {
+    //         precipDataOnReceive: this.updatePrecipData,
+    //         windGustDataOnReceive: this.updateWindGustData,
+    //         hurricaneDataOnReceive: this.updateStormData
+    //     }
 
-        this.props.controller.initActionHandlers(actionHandlers);
-    }
+    //     this.props.controller.initActionHandlers(actionHandlers);
+    // }
 
     updateStormData(data){
-        console.log('calling updateStormData', data);
+        // console.log('calling updateStormData', data);
         this.setState({
             stormData: data
         });
     };
 
     updatePrecipData(data=[]){
-        console.log('calling updatePrecipData', data);
+        // console.log('calling updatePrecipData', data);
         this.setState({
             precipData: data
         });
     };
 
     updateWindGustData(data=[]){
-        console.log('calling updateWindGustData', data);
+        // console.log('calling updateWindGustData', data);
         this.setState({
             windGustData: data
         });
     };
 
-    mapOnClick(mapPoint){
+    updatePopulationData(data=[]){
+        // console.log('calling populationData', data);
+        this.setState({
+            populationData: data
+        });
+    };
+
+    updateLanguageData(data=[]){
+        // console.log('calling languageData', data);
+        this.setState({
+            languageData: data
+        });
+    };
+
+    async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
-        this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
+        const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
+        console.log('data for info panel', data);
+
+        if(data.precip){
+            this.updatePrecipData(data.precip);
+        }
+
+        if(data.windGust){
+            this.updateWindGustData(data.windGust);
+        }
+
+        if(data.Population){
+            this.updatePopulationData(data.Population);
+        }
+
+        if(data.Language){
+            this.updateLanguageData(data.Language);
+        }
     }
 
     stormSelectorOnChange(stormName=''){
         // console.log('stormSelectorOnChange', stormName);
         this.setState({
             activeStorm: stormName
-        },()=>{
-            this.props.controller.fecthHurricaneForecastDataByName(stormName);
+        }, async()=>{
+            const data = await this.props.controller.fecthHurricaneForecastDataByName(stormName);
+            this.updateStormData(data);
         });
     }
 
     componentDidMount(){
         // console.log('app is mounted');
-        this.initControllerActionHandlers();
-
         calcite.init();
     }
 
@@ -95,6 +128,8 @@ class App extends React.Component {
                 <InfoPanel 
                     precipData={this.state.precipData}
                     windGustData={this.state.windGustData}
+                    populationData={this.state.populationData}
+                    languageData={this.state.languageData}
                 />
             </div>
         );
