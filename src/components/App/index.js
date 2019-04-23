@@ -20,6 +20,8 @@ class App extends React.Component {
             windGustData: [],
             populationData: [],
             languageData: [],
+            vehicleData: null,
+            disabilityData: null,
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -76,6 +78,20 @@ class App extends React.Component {
         });
     };
 
+    updateVehicleData(data=null){
+        // console.log('calling languageData', data);
+        this.setState({
+            vehicleData: data
+        });
+    };
+
+    updateDisabilityData(data=null){
+        // console.log('calling languageData', data);
+        this.setState({
+            disabilityData: data
+        });
+    };
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
@@ -95,6 +111,14 @@ class App extends React.Component {
 
         if(data.Language){
             this.updateLanguageData(data.Language);
+        }
+
+        if(data['Vehicle Avialability']){
+            this.updateVehicleData(data['Vehicle Avialability'][0]);
+        }
+
+        if(data['Disability Status']){
+            this.updateDisabilityData(data['Disability Status'][2]);
         }
     }
 
@@ -130,6 +154,8 @@ class App extends React.Component {
                     windGustData={this.state.windGustData}
                     populationData={this.state.populationData}
                     languageData={this.state.languageData}
+                    vehicleData={this.state.vehicleData}
+                    disabilityData={this.state.disabilityData}
                 />
             </div>
         );

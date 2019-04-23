@@ -10,6 +10,10 @@ export default function DonutChart({
     // by default, use 0 as the thicknessRatio to create a pei chart. If thicknessRatio is greater than 0 and smaller than 1, it will create a donut chart
     // the value should between 0 and 1
     thicknessRatio = 0,
+    // if true, add text to the center of the donut chart
+    isCenterTextVisible = false,
+    centerTextDefaultValue = '',
+    shouldShowValueInCenterWhenMouseOver = false,
     fieldName = '',
     data = []
 }={}){
@@ -21,10 +25,9 @@ export default function DonutChart({
 
     const initSvg = ()=>{
 
-        const marginRatio = 1;
         const container = containerDivRef.current;
-        const width = container.offsetWidth * marginRatio;
-        const height = container.offsetHeight * marginRatio;
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
         const radius = Math.min(width, height) / 2;
 
         const svg = d3.select("#" + container.id)
@@ -59,6 +62,28 @@ export default function DonutChart({
         g.append("path")
             .attr("d", arc)
             .attr('fill', (d,i) => color(i))
+            .on("mouseover", function(d) {
+                if(shouldShowValueInCenterWhenMouseOver){
+                    g.select('.center-text').text(d.value);
+                }
+            })
+            .on("mouseout", function(d) {
+                if(shouldShowValueInCenterWhenMouseOver){
+                    g.select('.center-text').text(centerTextDefaultValue);
+                }
+            });
+
+        if(isCenterTextVisible){
+            g.append("text")
+            .attr("class", "center-text")
+            .attr("text-anchor", "middle")
+                .attr('font-size', '.9rem')
+                .attr('y', 7)
+            .attr('fill', 'rgba(255,255,255,.8)')
+            .text(centerTextDefaultValue);
+        }
+
+
     };
 
     

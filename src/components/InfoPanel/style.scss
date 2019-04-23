@@ -8,7 +8,35 @@
     background: rgba(0,0,0,.7);
 
     .item-container {
+        display: flex;
+        flex-flow: column;
         height: 100%;
+
+        .item-header {
+            flex: 0 1 auto;
+            text-align: center;
+            color: rgba(255,255,255,.8);
+        }
+          
+        .item-content {
+            flex: 1 1 auto;
+        }
+    }
+
+
+    .flex-container {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: center;
+        align-items: center;
+
+        .flexy-item {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 0px;
+        }
     }
 
     .axis text {
