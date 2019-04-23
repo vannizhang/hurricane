@@ -59,13 +59,13 @@ class InfoPanel extends React.Component {
                             <h5>POPULATION</h5>
                         </div>
                         <div className='item-content flex-container'>
-                            <div className=' text-center'>
+                            <div className='fixed-item text-center' style={{width: '100px'}}>
                                 <TwoLineLabel 
-                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue + '%' : ''}
+                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
                                     label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
                                 />
                             </div>
-                            <div className='fixed-item' style={{width: '100px', height: '100%'}}>
+                            <div className='flexy-item' style={{height: '100%'}}>
                                 <DonutChart 
                                     containerID={'popuChartDiv'}
                                     containerWidth={'100%'}
@@ -78,9 +78,9 @@ class InfoPanel extends React.Component {
                                     centerTextDefaultValue={this.props.populationData[0] ? this.props.populationData[0].fieldValue : ''}
                                 />
                             </div>
-                            <div className='flexy-item text-center'>
+                            <div className='fixed-item text-center' style={{width: '100px'}}>
                                 <TwoLineLabel 
-                                    value={this.props.disabilityData ? this.props.disabilityData.fieldValue + '%' : ''}
+                                    value={this.props.disabilityData ? this.props.disabilityData.fieldValue.toFixed(1) + '%' : ''}
                                     label={this.props.disabilityData ? this.props.disabilityData.fieldLabel : ''}
                                 />
                             </div>
@@ -94,8 +94,13 @@ class InfoPanel extends React.Component {
                             <h5>COMMUNICATION</h5>
                         </div>
                         <div className='item-content flex-container'>
-                            <div className='flexy-item text-center'>foo</div>
-                            <div className='fixed-item' style={{width: '100px', height: '100%'}}>
+                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                                <TwoLineLabel 
+                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
+                                    label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                />
+                            </div>
+                            <div className='flexy-item' style={{height: '100%'}}>
                                 <DonutChart 
                                     containerID={'communicationChartDiv'}
                                     containerWidth={'100%'}
@@ -104,7 +109,12 @@ class InfoPanel extends React.Component {
                                     data={this.props.languageData}
                                 />
                             </div>
-                            <div className='flexy-item text-center'>bar</div>
+                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                                <TwoLineLabel 
+                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
+                                    label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                />
+                            </div>
 
                         </div>
                     </div>

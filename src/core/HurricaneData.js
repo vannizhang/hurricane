@@ -94,6 +94,8 @@ const HurricaneData = function(){
         try {
             const features = await queryFeatures(requestUrl, queryParam);
 
+            console.log(requestUrl, queryParam);
+
             const data = features.map(d=>{
                 const value = d.attributes[fieldNameStormName];
                 const label = capitalizeFirstLetter(value);
@@ -116,9 +118,13 @@ const HurricaneData = function(){
 
         return new Promise((resolve, reject)=>{
 
-            axios.get(requestUrl, {
-                params
-            }).then( (response)=>{
+            const formData = new FormData();
+
+            Object.keys(params).forEach(key=>{
+                formData.append(key, params[key]);
+            });
+
+            axios.post(requestUrl, formData).then( (response)=>{
                 // console.log(response);
 
                 if(response.data && response.data.features){
