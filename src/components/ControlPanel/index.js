@@ -34,7 +34,11 @@ class ControlPanel extends React.Component {
     getComponentJsx(){
 
         return (<div style={styles.controlPanelContent}>
-            <h4>HURRICANE AWARE</h4>
+            <div className='trailer-half'>
+                <span className='font-size-2'>HURRICANE AWARE</span>
+                <span className='right icon-ui-question cursor-pointer'></span>
+            </div>
+            
             <p className='trailer-half'>For community awareness within the US about a hurricane in your area, click on the map or search bwlow</p>
             <div id='addressLocatorDiv' className='trailer-half' style={styles.addressLocatorDiv}></div>
             <p className='trailer-half'>Look up a specific storm to find out more information here.</p>
@@ -56,7 +60,7 @@ class ControlPanel extends React.Component {
         const componentJsx = this.getComponentJsx();
         return (
             <div id='controlPanelDiv' style={styles.controlPanelDiv}>
-                <div className='panel'>{componentJsx}</div>
+                <div className='panel panel-dark-blue'>{componentJsx}</div>
             </div>
         );
     }

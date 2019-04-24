@@ -1,6 +1,7 @@
 'use strict';
 
 import axios from 'axios';
+import colors from '../data/Colors';
 
 const config = {
     layers: [
@@ -139,12 +140,13 @@ export default function(){
                 const fieldAlias = d.alias;
                 const fieldLabel = d.label;
                 const fieldValue = attributes[fieldName];
-                
+                const color = colors[fieldLabel]
 
                 return {
                     fieldAlias,
                     fieldLabel,
-                    fieldValue
+                    fieldValue,
+                    color
                 };
             });
 
@@ -157,7 +159,8 @@ export default function(){
             const pctSpeakOtherLanguage = {
                 fieldAlias: 'Percent of Total Population Age 5+ Who Speaks Other Languages at Home',
                 fieldLabel: 'Other Languages',
-                fieldValue: 100 - beautifiedData['Language'][0].fieldValue
+                fieldValue: 100 - beautifiedData['Language'][0].fieldValue,
+                color: colors['Other Languages']
             };
 
             beautifiedData['Language'].push(pctSpeakOtherLanguage);
@@ -173,7 +176,8 @@ export default function(){
             const countPopu18to64= {
                 fieldAlias: 'Count of People 18 to 64',
                 fieldLabel: '18-64 yrs',
-                fieldValue: nonDependentPopu
+                fieldValue: nonDependentPopu,
+                color: colors['18-64 yrs']
             };
 
             const rearrangedPopulationData = [

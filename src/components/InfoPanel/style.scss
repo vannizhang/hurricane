@@ -3,9 +3,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1rem;
+    // padding: 1rem;
     height: 200px;
-    background: rgba(0,0,0,.7);
+    // background: rgba(0,0,0,.7);
 
     .item-container {
         display: flex;
@@ -20,6 +20,11 @@
           
         .item-content {
             flex: 1 1 auto;
+        }
+
+        .item-footer {
+            flex: 0 1 25px;
+            padding-top: .5rem;
         }
     }
 

@@ -22,6 +22,7 @@ class App extends React.Component {
             languageData: [],
             vehicleData: null,
             disabilityData: null,
+            internetData: null
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -92,6 +93,13 @@ class App extends React.Component {
         });
     };
 
+    updateInternetData(data=null){
+        // console.log('calling languageData', data);
+        this.setState({
+            internetData: data
+        });
+    };
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
@@ -119,6 +127,10 @@ class App extends React.Component {
 
         if(data['Disability Status']){
             this.updateDisabilityData(data['Disability Status'][2]);
+        }
+
+        if(data['Internet Connectivity']){
+            this.updateInternetData(data['Internet Connectivity'][0]);
         }
     }
 
@@ -156,6 +168,7 @@ class App extends React.Component {
                     languageData={this.state.languageData}
                     vehicleData={this.state.vehicleData}
                     disabilityData={this.state.disabilityData}
+                    internetData={this.state.internetData}
                 />
             </div>
         );

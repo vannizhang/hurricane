@@ -43,7 +43,7 @@ export default function DonutChart({
 
     const draw = ()=>{
 
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const color = d3.scaleOrdinal(d3.schemeSet2);
 
         const arc = d3.arc()
             .innerRadius(radius * thicknessRatio)
@@ -61,7 +61,9 @@ export default function DonutChart({
       
         g.append("path")
             .attr("d", arc)
-            .attr('fill', (d,i) => color(i))
+            .attr('fill', (d,i)=>{
+                return d.data.color || color(i);
+            })
             .on("mouseover", function(d) {
                 if(shouldShowValueInCenterWhenMouseOver){
                     g.select('.center-text').text(d.value);

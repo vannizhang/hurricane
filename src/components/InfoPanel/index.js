@@ -6,6 +6,12 @@ import PrecipChart from '../PrecipChart';
 import WindChart from '../WindChart';
 import DonutChart from '../DonutChart';
 import TwoLineLabel from './TwoLineLabel';
+import HorizontalLegend from '../HorizontalLegend';
+
+const styles = {
+    itemWrap: { height: '100%', width: '350px' },
+    sideLabel: {width: '100px'}
+}
 
 class InfoPanel extends React.Component {
 
@@ -15,9 +21,9 @@ class InfoPanel extends React.Component {
 
     render(){
         return (
-            <div id='infoPanelDiv'>
+            <div id='infoPanelDiv' className='panel panel-dark-blue'>
 
-                <div className='inline-block' style={{height: '100%', width: '350px'}}>
+                <div className='inline-block' style={styles.itemWrap}>
                     <div className='item-container'>
                         <div className='item-header'>
                             <h5>PRECIPITATION</h5>
@@ -35,7 +41,7 @@ class InfoPanel extends React.Component {
                     </div>
                 </div>
 
-                <div className='inline-block' style={{height: '100%', width: '350px'}}>
+                <div className='inline-block' style={styles.itemWrap}>
                     <div className='item-container'>
                         <div className='item-header'>
                             <h5>WIND GUST</h5>
@@ -53,13 +59,15 @@ class InfoPanel extends React.Component {
                     </div>
                 </div>
 
-                <div className='inline-block' style={{height: '100%', width: '350px'}}>
+                <div className='inline-block' style={styles.itemWrap}>
                     <div className='item-container'>
+
                         <div className='item-header'>
                             <h5>POPULATION</h5>
                         </div>
+
                         <div className='item-content flex-container'>
-                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                            <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
                                     value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
                                     label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
@@ -78,26 +86,43 @@ class InfoPanel extends React.Component {
                                     centerTextDefaultValue={this.props.populationData[0] ? this.props.populationData[0].fieldValue : ''}
                                 />
                             </div>
-                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                            <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
                                     value={this.props.disabilityData ? this.props.disabilityData.fieldValue.toFixed(1) + '%' : ''}
                                     label={this.props.disabilityData ? this.props.disabilityData.fieldLabel : ''}
                                 />
                             </div>
                         </div>
+
+                        <div className='item-footer'>
+                            <HorizontalLegend 
+                                data={
+                                    this.props.populationData
+                                    .filter(d=>{ return d.fieldAlias !== 'Total Population' })
+                                    .map(d=>{ 
+                                        const label = d.fieldLabel;
+                                        const color = d.color;
+                                        return { label, color };
+                                    })
+                                }
+                            />
+                        </div>
+
                     </div>
                 </div>
 
-                <div className='inline-block' style={{height: '100%', width: '350px'}}>
+                <div className='inline-block' style={styles.itemWrap}>
                     <div className='item-container'>
+
                         <div className='item-header'>
                             <h5>COMMUNICATION</h5>
                         </div>
+
                         <div className='item-content flex-container'>
-                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                            <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
-                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
-                                    label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                    value={this.props.internetData ? this.props.internetData.fieldValue.toFixed(1) + '%' : ''}
+                                    label={this.props.internetData ? this.props.internetData.fieldLabel : ''}
                                 />
                             </div>
                             <div className='flexy-item' style={{height: '100%'}}>
@@ -109,14 +134,27 @@ class InfoPanel extends React.Component {
                                     data={this.props.languageData}
                                 />
                             </div>
-                            <div className='fixed-item text-center' style={{width: '100px'}}>
+                            <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
-                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
-                                    label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                    // value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
+                                    // label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
                                 />
                             </div>
-
                         </div>
+
+                        <div className='item-footer'>
+                            <HorizontalLegend 
+                                data={
+                                    this.props.languageData
+                                    .map(d=>{ 
+                                        const label = d.fieldLabel;
+                                        const color = d.color;
+                                        return { label, color };
+                                    })
+                                }
+                            />
+                        </div>
+
                     </div>
                 </div>
 

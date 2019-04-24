@@ -1,0 +1,28 @@
+.horizontal-legend{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+
+    .legend-item {
+        display:flex;
+        justify-content: center;
+        align-items:center;
+
+        flex-grow: 1;
+        flex-shrink: 0;
+        flex-basis: 50px;
+
+        .legend-icon{
+            width: 18px;
+            height: 18px;
+            // background-color: #666;
+        }
+
+        .legend-label {
+            font-size: .8rem;
+        }
+    }
+}

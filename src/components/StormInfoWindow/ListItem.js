@@ -17,8 +17,8 @@ class StormInfoWindowListItem extends React.Component {
         return (   
             <div className='storm-info-list-item' onClick={this.onClickHandler}>
                 <div className='date-label'><span className='font-size--2'>{this.props.data.attributes.dateLabel}</span></div>
-                <div className='category-icon' data-value={this.props.data.attributes.category}></div>
                 <div className='storm-type text-right'><span className='font-size--3'>{this.props.data.attributes.stormType}</span></div>
+                <div className='category-icon' data-value={this.props.data.attributes.category}></div>
             </div>
         );
     }
