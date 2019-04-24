@@ -59,12 +59,16 @@ export default function WindChart({
         
         const axis = {};
 
-        axis.x = d3.axisBottom().scale(scales.x).tickFormat(d3.timeFormat("%a %-I %p"));;
+        axis.x = d3.axisBottom()
+            .scale(scales.x)
+            // .tickSize(-height)
+            .tickFormat(d3.timeFormat("%a %-I %p"));
 
         axis.y = d3.axisLeft()
             .scale(scales.y)
             .tickValues([0, 3, 6, 9, 12, 15])
             .tickFormat(d =>{ return decodeWindForce(d); })
+            // .tickSize(-width)
             .ticks(5);
 
         setAxis(axis);

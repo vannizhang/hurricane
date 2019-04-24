@@ -19,7 +19,8 @@ export default class HorizonatlLegend extends React.PureComponent {
     }
 
     render(){
-        
+        // this.props.data should contain an array of object like: [{ label: 'foobar', color: '#000' }] 
+
         const legendItems = this.props.data.map((d, i)=>{
             return this.getLegendItem(d.label, d.color, i);
         });

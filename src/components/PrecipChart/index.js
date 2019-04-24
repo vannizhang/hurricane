@@ -164,7 +164,7 @@ export default function PrecipChart({
 
         bars.data(data)
             .enter().append("rect")
-            .style("fill", "steelblue")
+            .style("fill", "rgba(188,218,237,.8)")
             .attr("class", "bar")
             .attr("x", function(d) { return scales.x(d[fieldNameForXAxis]); })
             .attr("width", scales.x.bandwidth())
