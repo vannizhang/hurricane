@@ -6,6 +6,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import WindLayerConfig from '../../data/WindGustLayerConfig';
 
+const config = {
+    windTicks :[ 2, 4, 6, 8, 10, 12, 14, 16 ]
+};
+
 export default function WindChart({
     containerID='',
     containerWidth='',
@@ -66,7 +70,8 @@ export default function WindChart({
 
         axis.y = d3.axisLeft()
             .scale(scales.y)
-            .tickValues([0, 3, 6, 9, 12, 15])
+            // .tickValues([0, 3, 6, 9, 12, 15])
+            .tickValues(config.windTicks)
             .tickFormat(d =>{ return decodeWindForce(d); })
             // .tickSize(-width)
             .ticks(5);

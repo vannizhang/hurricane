@@ -32,18 +32,6 @@ class App extends React.Component {
         this.updateWindGustData = this.updateWindGustData.bind(this);
     };
 
-    // initControllerActionHandlers(){
-    //     // console.log('calling initControllerActionHandlers', this);
-
-    //     const actionHandlers = {
-    //         precipDataOnReceive: this.updatePrecipData,
-    //         windGustDataOnReceive: this.updateWindGustData,
-    //         hurricaneDataOnReceive: this.updateStormData
-    //     }
-
-    //     this.props.controller.initActionHandlers(actionHandlers);
-    // }
-
     updateStormData(data){
         // console.log('calling updateStormData', data);
         this.setState({
@@ -52,7 +40,7 @@ class App extends React.Component {
     };
 
     updatePrecipData(data=[]){
-        // console.log('calling updatePrecipData', data);
+        console.log('calling updatePrecipData', data);
         this.setState({
             precipData: data
         });

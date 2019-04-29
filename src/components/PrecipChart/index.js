@@ -4,6 +4,13 @@ import './style.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
+const config = {
+    class_name: {
+        svg: 'precip-chart-svg',
+        bar_rect: 'precip-chart-bar'
+    }
+};
+
 export default function PrecipChart({
     containerID='',
     containerWidth='',
@@ -32,6 +39,7 @@ export default function PrecipChart({
         const svg = d3.select("#" + containerID).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr("class", config.class_name.svg)
             .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
@@ -155,24 +163,22 @@ export default function PrecipChart({
 
     const drawBars = ()=>{
 
-        const bars = svg.selectAll('.bar');
+        const bars = svg.selectAll('.' + config.class_name.bar_rect);
 
-        // check the number of existing bars, if greater than 0; remove all existing ones
-        if(bars.size()){
-            bars.remove().exit();
-        }
-
-        bars.data(data)
+        //select all bars on the graph, take them out, and exit the previous data set. 
+	    //then you can add/enter the new data set
+        bars.remove().exit()
+            .data(data)
             .enter().append("rect")
-            .style("fill", "rgba(188,218,237,.8)")
-            .attr("class", "bar")
+            // .style("fill", "rgba(188,218,237,.8)")
+            .attr("class", config.class_name.bar_rect)
             .attr("x", function(d) { return scales.x(d[fieldNameForXAxis]); })
             .attr("width", scales.x.bandwidth())
             .attr("y", function(d) { return scales.y(d[fieldNameForYAxis]); })
             .attr("height", function(d) { return height - scales.y(d[fieldNameForYAxis]); })
             .on('click', function(d){
-                // console.log('chart on click >>>', d.date.getTime(), d.date);
-            });
+                console.log('chart on click >>>', d);
+            })
     };
 
     const beautifyMaxValueForYAxis = (value=0)=>{
