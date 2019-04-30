@@ -16,6 +16,7 @@ class App extends React.Component {
             activeStorm: '', // selected storm name
             stormData: [], // forecast data for selected storm,
 
+            isInfoPanelVisible: false,
             precipData: [],
             windGustData: [],
             populationData: [],
@@ -88,38 +89,55 @@ class App extends React.Component {
         });
     };
 
+    updateIsInfoPanelVisible(isVisible=false){
+        this.setState({
+            isInfoPanelVisible: isVisible
+        }, ()=>{
+            console.log(this.state.isInfoPanelVisible)
+        });
+    }
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
-        const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
-        console.log('data for info panel', data);
+        try {
+            const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
+            console.log('data for info panel', data);
 
-        if(data.precip){
-            this.updatePrecipData(data.precip);
+            if(data.precip){
+                this.updatePrecipData(data.precip);
+            }
+    
+            if(data.windGust){
+                this.updateWindGustData(data.windGust);
+            }
+    
+            if(data.Population){
+                this.updatePopulationData(data.Population);
+            }
+    
+            if(data.Language){
+                this.updateLanguageData(data.Language);
+            }
+    
+            if(data['Vehicle Avialability']){
+                this.updateVehicleData(data['Vehicle Avialability'][0]);
+            }
+    
+            if(data['Disability Status']){
+                this.updateDisabilityData(data['Disability Status'][2]);
+            }
+    
+            if(data['Internet Connectivity']){
+                this.updateInternetData(data['Internet Connectivity'][0]);
+            }
+
+            this.updateIsInfoPanelVisible(true);
+
+        } catch(err){
+            // console.error('error when fetch info window data');
+            this.updateIsInfoPanelVisible(false);
         }
 
-        if(data.windGust){
-            this.updateWindGustData(data.windGust);
-        }
-
-        if(data.Population){
-            this.updatePopulationData(data.Population);
-        }
-
-        if(data.Language){
-            this.updateLanguageData(data.Language);
-        }
-
-        if(data['Vehicle Avialability']){
-            this.updateVehicleData(data['Vehicle Avialability'][0]);
-        }
-
-        if(data['Disability Status']){
-            this.updateDisabilityData(data['Disability Status'][2]);
-        }
-
-        if(data['Internet Connectivity']){
-            this.updateInternetData(data['Internet Connectivity'][0]);
-        }
     }
 
     stormSelectorOnChange(stormName=''){
@@ -143,21 +161,38 @@ class App extends React.Component {
                 <Map 
                     onClick={this.mapOnClick}
                 />
-                <ControlPanel 
-                    stormSelectorOnChange={this.stormSelectorOnChange}
 
-                    activeStorms={this.props.activeStorms}
-                    stormData={this.state.stormData}
-                />
-                <InfoPanel 
-                    precipData={this.state.precipData}
-                    windGustData={this.state.windGustData}
-                    populationData={this.state.populationData}
-                    languageData={this.state.languageData}
-                    vehicleData={this.state.vehicleData}
-                    disabilityData={this.state.disabilityData}
-                    internetData={this.state.internetData}
-                />
+                <div className='panel panel-dark-blue' style={{
+                    position: 'absolute',
+                    top: '0',
+                    right: '0',
+                    width: '370px',
+                    maxHeight: '100%',
+                    overflowY: 'auto',
+                    zIndex: 5,
+                }}>
+
+                    <ControlPanel 
+                        stormSelectorOnChange={this.stormSelectorOnChange}
+
+                        activeStorms={this.props.activeStorms}
+                        stormData={this.state.stormData}
+                    />
+
+                    <InfoPanel 
+                        isVisible={this.state.isInfoPanelVisible}
+                        precipData={this.state.precipData}
+                        windGustData={this.state.windGustData}
+                        populationData={this.state.populationData}
+                        languageData={this.state.languageData}
+                        vehicleData={this.state.vehicleData}
+                        disabilityData={this.state.disabilityData}
+                        internetData={this.state.internetData}
+                    />
+
+                </div>
+
+
             </div>
         );
     };

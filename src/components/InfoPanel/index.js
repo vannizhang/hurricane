@@ -9,7 +9,11 @@ import TwoLineLabel from './TwoLineLabel';
 import HorizontalLegend from '../HorizontalLegend';
 
 const styles = {
-    itemWrap: { height: '100%', width: '350px' },
+    itemWrap: { 
+        height: '220px', 
+        width: '100%',
+        marginBottom: '1rem'
+    },
     sideLabel: {width: '100px'}
 }
 
@@ -20,10 +24,12 @@ class InfoPanel extends React.Component {
     };
 
     render(){
-        return (
-            <div id='infoPanelDiv' className='panel panel-dark-blue'>
+        const isHide = !this.props.isVisible ? 'hide' : '';
 
-                <div className='inline-block' style={styles.itemWrap}>
+        return (
+            <div id='infoPanelDiv' className={`padding-trailer-1`}>
+
+                <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
                         <div className='item-header'>
                             <h5>PRECIPITATION</h5>
@@ -31,7 +37,7 @@ class InfoPanel extends React.Component {
                         <div className='item-content'>
                             <PrecipChart 
                                 containerID={'precipChartDiv'}
-                                containerWidth={'350px'}
+                                containerWidth={'100%'}
                                 containerHeight={'100%'}
                                 fieldNameForXAxis={'fromdate'}
                                 fieldNameForYAxis={'value'}
@@ -41,7 +47,7 @@ class InfoPanel extends React.Component {
                     </div>
                 </div>
 
-                <div className='inline-block' style={styles.itemWrap}>
+                <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
                         <div className='item-header'>
                             <h5>WIND GUST</h5>
@@ -49,7 +55,7 @@ class InfoPanel extends React.Component {
                         <div className='item-content'>
                             <WindChart 
                                 containerID={'windChartDiv'}
-                                containerWidth={'350px'}
+                                containerWidth={'100%'}
                                 containerHeight={'100%'}
                                 fieldNameForXAxis={'fromdate'}
                                 fieldNameForYAxis={'force'}
@@ -59,7 +65,7 @@ class InfoPanel extends React.Component {
                     </div>
                 </div>
 
-                <div className='inline-block' style={styles.itemWrap}>
+                <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
 
                         <div className='item-header'>
@@ -111,7 +117,7 @@ class InfoPanel extends React.Component {
                     </div>
                 </div>
 
-                <div className='inline-block' style={styles.itemWrap}>
+                <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
 
                         <div className='item-header'>

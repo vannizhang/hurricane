@@ -46,6 +46,8 @@ export default function PrecipChart({
         setSvg(svg);
         setWidth(width);
         setHeight(height);
+
+        console.log(container);
     };
 
     const initScales = ()=>{
