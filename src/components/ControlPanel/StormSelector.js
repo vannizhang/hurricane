@@ -43,7 +43,7 @@ class StormSelector extends React.Component {
         const dropdownMenuOptions = this.getDropdownMenuOptions(this.props.data);
         return (            
             <div className="dropdown js-dropdown trailer-half" style={{width: '100%'}}>
-                <button className="btn btn-fill dropdown-btn js-dropdown-toggle" tabIndex="0" aria-haspopup="true" aria-expanded="false">
+                <button className="btn btn-fill dropdown-btn js-dropdown-toggle" tabIndex="0" aria-haspopup="true" aria-expanded="false" style={{background: '#77bde7', color: '#00304d'}}>
                     {this.state.selectorBtnLabel}
                 </button>
 

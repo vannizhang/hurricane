@@ -32,6 +32,9 @@ export default class Map extends React.PureComponent {
                     }
                 }),
                 container: config.CONTAINER_ID,
+                padding: {
+                    right: this.props.rightPadding || 0
+                }
             });
 
             this.mapView.when(()=>{

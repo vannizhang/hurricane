@@ -5,6 +5,8 @@ import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
 
+const SIDE_PANEL_WIDTH = 375;
+
 class App extends React.Component {
     
     constructor(props){
@@ -160,15 +162,20 @@ class App extends React.Component {
             <div id='appContentDiv'>
                 <Map 
                     onClick={this.mapOnClick}
+
+                    rightPadding={SIDE_PANEL_WIDTH}
                 />
 
-                <div className='panel panel-dark-blue' style={{
+                <div className='side-container' style={{
                     position: 'absolute',
                     top: '0',
                     right: '0',
-                    width: '370px',
+                    width: SIDE_PANEL_WIDTH + 'px',
+                    padding: '1rem',
                     maxHeight: '100%',
                     overflowY: 'auto',
+                    background: 'rgba(0,48,77,.75)',
+                    color: '#fff',
                     zIndex: 5,
                 }}>
 
