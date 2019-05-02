@@ -10,9 +10,9 @@ import HorizontalLegend from '../HorizontalLegend';
 
 const styles = {
     itemWrap: { 
-        height: '220px', 
+        // height: '220px', 
         width: '100%',
-        marginBottom: '1rem'
+        marginBottom: '2rem'
     },
     sideLabel: {width: '100px'}
 }
@@ -27,7 +27,7 @@ class InfoPanel extends React.Component {
         const isHide = !this.props.isVisible ? 'hide' : '';
 
         return (
-            <div id='infoPanelDiv' className={`padding-trailer-1`}>
+            <div id='infoPanelDiv' className={`padding-trailer-1 ${isHide}`}>
 
                 <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
@@ -38,7 +38,7 @@ class InfoPanel extends React.Component {
                             <PrecipChart 
                                 containerID={'precipChartDiv'}
                                 containerWidth={'100%'}
-                                containerHeight={'100%'}
+                                containerHeight={'180px'}
                                 fieldNameForXAxis={'fromdate'}
                                 fieldNameForYAxis={'value'}
                                 data={this.props.precipData}
@@ -56,7 +56,7 @@ class InfoPanel extends React.Component {
                             <WindChart 
                                 containerID={'windChartDiv'}
                                 containerWidth={'100%'}
-                                containerHeight={'100%'}
+                                containerHeight={'180px'}
                                 fieldNameForXAxis={'fromdate'}
                                 fieldNameForYAxis={'force'}
                                 data={this.props.windGustData}
@@ -83,7 +83,7 @@ class InfoPanel extends React.Component {
                                 <DonutChart 
                                     containerID={'popuChartDiv'}
                                     containerWidth={'100%'}
-                                    containerHeight={'100%'}
+                                    containerHeight={'180px'}
                                     thicknessRatio={.7}
                                     fieldName={'fieldValue'}
                                     isCenterTextVisible={true}
@@ -135,7 +135,7 @@ class InfoPanel extends React.Component {
                                 <DonutChart 
                                     containerID={'communicationChartDiv'}
                                     containerWidth={'100%'}
-                                    containerHeight={'100%'}
+                                    containerHeight={'180px'}
                                     fieldName={'fieldValue'}
                                     data={this.props.languageData}
                                 />

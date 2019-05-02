@@ -95,15 +95,18 @@ class App extends React.Component {
         this.setState({
             isInfoPanelVisible: isVisible
         }, ()=>{
-            console.log(this.state.isInfoPanelVisible)
+            // console.log(this.state.isInfoPanelVisible)
         });
     }
 
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         try {
+            
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
             console.log('data for info panel', data);
+
+            this.updateIsInfoPanelVisible(true);
 
             if(data.precip){
                 this.updatePrecipData(data.precip);
@@ -132,8 +135,6 @@ class App extends React.Component {
             if(data['Internet Connectivity']){
                 this.updateInternetData(data['Internet Connectivity'][0]);
             }
-
-            this.updateIsInfoPanelVisible(true);
 
         } catch(err){
             // console.error('error when fetch info window data');

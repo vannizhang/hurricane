@@ -31,26 +31,37 @@ export default function PrecipChart({
 
     const initSvg = ()=>{
 
+        // console.log('initSvg');
+
         const container = containerDivRef.current;
         const margin = {top: 5, right: 10, bottom: 20, left: 30};
-        const width = container.offsetWidth - margin.left - margin.right;
-        const height = container.offsetHeight - margin.top - margin.bottom;
 
-        const svg = d3.select("#" + containerID).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .attr("class", config.class_name.svg)
-            .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        
-        setSvg(svg);
+        const width = container.offsetWidth - margin.left - margin.right;
         setWidth(width);
+
+        const height = container.offsetHeight - margin.top - margin.bottom;
         setHeight(height);
 
-        console.log(container);
+        const scales = initScales(width, height);
+        setScales(scales);
+
+        const axis = initAxis(scales);
+        setAxis(axis);
+        
+        const svg = d3.select("#" + containerID).append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .attr("class", config.class_name.svg)
+                    .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        setSvg(svg);
+
+        // console.log(container, width, height);
     };
 
-    const initScales = ()=>{
+    const initScales = (width, height)=>{
+
+        // console.log('initScales');
 
         const scales = {};
 
@@ -60,10 +71,13 @@ export default function PrecipChart({
         const y = d3.scaleLinear().range([height, 0]);
         scales.y = y;
 
-        setScales(scales);
+        // setScales(scales);
+        return scales;
     };
 
-    const initAxis = ()=>{
+    const initAxis = (scales)=>{
+
+        // console.log('initAxis');
         
         const axis = {};
 
@@ -71,10 +85,13 @@ export default function PrecipChart({
 
         axis.y = d3.axisLeft().scale(scales.y).ticks(5);
 
-        setAxis(axis);
+        // setAxis(axis);
+        return axis;
     }
 
     const draw = ()=>{
+
+        // console.log('draw', width, height);
 
         const parseDate = d3.isoParse;
 
@@ -196,34 +213,35 @@ export default function PrecipChart({
         return beautifiedVal || val;
     }
 
-    // init svg when component is ready
     useEffect(()=>{
         // console.log('component did mount', containerDivRef);
-        initSvg();
     },[]);
 
-    // init scales and axis when svg is ready
+    // svg is ready, draw chart if data is available
     useEffect(()=>{
-        initScales();
+        if(svg && data.length){
+            // console.log('svg is ready, call init scales');
+            draw();
+        }
     }, [svg]);
-
-    // init axis when scales is ready
-    useEffect(()=>{
-        initAxis();
-    }, [scales]);
 
     // draw chart when data is updated
     useEffect(()=>{
-        if(data && data.length && svg){
+
+        if(!data || !data.length){
+            return;
+        }
+
+        if(!svg){
+            // need to init the svg first
+            initSvg();
+        } else {
             draw();
         }
+
     }, [data]);
 
     return (
-        <div id={containerID} ref={containerDivRef}
-            style={{
-                width: containerWidth,
-                height: containerHeight,
-        }}></div>
+        <div id={containerID} ref={containerDivRef} style={{width: containerWidth , height: containerHeight}}></div>
     );
 };

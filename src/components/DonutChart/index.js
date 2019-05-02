@@ -92,14 +92,30 @@ export default function DonutChart({
     // init svg when component is ready
     useEffect(()=>{
         // console.log('component did mount', containerDivRef);
-        initSvg();
     },[]);
+
+    // svg is ready, draw chart if data is available
+    useEffect(()=>{
+        if(svg && data.length){
+            draw();
+        }
+    }, [svg]);
 
     // draw chart when data is updated
     useEffect(()=>{
-        if(data && data.length && svg){
+        if(!data || !data.length){
+            return;
+        }
+
+        if(!svg){
+            initSvg();
+        } else {
             draw();
         }
+
+        // if(data && data.length && svg){
+        //     draw();
+        // }
     }, [data]);
 
     return (
