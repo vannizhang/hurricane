@@ -72,11 +72,12 @@ const Controller = function(){
         //     state.actionHandlers.windGustDataOnReceive(weatherData.windGust);
         // };
 
-        // console.log('weatherData', weatherData);
-        console.log('demographicData', demographicData);
+        console.log('weatherData', weatherData);
+        // console.log('demographicData', demographicData);
 
         return {
             precip: weatherData.precip,
+            precipAccumulation: weatherData.precipAccumulation,
             windGust: weatherData.windGust,
             ...demographicData
         }

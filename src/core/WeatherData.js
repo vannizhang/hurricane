@@ -98,8 +98,6 @@ export default function(){
                 features = features.slice(1);
             }
 
-            // console.log(data);
-
             return {
                 fromdate: t,
                 label,
@@ -194,19 +192,26 @@ export default function(){
 
         const requestUrlPrcipData = config['precipitation-layer'].url + '/0/query';
         const requestUrlWindData = config['wind-gust-layer-url'] + '/0/query'; 
+        const requestUrlPrcipAccumuData = config['precipitation-layer'].url + '/1/query';
 
         return new Promise((resolve, reject)=>{
 
             Promise.all([
                 fetchData(requestUrlPrcipData, params), 
-                fetchData(requestUrlWindData, params)
+                fetchData(requestUrlWindData, params),
+                fetchData(requestUrlPrcipAccumuData, params),
             ]).then(function(arrOfResponses) {
                 // console.log(arrOfResponses);
                 const precipData = setWeatherDataFeatures('precip', arrOfResponses[0]);
                 const windGustData = setWeatherDataFeatures('windGust', arrOfResponses[1]);
+                const precipAccumuData = setWeatherDataFeatures('precip', arrOfResponses[2]);
+
+                // console.log(precipData);
+                // console.log(precipAccumuData);
 
                 resolve({
                     precip: precipData,
+                    precipAccumulation: precipAccumuData,
                     windGust: windGustData
                 });
 

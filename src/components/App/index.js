@@ -108,8 +108,8 @@ class App extends React.Component {
 
             this.updateIsInfoPanelVisible(true);
 
-            if(data.precip){
-                this.updatePrecipData(data.precip);
+            if(data.precip && data.precipAccumulation){
+                this.updatePrecipData([data.precip, data.precipAccumulation]);
             }
     
             if(data.windGust){

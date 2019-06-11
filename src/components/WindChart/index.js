@@ -181,8 +181,8 @@ export default function WindChart({
     };
 
     const decodeWindForce = (force=0)=>{
-        const label = force ? WindLayerConfig.uniqueValueInfos[force].label : '';
-        return label;
+        const description = force ? WindLayerConfig.uniqueValueInfos[force].description : '';
+        return description;
     }
 
     useEffect(()=>{

@@ -6,3 +6,9 @@
 .precip-chart-bar:hover {
     fill: #C5E7F2;
 }
+
+.precip-chart-line {
+    fill: none;
+    stroke: #EC2228;
+    stroke-width: 2px;
+}

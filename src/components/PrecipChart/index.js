@@ -95,35 +95,43 @@ export default function PrecipChart({
 
         const parseDate = d3.isoParse;
 
-        data = data.map(d=>{
-            d[fieldNameForXAxis] = parseDate(d[fieldNameForXAxis]);
-            return d;
-        });
+        data = data.map(item=>{
+            return item.map(d=>{
+                d[fieldNameForXAxis] = parseDate(d[fieldNameForXAxis]);
+                return d;
+            })
+        })
 
-        updateDomainForXScale();
+        const precipAmountData = data[0];
+        const precipAccumulationData = data[1];
 
-        updateDomainForYScale();
+        updateDomainForXScale(precipAccumulationData);
 
-        updateXAxisTickValues(data);
+        updateDomainForYScale(precipAccumulationData);
+
+        updateXAxisTickValues(precipAccumulationData);
 
         drawXLabels();
 
         drawYLabels();
 
-        drawBars();
+        drawBars(precipAmountData);
+
+        drawLines(precipAccumulationData);
+
     }; 
 
-    const updateDomainForXScale = ()=>{
+    const updateDomainForXScale = (data=[])=>{
         scales.x.domain(data.map(function(d) { return d[fieldNameForXAxis]; }));
     };
 
-    const updateDomainForYScale = ()=>{
+    const updateDomainForYScale = (data=[])=>{
         const yScaleMax = d3.max(data, function(d) { return d[fieldNameForYAxis]; });
         const yScaleMaxBeautified = beautifyMaxValueForYAxis(yScaleMax);
         scales.y.domain([0, yScaleMaxBeautified]);
     };
 
-    const updateXAxisTickValues = (data)=>{
+    const updateXAxisTickValues = (data=[])=>{
 
         const xAxisValue = {};
 
@@ -180,7 +188,7 @@ export default function PrecipChart({
         }
     };
 
-    const drawBars = ()=>{
+    const drawBars = (data=[])=>{
 
         const bars = svg.selectAll('.' + config.class_name.bar_rect);
 
@@ -198,6 +206,34 @@ export default function PrecipChart({
             .on('click', function(d){
                 console.log('chart on click >>>', d);
             })
+    };
+
+    const drawLines = (data=[])=>{
+
+        const lineClassName = 'precip-chart-line';
+
+        const anyNoneZeroData = data.filter(d=>d.value).length ? true : false;
+
+        const xOffset = scales.x.bandwidth() / 2;
+
+        const valueline = d3.line()
+            .x(function(d) { return scales.x(d[fieldNameForXAxis]) + xOffset; })
+            .y(function(d) { return scales.y(d[fieldNameForYAxis]); });
+
+        const lines = svg.selectAll('.' + lineClassName);
+
+        // check the number of existing lines, if greater than 0; remove all existing ones
+        if(lines.size()){
+            lines.remove().exit();
+        }
+
+        if(anyNoneZeroData){
+            svg.append("path")
+            .data([data])
+            .attr("class", lineClassName)
+            .attr("d", valueline);
+        }
+
     };
 
     const beautifyMaxValueForYAxis = (value=0)=>{
