@@ -85,7 +85,9 @@ export default function WindChart({
             .scale(scales.y)
             // .tickValues([0, 3, 6, 9, 12, 15])
             .tickValues(config.windTicks)
-            .tickFormat(d =>{ return decodeWindForce(d); })
+            .tickFormat(d =>{ 
+                return decodeWindForce(d); 
+            })
             // .tickSize(-width)
             .ticks(5);
 

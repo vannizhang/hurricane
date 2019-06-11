@@ -1,7 +1,8 @@
 export default {
-    'Speak Only English': 'rgb(102, 194, 165)',
-    'Other Languages': 'rgb(252, 141, 98)',
-    '< 18 yrs': 'rgb(141, 160, 203)',
-    '18-64 yrs': 'rgb(231, 138, 195)',
-    '+ 65 yrs': 'rgb(166, 216, 84)',
+    'Speak Only English': '#225D7F',
+    'Other Languages': '#F3CF22',
+    '< 18 yrs': '#C5E7F2',
+    '18-64 yrs': '#88D6EB',
+    '+ 65 yrs': '#409DBF',
+    'pinDrop': '#EC2228'
 }

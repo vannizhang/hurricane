@@ -1,11 +1,13 @@
 import React from 'react';
 import { loadCss, loadModules } from 'esri-loader';
 
+import colors from '../../data/Colors';
+
 loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd'
+    AGOL_ITEM_ID_WEB_MAP: 'c3f468ffb8ba43f09f5a4276e347311d'
 }
 
 export default class Map extends React.PureComponent {
@@ -91,7 +93,7 @@ export default class Map extends React.PureComponent {
 
             const markerSymbol = {
                 type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-                color: [217,70,52],
+                color: colors.pinDrop,
                 size: '15px',
                 outline: { // autocasts as new SimpleLineSymbol()
                     color: [255, 255, 255, .7],
