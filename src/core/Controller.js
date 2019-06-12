@@ -49,7 +49,7 @@ const Controller = function(){
             ]
 
         */
-        // console.log('ForecastDataByName', data);
+        console.log('ForecastDataByName', data);
 
         // if(state.actionHandlers.hurricaneDataOnReceive){
         //     state.actionHandlers.hurricaneDataOnReceive(data);

@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { format as formatDate } from 'date-fns';
 import { capitalizeFirstLetter } from '../utils/Helper'
+import { getLocalizedTropicalCycloneClassifications } from '../utils/localizeTropicalCyclone';
 
 const URL_HURRICANE_LAYER = 'https://utility.arcgis.com/usrsvcs/servers/9a052d8ae34741dcada2c0247121bbe5/rest/services/LiveFeeds/Hurricane_Active/MapServer';
 
@@ -14,7 +15,8 @@ const config = {
             stormName: 'STORMNAME',
             stormType: 'TCDVLP',
             dateLabel: 'FLDATELBL',
-            maxWind: 'MAXWIND'
+            maxWind: 'MAXWIND',
+            basin: 'BASIN'
         }
     },
 
@@ -34,7 +36,8 @@ const HurricaneData = function(){
         const fieldNameStormName = config["forecast-position"].fields.stormName;
         const fieldNameStormType = config["forecast-position"].fields.stormType;
         const fieldNameDateLabel = config["forecast-position"].fields.dateLabel;
-        const fieldNameMaxWind = config["forecast-position"].fields.maxWind
+        const fieldNameMaxWind = config["forecast-position"].fields.maxWind;
+        const fieldNameBasin= config["forecast-position"].fields.basin;
 
         const requestUrl = config["forecast-position"].url + '/query';
 
@@ -49,21 +52,25 @@ const HurricaneData = function(){
             features = features.length > 6 ? features.slice(0, 6) : features;
 
             const data = features.map(d=>{
+
+                // console.log(`forecast location`, d);
                 
                 const stormType = d.attributes[fieldNameStormType];
                 const dateLabel = d.attributes[fieldNameDateLabel];
                 const maxWind = d.attributes[fieldNameMaxWind];
+                const basin = d.attributes[fieldNameBasin];
+
                 const category = getHurricaneCategory(maxWind, stormType);
                 const forecastTimeInLocal = convertForecastTimeInLocal(dateLabel);
-
-                // console.log(`forecastTimeInLocal`, forecastTimeInLocal);
+                const localizedName = getLocalizedTropicalCycloneClassifications(maxWind, basin);
 
                 return {
                     attributes: {
                         stormType,
                         dateLabel: forecastTimeInLocal,
                         maxWind,
-                        category
+                        category,
+                        localizedName
                     },
                     geometry: d.geometry
                 }
@@ -94,7 +101,7 @@ const HurricaneData = function(){
         try {
             const features = await queryFeatures(requestUrl, queryParam);
 
-            console.log(requestUrl, queryParam);
+            // console.log(requestUrl, queryParam);
 
             const data = features.map(d=>{
                 const value = d.attributes[fieldNameStormName];
@@ -162,7 +169,7 @@ const HurricaneData = function(){
 
         const localDate = new Date(Date.UTC(year, month, day, hourIn24Format));
 
-        const formattedDate = formatDate(localDate, 'MMM-D, h a');
+        const formattedDate = formatDate(localDate, 'MMM D, h A');
 
         return formattedDate;
     };
@@ -206,6 +213,16 @@ const HurricaneData = function(){
 
         return category;
     };
+
+    const localizeStormTypeByBasin = (maxWind=0, basin='')=>{
+        
+        if(!maxWind || !basin){
+            return 'NO DATA'
+        }
+
+        // const basinGroups = 
+
+    }
 
     return {
         fetchActiveHurricanes,
