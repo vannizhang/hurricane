@@ -30,6 +30,8 @@ export default function WindChart({
     const [ height, setHeight ] = useState(0);
     const [ scales, setScales ] = useState({});
     const [ axis, setAxis ] = useState({});
+    const [ verticalRefLine, setVerticalRefLine ] = useState(null);
+    const [ verticalRefLineXPos, setVerticalRefLineXPos ] = useState(0);
 
     const initSvg = ()=>{
 
@@ -55,6 +57,10 @@ export default function WindChart({
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         setSvg(svg);
 
+        const refLine = initVerticalRefLine({ svg, height })
+        setVerticalRefLine(refLine);
+
+        initOverlayRect({ svg, width, height, scales });
         // console.log(container, width, height);
     };
 
@@ -93,7 +99,47 @@ export default function WindChart({
 
         // setAxis(axis);
         return axis;
-    }
+    };
+
+    const initOverlayRect = ({
+        svg = null,
+        height = 0,
+        width = 0,
+        scales = null
+    }={})=>{
+        const overlay = svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .attr('fill', 'rgba(0,0,0,0)')
+            .on("mouseenter", mouseOverHandler)
+            .on("mouseleave", mouseOutHandler)
+            .on("mousemove", function(evt){
+                // console.log(this, evt);
+                const mousePosX = d3.mouse(this)[0];
+                const invertVal = scales.x.invert(mousePosX);
+                // console.log(invertVal);
+                mouseMoveHandler(invertVal);
+            });
+    };
+
+    const initVerticalRefLine = ({
+        svg = null,
+        height = 0
+    }={})=>{
+        const refLine = svg.append('line')
+            .attr('class', 'vertical-reference-line')
+            .attr('x1', verticalRefLineXPos)
+            .attr('y1', 0)
+            .attr('x2', verticalRefLineXPos)
+            .attr('y2', height)
+            // .style("display", "none")
+            .attr('stroke-width', 0.5)
+            .attr("stroke", "#efefef")
+            .style("fill", "none");
+
+        return refLine;
+    };
 
     const draw = ()=>{
 
@@ -164,6 +210,7 @@ export default function WindChart({
     const drawLines = ()=>{
 
         const valueline = d3.line()
+            .curve(d3.curveBasis)
             .x(function(d) { return scales.x(d[fieldNameForXAxis]); })
             .y(function(d) { return scales.y(d[fieldNameForYAxis]); });
 
@@ -178,6 +225,29 @@ export default function WindChart({
             .data([data])
             .attr("class", "line")
             .attr("d", valueline);
+    };
+
+    const mouseOverHandler = ()=>{
+
+    };
+
+    const mouseOutHandler = ()=>{
+
+    };
+
+    const mouseMoveHandler = (val=0)=>{
+        
+        // const valByXPos = scales.x.invert(xPos);
+        // console.log(xPos, valByXPos);
+        console.log(data);
+    };
+
+    const showTooltip = ()=>{
+
+    };
+
+    const hideTooltip = ()=>{
+
     };
 
     const decodeWindForce = (force=0)=>{
@@ -212,6 +282,12 @@ export default function WindChart({
         }
 
     }, [data]);
+
+    useEffect(()=>{
+        if(svg){
+            console.log('update verticalRefLineXPos');
+        }
+    }, [verticalRefLineXPos]);
 
     return (
         <div id={containerID} ref={containerDivRef}

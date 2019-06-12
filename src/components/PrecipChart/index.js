@@ -28,6 +28,8 @@ export default function PrecipChart({
     const [ height, setHeight ] = useState(0);
     const [ scales, setScales ] = useState({});
     const [ axis, setAxis ] = useState({});
+    const [ verticalRefLine, setVerticalRefLine ] = useState(null);
+    const [ verticalRefLineXPos, setVerticalRefLineXPos ] = useState(0);
 
     const initSvg = ()=>{
 
@@ -56,6 +58,10 @@ export default function PrecipChart({
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         setSvg(svg);
 
+        const refLine = initVerticalRefLine({ svg, height })
+        setVerticalRefLine(refLine);
+
+        initOverlayRect({ svg, width, height });
         // console.log(container, width, height);
     };
 
@@ -87,7 +93,43 @@ export default function PrecipChart({
 
         // setAxis(axis);
         return axis;
-    }
+    };
+
+    const initOverlayRect = ({
+        svg = null,
+        height = 0,
+        width = 0
+    }={})=>{
+        const overlay = svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .attr('fill', 'rgba(0,0,0,0)')
+            .on("mouseenter", mouseOverHandler)
+            .on("mouseleave", mouseOutHandler)
+            .on("mousemove", function(evt){
+                // console.log(this, evt);
+                const mousePosX = d3.mouse(this)[0];
+            });
+    };
+
+    const initVerticalRefLine = ({
+        svg = null,
+        height = 0
+    }={})=>{
+        const refLine = svg.append('line')
+            .attr('class', 'vertical-reference-line')
+            .attr('x1', verticalRefLineXPos)
+            .attr('y1', 0)
+            .attr('x2', verticalRefLineXPos)
+            .attr('y2', height)
+            // .style("display", "none")
+            .attr('stroke-width', 0.5)
+            .attr("stroke", "#efefef")
+            .style("fill", "none");
+
+        return refLine;
+    };
 
     const draw = ()=>{
 
@@ -217,6 +259,7 @@ export default function PrecipChart({
         const xOffset = scales.x.bandwidth() / 2;
 
         const valueline = d3.line()
+            .curve(d3.curveBasis)
             .x(function(d) { return scales.x(d[fieldNameForXAxis]) + xOffset; })
             .y(function(d) { return scales.y(d[fieldNameForYAxis]); });
 
@@ -233,6 +276,26 @@ export default function PrecipChart({
             .attr("class", lineClassName)
             .attr("d", valueline);
         }
+
+    };
+
+    const mouseOverHandler = ()=>{
+
+    };
+
+    const mouseOutHandler = ()=>{
+
+    };
+
+    const mouseMoveHandler = ()=>{
+
+    };
+
+    const showTooltip = ()=>{
+
+    };
+
+    const hideTooltip = ()=>{
 
     };
 
