@@ -32,6 +32,7 @@ export default function WindChart({
     const [ axis, setAxis ] = useState({});
     const [ verticalRefLine, setVerticalRefLine ] = useState(null);
     const [ verticalRefLineXPos, setVerticalRefLineXPos ] = useState(0);
+    const [ tooltipData, setTooltipData ] = useState(null);
 
     const initSvg = ()=>{
 
@@ -112,14 +113,17 @@ export default function WindChart({
             .attr("width", width)
             .attr("height", height)
             .attr('fill', 'rgba(0,0,0,0)')
-            .on("mouseenter", mouseOverHandler)
-            .on("mouseleave", mouseOutHandler)
+            // .on("mouseenter", mouseOverHandler)
+            .on("mouseleave", hideTooltip)
             .on("mousemove", function(evt){
                 // console.log(this, evt);
                 const mousePosX = d3.mouse(this)[0];
                 const invertVal = scales.x.invert(mousePosX);
                 // console.log(invertVal);
-                mouseMoveHandler(invertVal);
+                mouseMoveHandler({
+                    mousePosX, 
+                    scales
+                });
             });
     };
 
@@ -128,6 +132,7 @@ export default function WindChart({
         height = 0
     }={})=>{
         const refLine = svg.append('line')
+            .attr('id', 'verticalReferenceLine')
             .attr('class', 'vertical-reference-line')
             .attr('x1', verticalRefLineXPos)
             .attr('y1', 0)
@@ -140,6 +145,12 @@ export default function WindChart({
 
         return refLine;
     };
+
+    const updateVerticalRefLinePos = ()=>{
+        const refLine = d3.select('#verticalReferenceLine')
+            .attr('x1', verticalRefLineXPos)
+            .attr('x2', verticalRefLineXPos);
+    }
 
     const draw = ()=>{
 
@@ -214,7 +225,7 @@ export default function WindChart({
             .x(function(d) { return scales.x(d[fieldNameForXAxis]); })
             .y(function(d) { return scales.y(d[fieldNameForYAxis]); });
 
-        const lines = svg.selectAll('.line');
+        const lines = svg.selectAll('.wind-chart-line');
 
         // check the number of existing lines, if greater than 0; remove all existing ones
         if(lines.size()){
@@ -223,36 +234,80 @@ export default function WindChart({
 
         svg.append("path")
             .data([data])
-            .attr("class", "line")
+            .attr("class", "wind-chart-line")
             .attr("d", valueline);
     };
 
-    const mouseOverHandler = ()=>{
+    const mouseMoveHandler = ({val=0, scales=null, mousePosX=0}={})=>{
 
-    };
+        // console.log(mousePosX);
 
-    const mouseOutHandler = ()=>{
+        let tooltipData = null;
+        let tooltipPos = null;
 
-    };
+        for(let i = 0, len = data.length; i < len; i++){
 
-    const mouseMoveHandler = (val=0)=>{
-        
-        // const valByXPos = scales.x.invert(xPos);
-        // console.log(xPos, valByXPos);
-        console.log(data);
+            const currItem = data[i];
+            const currItemPos = scales.x(currItem[fieldNameForXAxis]);
+
+            const nextItem = data[i + 1] ? data[i + 1] : currItem;
+            const nextItemPos = scales.x(nextItem[fieldNameForXAxis]);
+
+            if(mousePosX >= currItemPos && mousePosX <= nextItemPos){
+
+                const distToCurrItem = mousePosX - currItemPos;
+                const distToNextItem = nextItemPos - mousePosX;
+
+                tooltipData = distToCurrItem < distToNextItem ? currItem : nextItem;
+                tooltipPos = distToCurrItem < distToNextItem ? currItemPos : nextItemPos;
+
+                break;
+            }
+        }
+
+        // console.log(tooltipData);
+        setVerticalRefLineXPos(tooltipPos);
+        setTooltipData(tooltipData);
+
     };
 
     const showTooltip = ()=>{
-
+        // console.log('show tooltip', tooltipData);
+        toggleRefLine(true);
     };
 
     const hideTooltip = ()=>{
-
+        setTooltipData(null);
     };
 
-    const decodeWindForce = (force=0)=>{
+    const getTooltipText = ()=>{
+
+        let tooltipContent = 'Hover chart to show tooltip';
+
+        if( tooltipData && tooltipData[fieldNameForXAxis] ){
+            const formatTime = d3.timeFormat("%a %-I %p");
+            const forecastTime = formatTime(tooltipData[fieldNameForXAxis]); // "June 30, 2015"
+            const label = decodeWindForce(tooltipData[fieldNameForYAxis], true);
+
+            tooltipContent = ( <span>{forecastTime}: {label}</span> );
+        }
+
+        return (
+            <div className='font-size--3 trailer-0 margin-right-1 text-right'>
+                {tooltipContent}
+            </div>
+        )
+    }
+
+    const toggleRefLine = (isVisible=false)=>{
+        const refLine = document.getElementById('verticalReferenceLine');
+        refLine.classList.toggle('hide', !isVisible);
+    };
+
+    const decodeWindForce = (force=0, ifGettingLabel=false)=>{
         const description = force ? WindLayerConfig.uniqueValueInfos[force].description : '';
-        return description;
+        const label = force ? WindLayerConfig.uniqueValueInfos[force].label : '';
+        return ifGettingLabel ? label : description;
     }
 
     useEffect(()=>{
@@ -285,15 +340,24 @@ export default function WindChart({
 
     useEffect(()=>{
         if(svg){
-            console.log('update verticalRefLineXPos');
+            updateVerticalRefLinePos();
+            showTooltip();
+
+            if(!tooltipData){
+                toggleRefLine(false);
+            }
         }
-    }, [verticalRefLineXPos]);
+    }, [verticalRefLineXPos, tooltipData]);
 
     return (
-        <div id={containerID} ref={containerDivRef}
-            style={{
-                width: containerWidth,
-                height: containerHeight,
-        }}></div>
+        <div style={{position: 'relative'}}>
+            { getTooltipText() }
+            <div id={containerID} ref={containerDivRef}
+                style={{
+                    width: containerWidth,
+                    height: containerHeight,
+            }}></div>
+        </div>
+
     );
 };

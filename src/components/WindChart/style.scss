@@ -1,8 +1,9 @@
 #windChartDiv{
-    .line {
+    .wind-chart-line {
         fill: none;
         stroke: #C5E7F2;
         stroke-width: 2px;
+        pointer-events: none;
     }
 }
 
