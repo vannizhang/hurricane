@@ -38,7 +38,7 @@ class ControlPanel extends React.Component {
             <div style={styles.controlPanelContent}>
                 <div className='trailer-half'>
                     <span className='font-size-2'>HURRICANE AWARE</span>
-                    <span className='right icon-ui-question cursor-pointer'></span>
+                    <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
                 </div>
                 
                 <p className='trailer-half'>For community awareness within the US about a hurricane in your area, click on the map or search below</p>

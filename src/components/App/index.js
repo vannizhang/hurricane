@@ -4,6 +4,7 @@ import * as calcite from 'calcite-web';
 import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
+import Colors from '../../data/Colors';
 
 const SIDE_PANEL_WIDTH = 395;
 
@@ -41,7 +42,7 @@ class App extends React.Component {
         this.stormListOnClick = this.stormListOnClick.bind(this);
         this.stormListOnMouseEnter = this.stormListOnMouseEnter.bind(this);
         this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
-        
+
     };
 
     updateStormData(data){
@@ -211,7 +212,7 @@ class App extends React.Component {
                     width: SIDE_PANEL_WIDTH + 'px',
                     maxHeight: '100%',
                     overflowY: 'auto',
-                    background: 'rgba(0,48,77,.75)',
+                    background: Colors.sidebar,
                     color: '#fff',
                     zIndex: 5,
                 }}>

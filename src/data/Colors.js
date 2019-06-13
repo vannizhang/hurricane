@@ -4,5 +4,6 @@ export default {
     '< 18 yrs': '#C5E7F2',
     '18-64 yrs': '#88D6EB',
     '+ 65 yrs': '#409DBF',
-    'pinDrop': '#EC2228'
+    'pinDrop': '#EC2228',
+    'sidebar': 'rgba(0,48,77,.75)'
 }

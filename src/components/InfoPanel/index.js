@@ -75,8 +75,8 @@ class InfoPanel extends React.Component {
                         <div className='item-content flex-container'>
                             <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
-                                    value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
-                                    label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                    value={this.props.vehicleData && this.props.vehicleData.fieldValue ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
+                                    label={this.props.vehicleData && this.props.vehicleData.fieldLabel ? this.props.vehicleData.fieldLabel : ''}
                                 />
                             </div>
                             <div className='flexy-item' style={{height: '100%'}}>
