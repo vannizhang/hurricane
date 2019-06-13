@@ -5,7 +5,7 @@ import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
 
-const SIDE_PANEL_WIDTH = 375;
+const SIDE_PANEL_WIDTH = 395;
 
 class App extends React.Component {
     
@@ -18,6 +18,11 @@ class App extends React.Component {
             activeStorm: '', // selected storm name
             stormData: [], // forecast data for selected storm,
 
+            // state for map component 
+            forecastPositionPreview: null,
+            forecastPositionSelected: null,
+
+            // state for info panel
             isInfoPanelVisible: false,
             precipData: [],
             windGustData: [],
@@ -33,6 +38,10 @@ class App extends React.Component {
         this.updateStormData = this.updateStormData.bind(this);
         this.updatePrecipData = this.updatePrecipData.bind(this);
         this.updateWindGustData = this.updateWindGustData.bind(this);
+        this.stormListOnClick = this.stormListOnClick.bind(this);
+        this.stormListOnMouseEnter = this.stormListOnMouseEnter.bind(this);
+        this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
+        
     };
 
     updateStormData(data){
@@ -97,7 +106,19 @@ class App extends React.Component {
         }, ()=>{
             // console.log(this.state.isInfoPanelVisible)
         });
-    }
+    };
+
+    updateForecastPositionPreview(data=null){
+        this.setState({
+            forecastPositionPreview: data
+        });
+    };
+
+    updateForecastPositionSelected(data=null){
+        this.setState({
+            forecastPositionSelected: data
+        });
+    };
 
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
@@ -153,6 +174,20 @@ class App extends React.Component {
         });
     }
 
+    stormListOnClick(data=null){
+        // console.log('stormListOnClick', data)
+        this.updateForecastPositionSelected(data);
+    }
+
+    stormListOnMouseEnter(data=null){
+        // console.log('stormListOnMouseEnter', data)
+        this.updateForecastPositionPreview(data);
+    }
+
+    stormListOnMouseLeave(){
+        this.updateForecastPositionPreview();
+    }
+
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
@@ -164,6 +199,8 @@ class App extends React.Component {
                 <Map 
                     onClick={this.mapOnClick}
 
+                    forecastPositionPreview={this.state.forecastPositionPreview}
+                    forecastPositionSelected={this.state.forecastPositionSelected}
                     rightPadding={SIDE_PANEL_WIDTH}
                 />
 
@@ -172,31 +209,34 @@ class App extends React.Component {
                     top: '0',
                     right: '0',
                     width: SIDE_PANEL_WIDTH + 'px',
-                    padding: '1rem',
                     maxHeight: '100%',
                     overflowY: 'auto',
                     background: 'rgba(0,48,77,.75)',
                     color: '#fff',
                     zIndex: 5,
                 }}>
+                    <div style={{ padding: '1rem' }}>
+                        <ControlPanel 
+                            stormSelectorOnChange={this.stormSelectorOnChange}
+                            stormListOnClick={this.stormListOnClick}
+                            stormListOnMouseEnter={this.stormListOnMouseEnter}
+                            stormListOnMouseLeave={this.stormListOnMouseLeave}
 
-                    <ControlPanel 
-                        stormSelectorOnChange={this.stormSelectorOnChange}
+                            activeStorms={this.props.activeStorms}
+                            stormData={this.state.stormData}
+                        />
 
-                        activeStorms={this.props.activeStorms}
-                        stormData={this.state.stormData}
-                    />
-
-                    <InfoPanel 
-                        isVisible={this.state.isInfoPanelVisible}
-                        precipData={this.state.precipData}
-                        windGustData={this.state.windGustData}
-                        populationData={this.state.populationData}
-                        languageData={this.state.languageData}
-                        vehicleData={this.state.vehicleData}
-                        disabilityData={this.state.disabilityData}
-                        internetData={this.state.internetData}
-                    />
+                        <InfoPanel 
+                            isVisible={this.state.isInfoPanelVisible}
+                            precipData={this.state.precipData}
+                            windGustData={this.state.windGustData}
+                            populationData={this.state.populationData}
+                            languageData={this.state.languageData}
+                            vehicleData={this.state.vehicleData}
+                            disabilityData={this.state.disabilityData}
+                            internetData={this.state.internetData}
+                        />
+                    </div>
 
                 </div>
 

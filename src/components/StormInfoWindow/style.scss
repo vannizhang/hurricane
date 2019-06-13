@@ -8,67 +8,95 @@
     align-items: center;
     cursor: pointer;
 
-    .date-label {
-        // width: 100px;
+    .time-info-div {
+        width: 50px;
+        
+    }
+
+    .storm-info-div {
+        // width: 120px;
         flex-grow: 2;
         flex-shrink: 0;
         flex-basis: 100px;
+        border-left: 1px solid rgba(255,255,255,.2);
     }
 
-    .category-icon {
-        width: 60px;
-        height: 30px;
+    .storm-info-header {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: center;
+        align-items: center;
+
+        .storm-category-name {
+            // width: 120px;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 100px;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 30px;
+        }
+
+        .category-icon[data-value="Subtropical Depression"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/b_TropicalDepression.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Tropical Low"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/b_TropicalDepression.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Tropical Depression"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/b_TropicalDepression.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Tropical Storm"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/c_TropicalStorm.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Category 1"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/d_Hurricane1.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Category 2"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/e_Hurricane2.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Category 3"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/f_Hurricane3.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Category 4"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/g_Hurricane4.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
+        .category-icon[data-value="Category 5"]{
+            background: url('../../static/Symbology_PNG_SVG/FinalSymbols/h_Hurricane5.png') center center no-repeat;
+            background-size: auto 80%;
+        }
+
     }
 
-    .category-icon[data-value="Subtropical Depression"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/TropicalDepression.png') center center no-repeat;
-        background-size: auto 80%;
-    }
+    .storm-info-additional {
+        .info-type {
+            // width: 65px;
+            margin-right: .5rem;
+            color: rgba(255,255,255,.75);
+        }
 
-    .category-icon[data-value="Tropical Low"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/TropicalLow.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Tropical Depression"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/TropicalDepression.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Tropical Storm"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/TropicalStorm.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Category 1"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/Hurricane1.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Category 2"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/Hurricane2.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Category 3"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/Hurricane3.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Category 4"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/Hurricane4.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .category-icon[data-value="Category 5"]{
-        background: url('../../static/Symbology_PNG_SVG/PNG/Hurricane5.png') center center no-repeat;
-        background-size: auto 80%;
-    }
-
-    .storm-type{
-        // width: 120px;
-        flex-grow: 1;
-        flex-shrink: 0;
-        flex-basis: 100px;
+        .info-value {
+            color: rgba(255,255,255,.9);
+        }
     }
 }

@@ -2,12 +2,14 @@ import React from 'react';
 import { loadCss, loadModules } from 'esri-loader';
 
 import colors from '../../data/Colors';
+import forecastPositionPreviewSymbol from '../../static/Symbology_PNG_SVG/PNG/LightBlueOrb.png';
 
 loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd'
+    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd',
+    FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
 }
 
 export default class Map extends React.PureComponent {
@@ -68,12 +70,31 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     }
 
+    initForecastPostionPreviewLayer(){
+        loadModules([
+            "esri/layers/GraphicsLayer"
+        ]).then(([
+            GraphicsLayer
+        ])=>{
+
+            // Add graphic when GraphicsLayer is constructed
+            const layer = new GraphicsLayer({
+                id: config.FORECAST_POSITION_PREVIEW_LAYERID
+            });
+
+            this.mapView.map.add(layer);
+
+        }).catch(err=>console.error(err));
+    }
+
     mapViewOnReadyHandler(){
         this.mapView.on('click', (evt)=>{
             this.mapOnClickHandler(evt.mapPoint);
         });
 
         this.initAddressLocator();
+
+        this.initForecastPostionPreviewLayer();
     };
 
     mapOnClickHandler(mapPoint=null){
@@ -113,12 +134,83 @@ export default class Map extends React.PureComponent {
 
     };
 
+    zoomToSelectedForecastPosition(){
+
+        // console.log(this.props.forecastPositionSelected);
+        
+        loadModules([
+            "esri/geometry/Point"
+        ]).then(([
+            Point
+        ])=>{
+
+            const point = new Point({
+                x: this.props.forecastPositionSelected.geometry.x,
+                y: this.props.forecastPositionSelected.geometry.y,
+                spatialReference: {
+                    latestWkid: 3857,
+                    wkid: 102100
+                },
+            });
+
+            this.mapView.goTo(point);
+
+        }).catch(err=>console.error(err));
+    };
+
+    togglePreviewForecastPosition(){
+        const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
+        targetLayer.removeAll();
+
+        if(this.props.forecastPositionPreview){
+
+            loadModules([
+                "esri/Graphic",
+                "esri/geometry/Point"
+            ]).then(([
+                Graphic,
+                Point
+            ])=>{
+
+                const symbol = {
+                    type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                    url: forecastPositionPreviewSymbol,
+                    width: "64px",
+                    height: "64px"
+                };
+
+                const geometry = new Point({
+                    x: this.props.forecastPositionPreview.geometry.x,
+                    y: this.props.forecastPositionPreview.geometry.y,
+                    spatialReference: {
+                        latestWkid: 3857,
+                        wkid: 102100
+                    },
+                });
+    
+                const point = new Graphic({
+                    geometry,
+                    symbol
+                });
+    
+                targetLayer.add(point);
+    
+            }).catch(err=>console.error(err));
+        }
+    }
+
     componentDidMount(){
         this.initMap();
     };
 
     componentDidUpdate(prevProps, prevStates){
+        if(this.props.forecastPositionSelected && this.props.forecastPositionSelected !== prevProps.forecastPositionSelected){
+            this.zoomToSelectedForecastPosition();
+        }
 
+        if(this.props.forecastPositionPreview !== prevProps.forecastPositionPreview){
+            this.togglePreviewForecastPosition();
+        }
     };
 
     render(){

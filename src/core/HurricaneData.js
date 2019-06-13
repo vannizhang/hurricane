@@ -16,7 +16,8 @@ const config = {
             stormType: 'TCDVLP',
             dateLabel: 'FLDATELBL',
             maxWind: 'MAXWIND',
-            basin: 'BASIN'
+            basin: 'BASIN',
+            gust: 'GUST'
         }
     },
 
@@ -38,6 +39,7 @@ const HurricaneData = function(){
         const fieldNameDateLabel = config["forecast-position"].fields.dateLabel;
         const fieldNameMaxWind = config["forecast-position"].fields.maxWind;
         const fieldNameBasin= config["forecast-position"].fields.basin;
+        const fieldNameGust= config["forecast-position"].fields.gust;
 
         const requestUrl = config["forecast-position"].url + '/query';
 
@@ -57,7 +59,8 @@ const HurricaneData = function(){
                 
                 const stormType = d.attributes[fieldNameStormType];
                 const dateLabel = d.attributes[fieldNameDateLabel];
-                const maxWind = d.attributes[fieldNameMaxWind];
+                const maxWind = (d.attributes[fieldNameMaxWind] * 1.15078).toFixed(0);
+                const gust = (d.attributes[fieldNameGust] * 1.15078).toFixed(0);
                 const basin = d.attributes[fieldNameBasin];
 
                 const category = getHurricaneCategory(maxWind, stormType);
@@ -67,8 +70,10 @@ const HurricaneData = function(){
                 return {
                     attributes: {
                         stormType,
-                        dateLabel: forecastTimeInLocal,
+                        dateLabel: forecastTimeInLocal.formattedDate,
+                        forecastTime: forecastTimeInLocal.localDate,
                         maxWind,
+                        gust,
                         category,
                         localizedName
                     },
@@ -169,9 +174,12 @@ const HurricaneData = function(){
 
         const localDate = new Date(Date.UTC(year, month, day, hourIn24Format));
 
-        const formattedDate = formatDate(localDate, 'MMM D, h A');
+        const formattedDate = formatDate(localDate, 'MMM D h A');
 
-        return formattedDate;
+        return {
+            localDate,
+            formattedDate
+        };
     };
 
     const getHurricaneCategory = (maxWind=0, stormType='')=>{
@@ -213,16 +221,6 @@ const HurricaneData = function(){
 
         return category;
     };
-
-    const localizeStormTypeByBasin = (maxWind=0, basin='')=>{
-        
-        if(!maxWind || !basin){
-            return 'NO DATA'
-        }
-
-        // const basinGroups = 
-
-    }
 
     return {
         fetchActiveHurricanes,
