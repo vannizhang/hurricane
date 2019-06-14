@@ -41,10 +41,10 @@ class StormInfoWindowListItem extends React.PureComponent {
                             <span className='info-type'>maximum wind speed:</span>
                             <span className='info-value'>{this.props.data.attributes.maxWind} MPH</span>
                         </div>
-                        <div>
+                        {/* <div>
                             <span className='info-type'>gusting:</span>
                             <span className='info-value'>{this.props.data.attributes.gust} MPH</span>
-                        </div>
+                        </div> */}
                     </div>
                     
                 </div>

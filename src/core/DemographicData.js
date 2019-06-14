@@ -205,7 +205,7 @@ export default function(){
             const pctHasDisability= {
                 fieldAlias: 'Percent of Population with a disability',
                 fieldLabel: 'Has Disability',
-                fieldValue: beautifiedData['Disability Status'][0].fieldValue + beautifiedData['Disability Status'][1].fieldValue
+                fieldValue: (beautifiedData['Disability Status'][0].fieldValue + beautifiedData['Disability Status'][1].fieldValue) / 2
             };
 
             beautifiedData['Disability Status'].push(pctHasDisability);

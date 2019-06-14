@@ -8,6 +8,9 @@ const config = {
     class_name: {
         svg: 'precip-chart-svg',
         bar_rect: 'precip-chart-bar'
+    },
+    id: {
+        verticalRefLine: 'precipChartVerticalReferenceLine'
     }
 };
 
@@ -30,6 +33,7 @@ export default function PrecipChart({
     const [ axis, setAxis ] = useState({});
     const [ verticalRefLine, setVerticalRefLine ] = useState(null);
     const [ verticalRefLineXPos, setVerticalRefLineXPos ] = useState(0);
+    const [ tooltipData, setTooltipData ] = useState(null);
 
     const initSvg = ()=>{
 
@@ -61,7 +65,7 @@ export default function PrecipChart({
         const refLine = initVerticalRefLine({ svg, height })
         setVerticalRefLine(refLine);
 
-        initOverlayRect({ svg, width, height });
+        initOverlayRect({ svg, width, height,  scales});
         // console.log(container, width, height);
     };
 
@@ -98,18 +102,23 @@ export default function PrecipChart({
     const initOverlayRect = ({
         svg = null,
         height = 0,
-        width = 0
+        width = 0,
+        scales = null
     }={})=>{
         const overlay = svg.append("rect")
             .attr("class", "overlay")
             .attr("width", width)
             .attr("height", height)
             .attr('fill', 'rgba(0,0,0,0)')
-            .on("mouseenter", mouseOverHandler)
-            .on("mouseleave", mouseOutHandler)
+            // .on("mouseenter", mouseOverHandler)
+            .on("mouseleave", hideTooltip)
             .on("mousemove", function(evt){
                 // console.log(this, evt);
                 const mousePosX = d3.mouse(this)[0];
+                mouseMoveHandler({
+                    mousePosX, 
+                    scales
+                });
             });
     };
 
@@ -118,6 +127,7 @@ export default function PrecipChart({
         height = 0
     }={})=>{
         const refLine = svg.append('line')
+            .attr('id', config.id.verticalRefLine)
             .attr('class', 'vertical-reference-line')
             .attr('x1', verticalRefLineXPos)
             .attr('y1', 0)
@@ -130,6 +140,12 @@ export default function PrecipChart({
 
         return refLine;
     };
+
+    const updateVerticalRefLinePos = ()=>{
+        const refLine = d3.select('#' + config.id.verticalRefLine)
+            .attr('x1', verticalRefLineXPos)
+            .attr('x2', verticalRefLineXPos);
+    }
 
     const draw = ()=>{
 
@@ -244,10 +260,10 @@ export default function PrecipChart({
             .attr("x", function(d) { return scales.x(d[fieldNameForXAxis]); })
             .attr("width", scales.x.bandwidth())
             .attr("y", function(d) { return scales.y(d[fieldNameForYAxis]); })
-            .attr("height", function(d) { return height - scales.y(d[fieldNameForYAxis]); })
-            .on('click', function(d){
-                console.log('chart on click >>>', d);
-            })
+            .attr("height", function(d) { return height - scales.y(d[fieldNameForYAxis]); });
+            // .on('click', function(d){
+            //     console.log('chart on click >>>', d);
+            // })
     };
 
     const drawLines = (data=[])=>{
@@ -279,24 +295,75 @@ export default function PrecipChart({
 
     };
 
-    const mouseOverHandler = ()=>{
+    // const mouseOverHandler = ()=>{
 
-    };
+    // };
 
-    const mouseOutHandler = ()=>{
+    // const mouseOutHandler = ()=>{
 
-    };
+    // };
 
-    const mouseMoveHandler = ()=>{
+    const mouseMoveHandler = ({scales=null, mousePosX=0}={})=>{
+
+        // console.log(mousePosX);
+        const precipAmountData = data[0];
+        const precipAccumulationData = data[1];
+        const xOffset = scales.x.bandwidth() / 2;
+
+        let tooltipDataIdx = null;
+        let tooltipPos = null;
+
+        for(let i = 0, len = precipAmountData.length; i < len; i++){
+
+            const currItem = precipAmountData[i];
+            const currItemPos = scales.x(currItem[fieldNameForXAxis]) + xOffset;
+
+            const nextItem = precipAmountData[i + 1] ? precipAmountData[i + 1] : currItem;
+            const nextItemPos = scales.x(nextItem[fieldNameForXAxis]) + xOffset;
+
+            if(mousePosX >= currItemPos && mousePosX <= nextItemPos){
+
+                const distToCurrItem = mousePosX - currItemPos;
+                const distToNextItem = nextItemPos - mousePosX;
+
+                // tooltipData = distToCurrItem < distToNextItem ? currItem : nextItem;
+                tooltipDataIdx = distToCurrItem < distToNextItem ? i : i+1;
+                tooltipPos = distToCurrItem < distToNextItem ? currItemPos : nextItemPos;
+
+                break;
+            }
+        }
+
+        const tooltipData = precipAmountData[tooltipDataIdx] && precipAccumulationData[tooltipDataIdx] 
+            ? [precipAmountData[tooltipDataIdx], precipAccumulationData[tooltipDataIdx]]
+            : null; 
+
+        // console.log(tooltipData);
+        setVerticalRefLineXPos(tooltipPos);
+        setTooltipData(tooltipData);
 
     };
 
     const showTooltip = ()=>{
-
+        // console.log('show tooltip', tooltipData);
+        toggleRefLine(true);
     };
 
     const hideTooltip = ()=>{
+        setTooltipData(null);
+    };
 
+    const toggleRefLine = (isVisible=false)=>{
+        const refLine = document.getElementById(config.id.verticalRefLine);
+        refLine.classList.toggle('hide', !isVisible);
+    };
+
+    const getTooltipText = ()=>{
+        return (
+            <div className='font-size--3 trailer-0 margin-right-1 text-right'>
+                Fri 11 PM: 1 inch of rain is expected, totally accumulation is 5 inch
+            </div>
+        )
     };
 
     const beautifyMaxValueForYAxis = (value=0)=>{
@@ -340,7 +407,23 @@ export default function PrecipChart({
 
     }, [data]);
 
+    useEffect(()=>{
+        if(svg){
+            updateVerticalRefLinePos();
+            showTooltip();
+
+            if(!tooltipData){
+                toggleRefLine(false);
+            }
+
+            console.log(tooltipData);
+        }
+    }, [verticalRefLineXPos, tooltipData]);
+
     return (
-        <div id={containerID} ref={containerDivRef} style={{width: containerWidth , height: containerHeight}}></div>
+        <div>
+            {/* { getTooltipText() } */}
+            <div id={containerID} ref={containerDivRef} style={{width: containerWidth , height: containerHeight}}></div>
+        </div>
     );
 };

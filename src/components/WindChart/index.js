@@ -10,6 +10,9 @@ const config = {
     windTicks :[ 2, 4, 6, 8, 10, 12, 14, 16 ],
     class_name: {
         svg: 'wind-chart-svg'
+    },
+    id: {
+        verticalRefLine: 'windChartVerticalReferenceLine'
     }
 };
 
@@ -118,7 +121,7 @@ export default function WindChart({
             .on("mousemove", function(evt){
                 // console.log(this, evt);
                 const mousePosX = d3.mouse(this)[0];
-                const invertVal = scales.x.invert(mousePosX);
+                // const invertVal = scales.x.invert(mousePosX);
                 // console.log(invertVal);
                 mouseMoveHandler({
                     mousePosX, 
@@ -132,7 +135,7 @@ export default function WindChart({
         height = 0
     }={})=>{
         const refLine = svg.append('line')
-            .attr('id', 'verticalReferenceLine')
+            .attr('id', config.id.verticalRefLine)
             .attr('class', 'vertical-reference-line')
             .attr('x1', verticalRefLineXPos)
             .attr('y1', 0)
@@ -147,7 +150,7 @@ export default function WindChart({
     };
 
     const updateVerticalRefLinePos = ()=>{
-        const refLine = d3.select('#verticalReferenceLine')
+        const refLine = d3.select('#' + config.id.verticalRefLine)
             .attr('x1', verticalRefLineXPos)
             .attr('x2', verticalRefLineXPos);
     }
@@ -238,7 +241,7 @@ export default function WindChart({
             .attr("d", valueline);
     };
 
-    const mouseMoveHandler = ({val=0, scales=null, mousePosX=0}={})=>{
+    const mouseMoveHandler = ({scales=null, mousePosX=0}={})=>{
 
         // console.log(mousePosX);
 
@@ -300,7 +303,7 @@ export default function WindChart({
     }
 
     const toggleRefLine = (isVisible=false)=>{
-        const refLine = document.getElementById('verticalReferenceLine');
+        const refLine = document.getElementById(config.id.verticalRefLine);
         refLine.classList.toggle('hide', !isVisible);
     };
 

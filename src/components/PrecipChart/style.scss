@@ -1,14 +1,17 @@
 .precip-chart-bar {
-    fill: rgba(197, 231, 242, 0.8);
-    cursor: pointer;
+    // fill: rgba(197, 231, 242, 0.8);
+    fill: #C5E7F2;
+    // cursor: pointer;
+    pointer-events: none;
 }
 
-.precip-chart-bar:hover {
-    fill: #C5E7F2;
-}
+// .precip-chart-bar:hover {
+//     fill: #C5E7F2;
+// }
 
 .precip-chart-line {
     fill: none;
     stroke: #EC2228;
     stroke-width: 2px;
+    pointer-events: none;
 }

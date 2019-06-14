@@ -8,7 +8,7 @@ loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd',
+    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd', //'6cd940d108414780ad0118f78e2a6fcd',
     FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
 }
 

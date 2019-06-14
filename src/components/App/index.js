@@ -239,7 +239,7 @@ class App extends React.Component {
                     activeStormExtent={this.state.activeStormExtent}
                     forecastPositionPreview={this.state.forecastPositionPreview}
                     forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={window.outerWidth <= 480 ? 0 : config.SIDE_PANEL_WIDTH}
+                    // rightPadding={window.outerWidth <= 480 ? 0 : config.SIDE_PANEL_WIDTH}
                 />
 
                 <div className='side-container'>
