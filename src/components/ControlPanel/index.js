@@ -41,9 +41,9 @@ class ControlPanel extends React.Component {
                     <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
                 </div>
                 
-                <p className='trailer-half'>For community awareness within the US about a hurricane in your area, click on the map or search below</p>
+                <p className='trailer-half font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</p>
                 <div id='addressLocatorDiv' className='trailer-half' style={styles.addressLocatorDiv}></div>
-                <p className='trailer-half'>Look up a specific storm to find out more information here.</p>
+                {/* <p className='trailer-half font-size--3'>Look up a specific storm to find out more information here.</p> */}
                 
                 <StormSelector
                     data={this.props.activeStorms}

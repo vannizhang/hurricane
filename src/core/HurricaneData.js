@@ -53,7 +53,7 @@ const HurricaneData = function(){
             const queryResponse = await queryRequest(requestUrl, queryParam);
             
             let features = queryResponse.features || [];
-            features = features.length > 6 ? features.slice(0, 6) : features;
+            // features = features.length > 6 ? features.slice(0, 6) : features;
 
             const data = features.map(d=>{
 

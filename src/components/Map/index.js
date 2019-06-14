@@ -152,8 +152,8 @@ export default class Map extends React.PureComponent {
                 x: this.props.forecastPositionSelected.geometry.x,
                 y: this.props.forecastPositionSelected.geometry.y,
                 spatialReference: {
-                    latestWkid: 3857,
-                    wkid: 102100
+                    latestWkid: 4326,
+                    wkid: 4326
                 },
             });
 
@@ -189,8 +189,8 @@ export default class Map extends React.PureComponent {
                         x: this.props.forecastPositionPreview.geometry.x,
                         y: this.props.forecastPositionPreview.geometry.y,
                         spatialReference: {
-                            latestWkid: 3857,
-                            wkid: 102100
+                            latestWkid: 4326,
+                            wkid: 4326
                         },
                     });
         

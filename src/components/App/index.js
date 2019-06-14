@@ -8,7 +8,7 @@ import Colors from '../../data/Colors';
 
 import { urlFns } from 'helper-toolkit-ts';
 
-const SIDE_PANEL_WIDTH = 395;
+// const SIDE_PANEL_WIDTH = 395;
 
 const config = {
     SIDE_PANEL_WIDTH: 395,
@@ -239,20 +239,10 @@ class App extends React.Component {
                     activeStormExtent={this.state.activeStormExtent}
                     forecastPositionPreview={this.state.forecastPositionPreview}
                     forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={config.SIDE_PANEL_WIDTH}
+                    rightPadding={window.outerWidth <= 480 ? 0 : config.SIDE_PANEL_WIDTH}
                 />
 
-                <div className='side-container' style={{
-                    position: 'absolute',
-                    top: '0',
-                    right: '0',
-                    width: config.SIDE_PANEL_WIDTH + 'px',
-                    maxHeight: '100%',
-                    overflowY: 'auto',
-                    background: Colors.sidebar,
-                    color: '#fff',
-                    zIndex: 5,
-                }}>
+                <div className='side-container'>
                     <div style={{ padding: '1rem' }}>
                         <ControlPanel 
                             stormSelectorOnChange={this.stormSelectorOnChange}
