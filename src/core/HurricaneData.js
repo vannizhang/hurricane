@@ -5,7 +5,7 @@ import { format as formatDate } from 'date-fns';
 import { capitalizeFirstLetter } from '../utils/Helper'
 import { getLocalizedTropicalCycloneClassifications } from '../utils/localizeTropicalCyclone';
 
-const URL_HURRICANE_LAYER = 'https://utility.arcgis.com/usrsvcs/servers/9a052d8ae34741dcada2c0247121bbe5/rest/services/LiveFeeds/Hurricane_Active/MapServer';
+const URL_HURRICANE_LAYER = 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Active_Hurricanes_v1/FeatureServer';
 
 const config = {
 
@@ -50,7 +50,9 @@ const HurricaneData = function(){
         };
 
         try {
-            let features = await queryFeatures(requestUrl, queryParam);
+            const queryResponse = await queryRequest(requestUrl, queryParam);
+            
+            let features = queryResponse.features || [];
             features = features.length > 6 ? features.slice(0, 6) : features;
 
             const data = features.map(d=>{
@@ -89,6 +91,28 @@ const HurricaneData = function(){
         }
     };
 
+    const fetchErrorConeExtent = async(name='')=>{
+
+        const fieldNameStormName = config["forecast-error-cone"].fields.stormName;
+
+        const requestUrl = config["forecast-error-cone"].url + '/query';
+
+        const queryParam = {
+            where: `${fieldNameStormName} = '${name}'`,
+            returnExtentOnly: true,
+            f: 'json',
+        };
+
+        try {
+            const queryResponse = await queryRequest(requestUrl, queryParam);
+            // console.log('fetchErrorConeExtent', queryResponse);
+            return queryResponse.extent || null;
+
+        } catch(err){
+            return null;
+        }
+    };
+
     const fetchActiveHurricanes = async()=>{
 
         const requestUrl = config["forecast-position"].url + '/query';
@@ -104,7 +128,8 @@ const HurricaneData = function(){
         };
 
         try {
-            const features = await queryFeatures(requestUrl, queryParam);
+            const queryRes = await queryRequest(requestUrl, queryParam);
+            const features = queryRes.features || [];
 
             // console.log(requestUrl, queryParam);
 
@@ -126,7 +151,7 @@ const HurricaneData = function(){
 
     };
 
-    const queryFeatures = (requestUrl, params)=>{
+    const queryRequest = (requestUrl, params)=>{
 
         return new Promise((resolve, reject)=>{
 
@@ -139,10 +164,8 @@ const HurricaneData = function(){
             axios.post(requestUrl, formData).then( (response)=>{
                 // console.log(response);
 
-                if(response.data && response.data.features){
-                    resolve(response.data.features)
-                } else {
-                    reject('no features returned', response.data);
+                if(response.data){
+                    resolve(response.data)
                 }
 
             }).catch(err=>{
@@ -224,7 +247,8 @@ const HurricaneData = function(){
 
     return {
         fetchActiveHurricanes,
-        fecthForecastDataByName
+        fecthForecastDataByName,
+        fetchErrorConeExtent
     };
 
 };

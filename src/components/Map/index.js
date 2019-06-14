@@ -95,6 +95,10 @@ export default class Map extends React.PureComponent {
         this.initAddressLocator();
 
         this.initForecastPostionPreviewLayer();
+
+        if(this.props.onReady){
+            this.props.onReady();
+        }
     };
 
     mapOnClickHandler(mapPoint=null){
@@ -160,43 +164,47 @@ export default class Map extends React.PureComponent {
 
     togglePreviewForecastPosition(){
         const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
-        targetLayer.removeAll();
 
-        if(this.props.forecastPositionPreview){
+        if(targetLayer){
+            targetLayer.removeAll();
 
-            loadModules([
-                "esri/Graphic",
-                "esri/geometry/Point"
-            ]).then(([
-                Graphic,
-                Point
-            ])=>{
+            if(this.props.forecastPositionPreview){
 
-                const symbol = {
-                    type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
-                    url: forecastPositionPreviewSymbol,
-                    width: "64px",
-                    height: "64px"
-                };
-
-                const geometry = new Point({
-                    x: this.props.forecastPositionPreview.geometry.x,
-                    y: this.props.forecastPositionPreview.geometry.y,
-                    spatialReference: {
-                        latestWkid: 3857,
-                        wkid: 102100
-                    },
-                });
+                loadModules([
+                    "esri/Graphic",
+                    "esri/geometry/Point"
+                ]).then(([
+                    Graphic,
+                    Point
+                ])=>{
     
-                const point = new Graphic({
-                    geometry,
-                    symbol
-                });
+                    const symbol = {
+                        type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                        url: forecastPositionPreviewSymbol,
+                        width: "64px",
+                        height: "64px"
+                    };
     
-                targetLayer.add(point);
-    
-            }).catch(err=>console.error(err));
+                    const geometry = new Point({
+                        x: this.props.forecastPositionPreview.geometry.x,
+                        y: this.props.forecastPositionPreview.geometry.y,
+                        spatialReference: {
+                            latestWkid: 3857,
+                            wkid: 102100
+                        },
+                    });
+        
+                    const point = new Graphic({
+                        geometry,
+                        symbol
+                    });
+        
+                    targetLayer.add(point);
+        
+                }).catch(err=>console.error(err));
+            }
         }
+        
     }
 
     componentDidMount(){

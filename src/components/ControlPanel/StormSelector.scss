@@ -1,0 +1,13 @@
+.storm-selector{
+    .dropdown-menu{
+        background-color: rgba(0,0,0,0);
+        border: 1px solid rgba(255,255,255,.3);
+        border-top: none;
+
+        .dropdown-link{
+            color: #efefef;
+            border-top: 1px solid rgba(255,255,255,.3);
+            background-color: rgba(0,48,77,.95);
+        }
+    }
+}

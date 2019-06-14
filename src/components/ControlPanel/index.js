@@ -47,6 +47,7 @@ class ControlPanel extends React.Component {
                 
                 <StormSelector
                     data={this.props.activeStorms}
+                    activeStorm={this.props.activeStorm}
                     onSelect={this.props.stormSelectorOnChange}
                 />
 

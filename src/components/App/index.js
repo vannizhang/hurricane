@@ -6,7 +6,16 @@ import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
 import Colors from '../../data/Colors';
 
+import { urlFns } from 'helper-toolkit-ts';
+
 const SIDE_PANEL_WIDTH = 395;
+
+const config = {
+    SIDE_PANEL_WIDTH: 395,
+    search_params_key: {
+        storm: 'storm'
+    }
+}
 
 class App extends React.Component {
     
@@ -22,6 +31,7 @@ class App extends React.Component {
             // state for map component 
             forecastPositionPreview: null,
             forecastPositionSelected: null,
+            activeStormExtent: null,
 
             // state for info panel
             isInfoPanelVisible: false,
@@ -35,6 +45,7 @@ class App extends React.Component {
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
+        this.mapOnReady = this.mapOnReady.bind(this);
         this.stormSelectorOnChange = this.stormSelectorOnChange.bind(this);
         this.updateStormData = this.updateStormData.bind(this);
         this.updatePrecipData = this.updatePrecipData.bind(this);
@@ -53,7 +64,7 @@ class App extends React.Component {
     };
 
     updatePrecipData(data=[]){
-        console.log('calling updatePrecipData', data);
+        // console.log('calling updatePrecipData', data);
         this.setState({
             precipData: data
         });
@@ -121,6 +132,20 @@ class App extends React.Component {
         });
     };
 
+    updateActiveStorm(stormName=''){
+
+        this.setState({
+            activeStorm: stormName
+        }, async()=>{
+            const queryResponse = await this.props.controller.fecthHurricaneForecastDataByName(stormName);
+            this.updateStormData(queryResponse.forecastData);
+        });
+
+        urlFns.updateQueryParam({key: config.search_params_key.storm, value: stormName});
+    }
+
+    // updateActiveStormExtent
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         try {
@@ -165,14 +190,18 @@ class App extends React.Component {
 
     }
 
+    mapOnReady(){
+        const searchParams = urlFns.parseQuery();
+        const stormName = searchParams[config.search_params_key.storm];
+
+        if(stormName){
+            this.updateActiveStorm(stormName);
+        }
+    }
+
     stormSelectorOnChange(stormName=''){
         // console.log('stormSelectorOnChange', stormName);
-        this.setState({
-            activeStorm: stormName
-        }, async()=>{
-            const data = await this.props.controller.fecthHurricaneForecastDataByName(stormName);
-            this.updateStormData(data);
-        });
+        this.updateActiveStorm(stormName);
     }
 
     stormListOnClick(data=null){
@@ -199,17 +228,18 @@ class App extends React.Component {
             <div id='appContentDiv'>
                 <Map 
                     onClick={this.mapOnClick}
+                    onReady={this.mapOnReady}
 
                     forecastPositionPreview={this.state.forecastPositionPreview}
                     forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={SIDE_PANEL_WIDTH}
+                    rightPadding={config.SIDE_PANEL_WIDTH}
                 />
 
                 <div className='side-container' style={{
                     position: 'absolute',
                     top: '0',
                     right: '0',
-                    width: SIDE_PANEL_WIDTH + 'px',
+                    width: config.SIDE_PANEL_WIDTH + 'px',
                     maxHeight: '100%',
                     overflowY: 'auto',
                     background: Colors.sidebar,
@@ -224,6 +254,7 @@ class App extends React.Component {
                             stormListOnMouseLeave={this.stormListOnMouseLeave}
 
                             activeStorms={this.props.activeStorms}
+                            activeStorm={this.state.activeStorm}
                             stormData={this.state.stormData}
                         />
 

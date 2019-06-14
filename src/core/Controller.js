@@ -33,7 +33,10 @@ const Controller = function(){
     // };
 
     const fecthHurricaneForecastDataByName = async(stormName='')=>{
-        const data = await hurricaneDataManager.fecthForecastDataByName(stormName);
+        const forecastData = await hurricaneDataManager.fecthForecastDataByName(stormName);
+        const errorConeExtent = await hurricaneDataManager.fetchErrorConeExtent(stormName);
+        // console.log('forecastData', forecastData);
+        // console.log('errorConeExtent', errorConeExtent);
         /*
             the output data is an array of features look like this one below
             [
@@ -49,13 +52,16 @@ const Controller = function(){
             ]
 
         */
-        console.log('ForecastDataByName', data);
+        // console.log('ForecastDataByName', data);
 
         // if(state.actionHandlers.hurricaneDataOnReceive){
         //     state.actionHandlers.hurricaneDataOnReceive(data);
         // }
 
-        return data;
+        return {
+            forecastData,
+            errorConeExtent
+        };
     }
 
     const fetchDataForInfoPanel = async(mapPoint=null)=>{
