@@ -205,13 +205,32 @@ export default class Map extends React.PureComponent {
             }
         }
         
-    }
+    };
+
+    zoomToActiveStormExtent(){
+
+        loadModules([
+            "esri/geometry/Extent"
+        ]).then(([
+            Extent
+        ])=>{
+            
+            const activeStormExtent = new Extent(this.props.activeStormExtent);
+            this.mapView.goTo(activeStormExtent);
+
+        }).catch(err=>console.error(err));
+    };
 
     componentDidMount(){
         this.initMap();
     };
 
     componentDidUpdate(prevProps, prevStates){
+
+        if(this.props.activeStormExtent && this.props.activeStormExtent !== prevProps.activeStormExtent){
+            this.zoomToActiveStormExtent();
+        }
+
         if(this.props.forecastPositionSelected && this.props.forecastPositionSelected !== prevProps.forecastPositionSelected){
             this.zoomToSelectedForecastPosition();
         }

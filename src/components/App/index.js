@@ -139,19 +139,25 @@ class App extends React.Component {
         }, async()=>{
             const queryResponse = await this.props.controller.fecthHurricaneForecastDataByName(stormName);
             this.updateStormData(queryResponse.forecastData);
+            this.updateActiveStormExtent(queryResponse.errorConeExtent);
         });
 
         urlFns.updateQueryParam({key: config.search_params_key.storm, value: stormName});
     }
 
-    // updateActiveStormExtent
+    updateActiveStormExtent(data=null){
+        // console.log(data);
+        this.setState({
+            activeStormExtent: data
+        });
+    }
 
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         try {
             
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
-            console.log('data for info panel', data);
+            // console.log('data for info panel', data);
 
             this.updateIsInfoPanelVisible(true);
 
@@ -230,6 +236,7 @@ class App extends React.Component {
                     onClick={this.mapOnClick}
                     onReady={this.mapOnReady}
 
+                    activeStormExtent={this.state.activeStormExtent}
                     forecastPositionPreview={this.state.forecastPositionPreview}
                     forecastPositionSelected={this.state.forecastPositionSelected}
                     rightPadding={config.SIDE_PANEL_WIDTH}
