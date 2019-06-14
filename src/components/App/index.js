@@ -78,35 +78,35 @@ class App extends React.Component {
     };
 
     updatePopulationData(data=[]){
-        // console.log('calling populationData', data);
+        console.log('calling populationData', data);
         this.setState({
             populationData: data
         });
     };
 
     updateLanguageData(data=[]){
-        // console.log('calling languageData', data);
+        console.log('calling languageData', data);
         this.setState({
             languageData: data
         });
     };
 
     updateVehicleData(data=null){
-        // console.log('calling languageData', data);
+        console.log('calling updateVehicleData', data);
         this.setState({
             vehicleData: data
         });
     };
 
     updateDisabilityData(data=null){
-        // console.log('calling languageData', data);
+        console.log('calling updateDisabilityData', data);
         this.setState({
             disabilityData: data
         });
     };
 
     updateInternetData(data=null){
-        // console.log('calling languageData', data);
+        console.log('calling updateInternetData', data);
         this.setState({
             internetData: data
         });

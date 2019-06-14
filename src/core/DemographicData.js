@@ -149,7 +149,7 @@ export default function(){
                 const fieldName = d.name;
                 const fieldAlias = d.alias;
                 const fieldLabel = d.label;
-                const fieldValue = attributes[fieldName];
+                const fieldValue = typeof +attributes[fieldName] !== 'number' ? 0 : +attributes[fieldName];
                 const color = colors[fieldLabel]
 
                 return {
