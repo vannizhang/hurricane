@@ -6,9 +6,12 @@ import forecastPositionPreviewSymbol from '../../static/Symbology_PNG_SVG/PNG/Li
 
 loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
+const webMapIdForProd = 'd90c899acca34391bc4eb4590d4195c0';
+const webMapIdForDemo = '7a3425e64285411588c257271c68c9b6';
+
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: '6cd940d108414780ad0118f78e2a6fcd', //'6cd940d108414780ad0118f78e2a6fcd',
+    AGOL_ITEM_ID_WEB_MAP: webMapIdForDemo, //'6cd940d108414780ad0118f78e2a6fcd',
     FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
 }
 

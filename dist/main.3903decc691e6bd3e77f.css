@@ -15,6 +15,17 @@ body,
   width: 100%;
   overflow-y: hidden; }
 
+.side-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 395px;
+  max-height: calc(100% - 15px);
+  overflow-y: auto;
+  background: rgba(0, 48, 77, 0.75);
+  color: #fff;
+  z-index: 5; }
+
 #chartDiv {
   position: absolute;
   top: 1rem;
@@ -24,8 +35,16 @@ body,
   #chartDiv svg text {
     fill: #efefef; }
 
+.modal-content {
+  background: rgba(0, 48, 77, 0.75);
+  color: #efefef; }
+
 .cursor-pointer {
   cursor: pointer; }
+
+@media (max-width: 480px) {
+  .side-container {
+    width: 100%; } }
 
 .storm-info-list-item {
   display: flex;
@@ -35,44 +54,68 @@ body,
   align-content: center;
   align-items: center;
   cursor: pointer; }
-  .storm-info-list-item .date-label {
+  .storm-info-list-item .time-info-div {
+    width: 50px; }
+  .storm-info-list-item .storm-info-div {
     flex-grow: 2;
     flex-shrink: 0;
-    flex-basis: 100px; }
-  .storm-info-list-item .category-icon {
-    width: 60px;
-    height: 30px; }
-  .storm-info-list-item .category-icon[data-value="Subtropical Depression"] {
-    background: url(273d92b0a1dd062777d6c0349ab91e4f.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Tropical Low"] {
-    background: url(5f165ca7f96ffec62fa8cbb163e10456.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Tropical Depression"] {
-    background: url(273d92b0a1dd062777d6c0349ab91e4f.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Tropical Storm"] {
-    background: url(5abd96c32493735fe84d507f5458b322.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Category 1"] {
-    background: url(6c37f07dc7ad427c0bd52be37f9ca3ed.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Category 2"] {
-    background: url(7569e3fae4fa9e89d4f7c83d9d78c859.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Category 3"] {
-    background: url(6d022776bd341eab97d5c90dbd63977f.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Category 4"] {
-    background: url(b9e05c7d0d9a23f086548ba257485cf3.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .category-icon[data-value="Category 5"] {
-    background: url(3bd871eb2df02db0c4e8dbef86493651.png) center center no-repeat;
-    background-size: auto 80%; }
-  .storm-info-list-item .storm-type {
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: 100px; }
+    flex-basis: 100px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2); }
+  .storm-info-list-item .storm-info-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center; }
+    .storm-info-list-item .storm-info-header .storm-category-name {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 100px; }
+    .storm-info-list-item .storm-info-header .category-icon {
+      width: 50px;
+      height: 30px; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Subtropical Depression"] {
+      background: url(cd6cb5348191ffb931c9ae5b9fd7d259.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Tropical Low"] {
+      background: url(cd6cb5348191ffb931c9ae5b9fd7d259.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Tropical Depression"] {
+      background: url(cd6cb5348191ffb931c9ae5b9fd7d259.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Tropical Storm"] {
+      background: url(63c858334868cdac89fe896d548a2e56.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Category 1"] {
+      background: url(b6aa92fbf60349f6c9c3c20d4ab15132.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Category 2"] {
+      background: url(61518c78eaacb28229668e80ef333121.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Category 3"] {
+      background: url(02c59e6bd790ab47059717f41247a5fc.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Category 4"] {
+      background: url(dbdda1dcd4d1951c9a2a7df76b52f25e.png) center center no-repeat;
+      background-size: auto 80%; }
+    .storm-info-list-item .storm-info-header .category-icon[data-value="Category 5"] {
+      background: url(b8cad89c14eb6dfded30f2142021b0f0.png) center center no-repeat;
+      background-size: auto 80%; }
+  .storm-info-list-item .storm-info-additional .info-type {
+    margin-right: .5rem;
+    color: rgba(255, 255, 255, 0.75); }
+  .storm-info-list-item .storm-info-additional .info-value {
+    color: rgba(255, 255, 255, 0.9); }
+
+.storm-selector .dropdown-menu {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: none; }
+  .storm-selector .dropdown-menu .dropdown-link {
+    color: #efefef;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 48, 77, 0.95); }
 
 #infoPanelDiv {
   width: 100%; }
@@ -110,16 +153,20 @@ body,
     shape-rendering: crispEdges; }
 
 .precip-chart-bar {
-  fill: rgba(188, 218, 237, 0.8);
-  cursor: pointer; }
+  fill: #C5E7F2;
+  pointer-events: none; }
 
-.precip-chart-bar:hover {
-  fill: #bcdaed; }
-
-#windChartDiv .line {
+.precip-chart-line {
   fill: none;
-  stroke: #c4bcdc;
-  stroke-width: 2px; }
+  stroke: #EC2228;
+  stroke-width: 2px;
+  pointer-events: none; }
+
+#windChartDiv .wind-chart-line {
+  fill: none;
+  stroke: #C5E7F2;
+  stroke-width: 2px;
+  pointer-events: none; }
 
 .horizontal-legend {
   display: flex;
