@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const config = {
     "precipitation-layer": {
-        url: "https://utility.arcgis.com/usrsvcs/servers/d9835527647f4419ab113c95d29fce88/rest/services/LiveFeeds/NDFD_Precipitation/MapServer",
+        url: "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/NDFD_Precipitation_v1/FeatureServer",
+        // url: "https://utility.arcgis.com/usrsvcs/servers/d9835527647f4419ab113c95d29fce88/rest/services/LiveFeeds/NDFD_Precipitation/MapServer",
         category2value:[
             .01,
             .10,
@@ -26,7 +27,8 @@ const config = {
             20
         ]
     },
-    "wind-gust-layer-url": "https://utility.arcgis.com/usrsvcs/servers/abfa29364f074c1dafa0e253217ef472/rest/services/LiveFeeds/NDFD_WindGust/MapServer"
+    "wind-gust-layer-url": "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/NDFD_WindGust_v1/FeatureServer"
+    // "wind-gust-layer-url": "https://utility.arcgis.com/usrsvcs/servers/abfa29364f074c1dafa0e253217ef472/rest/services/LiveFeeds/NDFD_WindGust/MapServer"
 };
 
 export default function(){
@@ -108,6 +110,7 @@ export default function(){
     };
 
     const prepareWindGustData = (features)=>{
+        
         return features.map(d=>{
 
             const fromdate = d.attributes.fromdate;
@@ -166,8 +169,11 @@ export default function(){
 
     // get the time info for the weather data
     const getTimeInfo = ()=>{
-        const itemInfoUrlPrcipData = config['precipitation-layer'].url + '/?f=json';
-        const itemInfoUrlWindData = config['wind-gust-layer-url'] + '/?f=json'; 
+        // const itemInfoUrlPrcipData = config['precipitation-layer'].url + '/?f=json';
+        // const itemInfoUrlWindData = config['wind-gust-layer-url'] + '/?f=json'; 
+
+        const itemInfoUrlPrcipData = config['precipitation-layer'].url + '/0/?f=json';
+        const itemInfoUrlWindData = config['wind-gust-layer-url'] + '/0/?f=json'; 
 
         Promise.all([
             fetchItemInfo(itemInfoUrlPrcipData), 
@@ -187,7 +193,8 @@ export default function(){
             geometry: mapPoint,
             geometryType: 'esriGeometryPoint',
             spatialRel: 'esriSpatialRelIntersects',
-            outFields: '*'
+            outFields: '*',
+            orderByFields: 'fromdate'
         };
 
         const requestUrlPrcipData = config['precipitation-layer'].url + '/0/query';
@@ -200,7 +207,7 @@ export default function(){
                 fetchData(requestUrlPrcipData, params), 
                 fetchData(requestUrlWindData, params),
                 fetchData(requestUrlPrcipAccumuData, params),
-            ]).then(function(arrOfResponses) {
+            ]).then((arrOfResponses)=>{
                 // console.log(arrOfResponses);
                 const precipData = setWeatherDataFeatures('precip', arrOfResponses[0]);
                 const windGustData = setWeatherDataFeatures('windGust', arrOfResponses[1]);
@@ -208,6 +215,7 @@ export default function(){
 
                 // console.log(precipData);
                 // console.log(precipAccumuData);
+                console.log(windGustData);
 
                 resolve({
                     precip: precipData,
@@ -216,6 +224,7 @@ export default function(){
                 });
 
             }).catch(err=>{
+                console.error(err);
                 reject(err);
             })
         })
