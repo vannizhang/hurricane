@@ -1,17 +1,24 @@
 import React from 'react';
 import { loadCss, loadModules } from 'esri-loader';
 
+import AppConfig from '../../data/AppConfig';
 import colors from '../../data/Colors';
 import forecastPositionPreviewSymbol from '../../static/Symbology_PNG_SVG/PNG/LightBlueOrb.png';
 
-loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
+import TropicalDepressionIcon from '../../static/Symbology_PNG_SVG/32x32/b_TropicalDepression.png';
+import TropicalStormIcon from '../../static/Symbology_PNG_SVG/32x32/c_TropicalStorm.png';
+import Hurricane1Icon from '../../static/Symbology_PNG_SVG/32x32/d_Hurricane1.png';
+import Hurricane2Icon from '../../static/Symbology_PNG_SVG/32x32/e_Hurricane2.png';
+import Hurricane3Icon from '../../static/Symbology_PNG_SVG/32x32/f_Hurricane3.png';
+import Hurricane4Icon from '../../static/Symbology_PNG_SVG/32x32/g_Hurricane4.png';
+import Hurricane5Icon from '../../static/Symbology_PNG_SVG/32x32/h_Hurricane5.png';
 
-const webMapIdForProd = 'd90c899acca34391bc4eb4590d4195c0';
-const webMapIdForDemo = '7a3425e64285411588c257271c68c9b6';
+loadCss('https://js.arcgis.com/4.10/esri/css/main.css');
 
 const config ={
     CONTAINER_ID: 'mapViewDiv',
-    AGOL_ITEM_ID_WEB_MAP: webMapIdForDemo, //'6cd940d108414780ad0118f78e2a6fcd',
+    // AGOL_ITEM_ID_WEB_MAP: webMapIdForDemo, //'6cd940d108414780ad0118f78e2a6fcd',
+    FORECAST_POSITION_LAYERID: 'forecastPosition',
     FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
 }
 
@@ -25,6 +32,8 @@ export default class Map extends React.PureComponent {
 
     initMap(){
 
+        const webMapId = this.props.isDemoMode ? AppConfig.demo.web_map_id : AppConfig.production.web_map_id;
+
         loadModules([
             "esri/views/MapView",
             "esri/WebMap"
@@ -35,7 +44,7 @@ export default class Map extends React.PureComponent {
             this.mapView = new MapView({
                 map: new WebMap({
                     portalItem: { 
-                        id: config.AGOL_ITEM_ID_WEB_MAP
+                        id: webMapId
                     }
                 }),
                 container: config.CONTAINER_ID,
@@ -73,6 +82,96 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     }
 
+    initForecastPositionLayer(){
+
+        const layerUrl = this.props.isDemoMode ? AppConfig.demo.forecast_positions_layer_url : AppConfig.production.forecast_positions_layer_url;
+
+        loadModules([
+            "esri/layers/FeatureLayer"
+        ]).then(([
+            FeatureLayer
+        ])=>{
+
+            const renderer = this.getRendererForForecastPositionLayer();
+
+            const layer = new FeatureLayer({
+                id: config.FORECAST_POSITION_LAYERID,
+                url: layerUrl,
+                renderer
+            });
+
+            this.mapView.map.add(layer);
+
+        }).catch(err=>console.error(err));
+    }
+
+    getRendererForForecastPositionLayer(){
+        const size = 32;
+
+        const icons = [
+            TropicalDepressionIcon,
+            TropicalStormIcon,
+            Hurricane1Icon,
+            Hurricane2Icon,
+            Hurricane3Icon,
+            Hurricane4Icon,
+            Hurricane5Icon
+        ];
+
+        const symbols = icons.map(icon=>{
+            return {
+                type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                url: icon,
+                width: size + "px",
+                height: size + "px"
+            };
+        });
+
+        const renderer = {
+            type: "class-breaks", // autocasts as new ClassBreaksRenderer()
+            field: "MAXWIND",
+            classBreakInfos: [
+                {
+                    minValue: 0,
+                    maxValue: 33,
+                    symbol: symbols[0]
+                },
+                {
+                    minValue: 33.0000000001,
+                    maxValue: 63,
+                    symbol: symbols[1]
+                },
+                {
+                    minValue: 63.0000000001,
+                    maxValue: 82,
+                    symbol: symbols[2]
+                },
+                {
+                    minValue: 82.0000000001,
+                    maxValue: 95,
+                    symbol: symbols[3]
+                },
+                {
+                    minValue: 95.0000000001,
+                    maxValue: 112,
+                    symbol: symbols[4]
+                },
+                {
+                    minValue: 112.0000000001,
+                    maxValue: 136,
+                    symbol: symbols[5]
+                },
+                {
+                    minValue: 136.0000000001,
+                    maxValue: 999,
+                    symbol: symbols[6]
+                }
+            ]
+        };
+
+        return renderer;
+    }
+
     initForecastPostionPreviewLayer(){
         loadModules([
             "esri/layers/GraphicsLayer"
@@ -96,6 +195,8 @@ export default class Map extends React.PureComponent {
         });
 
         this.initAddressLocator();
+
+        this.initForecastPositionLayer();
 
         this.initForecastPostionPreviewLayer();
 

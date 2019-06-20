@@ -4,13 +4,20 @@ import axios from 'axios';
 import { format as formatDate } from 'date-fns';
 import { capitalizeFirstLetter } from '../utils/Helper'
 import { getLocalizedTropicalCycloneClassifications } from '../utils/localizeTropicalCyclone';
+import { urlFns } from 'helper-toolkit-ts';
+import AppConfig from '../data/AppConfig';
 
-const URL_HURRICANE_LAYER = 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Active_Hurricanes_v1/FeatureServer';
+const searchParams = urlFns.parseQuery();
+const isDemoMode = searchParams.demoMode ? true : false;
+
+// const URL_HURRICANE_LAYER = 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Active_Hurricanes_v1/FeatureServer';
+const URL_FORECAST_POSITION = isDemoMode ? AppConfig.demo.forecast_positions_layer_url : AppConfig.production.forecast_positions_layer_url;
+const URL_FORECAST_ERROR_CONE = isDemoMode ? AppConfig.demo.forecast_positions_layer_url : AppConfig.production.forecast_positions_layer_url;
 
 const config = {
 
     "forecast-position": {
-        url: URL_HURRICANE_LAYER + '/0',
+        url: URL_FORECAST_POSITION,
         fields: {
             stormName: 'STORMNAME',
             stormType: 'TCDVLP',
@@ -22,7 +29,7 @@ const config = {
     },
 
     "forecast-error-cone": {
-        url: URL_HURRICANE_LAYER + '/4',
+        url: URL_FORECAST_ERROR_CONE,
         fields: {
             stormName: 'STORMNAME',
         }

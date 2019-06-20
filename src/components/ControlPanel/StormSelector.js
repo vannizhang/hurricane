@@ -54,7 +54,7 @@ class StormSelector extends React.PureComponent {
     }
 
     render(){
-        console.log(this.props);
+        // console.log(this.props);
 
         const dropdownMenuOptions = this.getDropdownMenuOptions(this.props.data);
         return (            
@@ -67,7 +67,7 @@ class StormSelector extends React.PureComponent {
                     {dropdownMenuOptions}
                 </nav>
             </div>
-        )
+        );
     }
 }
 
