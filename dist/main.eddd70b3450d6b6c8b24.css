@@ -20,7 +20,7 @@ body,
   top: 0;
   right: 0;
   width: 395px;
-  max-height: calc(100% - 15px);
+  height: 100%;
   overflow-y: auto;
   background: rgba(0, 48, 77, 0.75);
   color: #fff;
