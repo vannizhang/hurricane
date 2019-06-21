@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const config = {
-    requestUrl: 'http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode'
+    requestUrl: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode'
 }
 
 const reverseGeocode = ({
