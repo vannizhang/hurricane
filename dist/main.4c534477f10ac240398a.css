@@ -151,6 +151,10 @@ body,
     fill: none;
     stroke: rgba(255, 255, 255, 0.3);
     shape-rendering: crispEdges; }
+  #infoPanelDiv hr.info-panel-divider {
+    margin: .75rem 0;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); }
 
 .precip-chart-bar {
   fill: #C5E7F2;
