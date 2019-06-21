@@ -204,7 +204,7 @@ const HurricaneData = function(){
 
         const localDate = new Date(Date.UTC(year, month, day, hourIn24Format));
 
-        const formattedDate = formatDate(localDate, 'MMM D h A');
+        const formattedDate = formatDate(localDate, 'MMM DD h A');
 
         return {
             localDate,
