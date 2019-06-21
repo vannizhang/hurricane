@@ -4,7 +4,8 @@ import * as calcite from 'calcite-web';
 import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
-import Colors from '../../data/Colors';
+// import Colors from '../../data/Colors';
+import { reverseGeocode } from '../../utils/reverseGeocode';
 
 import { urlFns } from 'helper-toolkit-ts';
 
@@ -41,7 +42,8 @@ class App extends React.Component {
             languageData: [],
             vehicleData: null,
             disabilityData: null,
-            internetData: null
+            internetData: null,
+            locationName: ''
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -152,6 +154,17 @@ class App extends React.Component {
         });
     }
 
+    updateLocationName(addressData=null){
+
+        const newLocationName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
+
+        this.setState({
+            locationName: newLocationName
+        }, ()=>{
+            // console.log(this.state.locationName)
+        });
+    }
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         try {
@@ -187,6 +200,16 @@ class App extends React.Component {
     
             if(data['Internet Connectivity']){
                 this.updateInternetData(data['Internet Connectivity'][0]);
+            }
+
+            const reverseGeocodeResult = await reverseGeocode({
+                lon: mapPoint.longitude,
+                lat: mapPoint.latitude
+            });
+            // console.log('reverseGeocodeResult', reverseGeocodeResult);
+
+            if(reverseGeocodeResult && reverseGeocodeResult.address){
+                this.updateLocationName(reverseGeocodeResult.address);
             }
 
         } catch(err){
@@ -258,6 +281,7 @@ class App extends React.Component {
                         />
 
                         <InfoPanel 
+                            locationName={this.state.locationName}
                             isVisible={this.state.isInfoPanelVisible}
                             precipData={this.state.precipData}
                             windGustData={this.state.windGustData}

@@ -57,4 +57,10 @@
         stroke: rgba(255,255,255,.3);
         shape-rendering: crispEdges;
     }
+
+    hr.info-panel-divider{
+        margin: .75rem 0;
+        border: none;
+        border-top: 1px solid rgba(255,255,255,.2);
+    }
 }

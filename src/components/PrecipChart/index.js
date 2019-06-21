@@ -416,7 +416,7 @@ export default function PrecipChart({
                 toggleRefLine(false);
             }
 
-            console.log(tooltipData);
+            // console.log(tooltipData);
         }
     }, [verticalRefLineXPos, tooltipData]);
 
