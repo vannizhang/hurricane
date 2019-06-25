@@ -184,7 +184,9 @@ export default class Map extends React.PureComponent {
                 id: config.FORECAST_POSITION_PREVIEW_LAYERID
             });
 
-            this.mapView.map.add(layer);
+            const zIndex = this.mapView.map.layers.length - 1;
+
+            this.mapView.map.add(layer, zIndex);
 
         }).catch(err=>console.error(err));
     }
@@ -196,9 +198,9 @@ export default class Map extends React.PureComponent {
 
         this.initAddressLocator();
 
-        this.initForecastPositionLayer();
-
         this.initForecastPostionPreviewLayer();
+
+        this.initForecastPositionLayer();
 
         if(this.props.onReady){
             this.props.onReady();
@@ -225,8 +227,8 @@ export default class Map extends React.PureComponent {
                 color: colors.pinDrop,
                 size: '15px',
                 outline: { // autocasts as new SimpleLineSymbol()
-                    color: [255, 255, 255, .7],
-                    width: 2
+                    color: '#59450E',
+                    width: 1.5
                 }
             };
     
@@ -271,42 +273,42 @@ export default class Map extends React.PureComponent {
 
         if(targetLayer){
             targetLayer.removeAll();
+        }
 
-            if(this.props.forecastPositionPreview){
+        if(this.props.forecastPositionPreview){
 
-                loadModules([
-                    "esri/Graphic",
-                    "esri/geometry/Point"
-                ]).then(([
-                    Graphic,
-                    Point
-                ])=>{
+            loadModules([
+                "esri/Graphic",
+                "esri/geometry/Point"
+            ]).then(([
+                Graphic,
+                Point
+            ])=>{
+
+                const symbol = {
+                    type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                    url: forecastPositionPreviewSymbol,
+                    width: "64px",
+                    height: "64px"
+                };
+
+                const geometry = new Point({
+                    x: this.props.forecastPositionPreview.geometry.x,
+                    y: this.props.forecastPositionPreview.geometry.y,
+                    spatialReference: {
+                        latestWkid: 4326,
+                        wkid: 4326
+                    },
+                });
     
-                    const symbol = {
-                        type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
-                        url: forecastPositionPreviewSymbol,
-                        width: "64px",
-                        height: "64px"
-                    };
+                const point = new Graphic({
+                    geometry,
+                    symbol
+                });
     
-                    const geometry = new Point({
-                        x: this.props.forecastPositionPreview.geometry.x,
-                        y: this.props.forecastPositionPreview.geometry.y,
-                        spatialReference: {
-                            latestWkid: 4326,
-                            wkid: 4326
-                        },
-                    });
-        
-                    const point = new Graphic({
-                        geometry,
-                        symbol
-                    });
-        
-                    targetLayer.add(point);
-        
-                }).catch(err=>console.error(err));
-            }
+                targetLayer.add(point);
+    
+            }).catch(err=>console.error(err));
         }
         
     };
@@ -320,7 +322,10 @@ export default class Map extends React.PureComponent {
         ])=>{
             
             const activeStormExtent = new Extent(this.props.activeStormExtent);
-            this.mapView.goTo(activeStormExtent);
+            this.mapView.goTo({
+                target: activeStormExtent,
+                zoom: 6
+            });
 
         }).catch(err=>console.error(err));
     };
