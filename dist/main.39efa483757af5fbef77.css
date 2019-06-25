@@ -157,18 +157,18 @@ body,
     border-top: 1px solid rgba(255, 255, 255, 0.2); }
 
 .precip-chart-bar {
-  fill: #C5E7F2;
+  fill: #1F5D7F;
   pointer-events: none; }
 
 .precip-chart-line {
   fill: none;
-  stroke: #EC2228;
+  stroke: #89D4E9;
   stroke-width: 2px;
   pointer-events: none; }
 
 #windChartDiv .wind-chart-line {
   fill: none;
-  stroke: #C5E7F2;
+  stroke: #C4E6F1;
   stroke-width: 2px;
   pointer-events: none; }
 
