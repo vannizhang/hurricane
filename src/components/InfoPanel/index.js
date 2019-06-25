@@ -149,8 +149,8 @@ class InfoPanel extends React.Component {
                             </div>
                             <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
-                                    // value={this.props.vehicleData ? this.props.vehicleData.fieldValue.toFixed(1) + '%' : ''}
-                                    // label={this.props.vehicleData ? this.props.vehicleData.fieldLabel : ''}
+                                    value={this.props.mobilePhoneData ? this.props.mobilePhoneData.fieldValue.toFixed(1) + '%' : ''}
+                                    label={this.props.mobilePhoneData ? this.props.mobilePhoneData.fieldLabel : ''}
                                 />
                             </div>
                         </div>

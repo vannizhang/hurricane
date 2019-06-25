@@ -43,6 +43,7 @@ class App extends React.Component {
             vehicleData: null,
             disabilityData: null,
             internetData: null,
+            mobilePhoneData: null,
             locationName: ''
         };
 
@@ -80,39 +81,45 @@ class App extends React.Component {
     };
 
     updatePopulationData(data=[]){
-        console.log('calling populationData', data);
+        // console.log('calling populationData', data);
         this.setState({
             populationData: data
         });
     };
 
     updateLanguageData(data=[]){
-        console.log('calling languageData', data);
+        // console.log('calling languageData', data);
         this.setState({
             languageData: data
         });
     };
 
     updateVehicleData(data=null){
-        console.log('calling updateVehicleData', data);
+        // console.log('calling updateVehicleData', data);
         this.setState({
             vehicleData: data
         });
     };
 
     updateDisabilityData(data=null){
-        console.log('calling updateDisabilityData', data);
+        // console.log('calling updateDisabilityData', data);
         this.setState({
             disabilityData: data
         });
     };
 
     updateInternetData(data=null){
-        console.log('calling updateInternetData', data);
+        // console.log('calling updateInternetData', data);
         this.setState({
             internetData: data
         });
     };
+
+    updateMobilePhoneData(data=null){
+        this.setState({
+            mobilePhoneData: data
+        });
+    }
 
     updateIsInfoPanelVisible(isVisible=false){
         this.setState({
@@ -200,6 +207,10 @@ class App extends React.Component {
     
             if(data['Internet Connectivity']){
                 this.updateInternetData(data['Internet Connectivity'][0]);
+            }
+
+            if(data['Mobile Phone Availability']){
+                this.updateMobilePhoneData(data['Mobile Phone Availability'][1]);
             }
 
             const reverseGeocodeResult = await reverseGeocode({
@@ -290,6 +301,7 @@ class App extends React.Component {
                             vehicleData={this.state.vehicleData}
                             disabilityData={this.state.disabilityData}
                             internetData={this.state.internetData}
+                            mobilePhoneData={this.state.mobilePhoneData}
                         />
                     </div>
 

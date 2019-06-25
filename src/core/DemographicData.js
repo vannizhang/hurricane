@@ -79,17 +79,18 @@ const config = {
                     label: '+ 65 yrs'
                 }
             ]
+        },
+        {
+            title: 'Mobile Phone Availability',
+            url: 'https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/Household_Demographics_HurricaneAware/FeatureServer/0',
+            fields: [
+                {
+                    name: 'E_HHCellPer',
+                    alias: 'Has Mobile Phone',
+                    label: 'Has Mobile Phone'
+                }
+            ]
         }
-        // {
-        //     title: 'Cell Phone',
-        //     url: '',
-        //     fields: [
-        //         {
-        //             name: '',
-        //             alias: ''
-        //         }
-        //     ]
-        // }
         // {
         //     title: '',
         //     url: '',
@@ -209,6 +210,17 @@ export default function(){
             };
 
             beautifiedData['Disability Status'].push(pctHasDisability);
+        }
+
+        if(beautifiedData['Mobile Phone Availability']){
+
+            const pctHasNoMobilePhone= {
+                fieldAlias: 'Percent of Household without Mobile Phone',
+                fieldLabel: 'No Mobile Phone',
+                fieldValue: (100 - beautifiedData['Mobile Phone Availability'][0].fieldValue)
+            };
+
+            beautifiedData['Mobile Phone Availability'].push(pctHasNoMobilePhone);
         }
 
         return beautifiedData;
