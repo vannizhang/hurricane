@@ -44,7 +44,9 @@ class App extends React.Component {
             disabilityData: null,
             internetData: null,
             mobilePhoneData: null,
-            locationName: ''
+            locationName: '',
+
+            isSidebarMinimized: false
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -56,6 +58,7 @@ class App extends React.Component {
         this.stormListOnClick = this.stormListOnClick.bind(this);
         this.stormListOnMouseEnter = this.stormListOnMouseEnter.bind(this);
         this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
 
     };
 
@@ -258,6 +261,12 @@ class App extends React.Component {
         this.updateForecastPositionPreview();
     }
 
+    toggleSidebar(){
+        this.setState({
+            isSidebarMinimized: !this.state.isSidebarMinimized
+        });
+    }
+
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
@@ -278,8 +287,13 @@ class App extends React.Component {
                     isDemoMode={this.props.isDemoMode}
                 />
 
-                <div className='side-container'>
-                    <div style={{ padding: '1rem' }}>
+                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`}>
+
+                    <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
+                        <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
+                    </div>
+
+                    <div className='content-wrap' style={{ padding: '1rem' }}>
                         <ControlPanel 
                             stormSelectorOnChange={this.stormSelectorOnChange}
                             stormListOnClick={this.stormListOnClick}

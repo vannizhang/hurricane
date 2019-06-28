@@ -26,6 +26,13 @@ body,
   color: #fff;
   z-index: 5; }
 
+.side-container.is-minimized {
+  top: unset;
+  bottom: 0;
+  height: auto; }
+  .side-container.is-minimized .content-wrap {
+    display: none; }
+
 #chartDiv {
   position: absolute;
   top: 1rem;
