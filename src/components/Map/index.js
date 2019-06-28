@@ -76,8 +76,19 @@ export default class Map extends React.PureComponent {
 
             const searchWidget = new Search({
                 view: this.mapView,
+                resultGraphicEnabled: false,
+                popupEnabled: false,
                 container: 'addressLocatorDiv'
             });
+
+            searchWidget.on('search-complete', evt=>{
+                // make the search equvelent to map click
+                if(searchWidget.results[0] && searchWidget.results[0].results[0]){
+                    // console.log(searchWidget.results[0].results[0].feature.geometry);
+                    const searchResultGeom = searchWidget.results[0].results[0].feature.geometry;
+                    this.mapOnClickHandler(searchResultGeom);
+                }
+            })
 
         }).catch(err=>console.error(err));
     }
@@ -208,9 +219,7 @@ export default class Map extends React.PureComponent {
     };
 
     mapOnClickHandler(mapPoint=null){
-
         this.addPointToMap(mapPoint);
-
         this.props.onClick(mapPoint);
     };
 
