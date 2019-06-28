@@ -192,3 +192,18 @@ body,
     .horizontal-legend .legend-item .legend-label {
       font-size: .8rem; }
 
+.pct-bar-chart-container .pct-bar-labels {
+  display: flex; }
+  .pct-bar-chart-container .pct-bar-labels .pct-bar-label {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 50px; }
+
+.pct-bar-chart-container .pct-bar-wrap {
+  position: relative;
+  background: #00a5a3;
+  width: 100%; }
+  .pct-bar-chart-container .pct-bar-wrap .pct-bar-element {
+    width: 70%;
+    background: #025175; }
+
