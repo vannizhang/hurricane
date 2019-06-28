@@ -48,6 +48,8 @@ export default function DonutChart({
         const arc = d3.arc()
             .innerRadius(radius * thicknessRatio)
             .outerRadius(radius);
+            // .startAngle(0)
+            // .endAngle(Math.PI / 2);
 
         const pie = d3.pie()
             .value(function(d) { return d[fieldName]; })

@@ -7,6 +7,7 @@ import WindChart from '../WindChart';
 import DonutChart from '../DonutChart';
 import TwoLineLabel from './TwoLineLabel';
 import HorizontalLegend from '../HorizontalLegend';
+import PercentBarChart from '../PercentBarChart';
 
 const styles = {
     itemWrap: { 
@@ -131,7 +132,32 @@ class InfoPanel extends React.Component {
                             <h5 className='avenir-light font-size-0'>COMMUNICATION</h5>
                         </div>
 
-                        <div className='item-content flex-container'>
+                        <div className='item-content'>
+
+                            <PercentBarChart 
+                                key={'PercentBarChart-1'} 
+                                labelOnLeft={this.props.languageData[0] ? this.props.languageData[0].fieldLabel : ''}
+                                labelOnRight={this.props.languageData[1] ? this.props.languageData[1].fieldLabel : ''}
+                                value={this.props.languageData[0] ? this.props.languageData[0].fieldValue : 0}
+                            />
+
+                            <PercentBarChart 
+                                key={'PercentBarChart-2'} 
+                                labelOnLeft={this.props.mobilePhoneData ? 'Has mobile phone' : ''}
+                                labelOnRight={this.props.mobilePhoneData ? this.props.mobilePhoneData.fieldLabel : ''}
+                                value={this.props.mobilePhoneData? (100 - this.props.mobilePhoneData.fieldValue) : 0}
+                            />
+
+                            <PercentBarChart 
+                                key={'PercentBarChart-3'} 
+                                labelOnLeft={this.props.internetData ? 'Has internet' : ''}
+                                labelOnRight={this.props.internetData ? this.props.internetData.fieldLabel : ''}
+                                value={this.props.internetData? (100 - this.props.internetData.fieldValue) : 0}
+                            />
+
+                        </div>
+
+                        {/* <div className='item-content flex-container'>
                             <div className='fixed-item text-center' style={styles.sideLabel}>
                                 <TwoLineLabel 
                                     value={this.props.internetData ? this.props.internetData.fieldValue.toFixed(1) + '%' : ''}
@@ -166,7 +192,7 @@ class InfoPanel extends React.Component {
                                     })
                                 }
                             />
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

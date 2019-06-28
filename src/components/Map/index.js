@@ -275,7 +275,7 @@ export default class Map extends React.PureComponent {
             targetLayer.removeAll();
         }
 
-        if(this.props.forecastPositionPreview){
+        if(this.props.forecastPositionPreview && targetLayer){
 
             loadModules([
                 "esri/Graphic",

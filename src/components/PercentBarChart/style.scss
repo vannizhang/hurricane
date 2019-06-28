@@ -1,0 +1,25 @@
+.pct-bar-chart-container {
+
+    .pct-bar-labels {
+        display: flex;
+
+        .pct-bar-label{
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 50px;
+        }
+    }
+    
+    .pct-bar-wrap{
+        position: relative;
+        background: #00a5a3;
+        width: 100%;
+
+        .pct-bar-element {
+            width: 70%;
+            // height: 30px;
+            background: #025175;
+        }
+    }
+
+}

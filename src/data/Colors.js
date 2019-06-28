@@ -5,5 +5,6 @@ export default {
     '18-64 yrs': '#166B8C',
     '+ 65 yrs': '#011126',
     'pinDrop': '#F2E643',
-    'sidebar': 'rgba(0,48,77,.75)'
+    'sidebar': 'rgba(0,48,77,.75)',
+    'chartLabelText': 'rgba(255,255,255,.8)'
 }

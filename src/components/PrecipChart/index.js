@@ -40,7 +40,7 @@ export default function PrecipChart({
         // console.log('initSvg');
 
         const container = containerDivRef.current;
-        const margin = {top: 5, right: 10, bottom: 20, left: 30};
+        const margin = {top: 5, right: 10, bottom: 20, left: 40};
 
         const width = container.offsetWidth - margin.left - margin.right;
         setWidth(width);
@@ -93,7 +93,7 @@ export default function PrecipChart({
 
         axis.x = d3.axisBottom().scale(scales.x).tickFormat(d3.timeFormat("%a %m/%d"));
 
-        axis.y = d3.axisLeft().scale(scales.y).ticks(5);
+        axis.y = d3.axisLeft().scale(scales.y).ticks(5).tickFormat(d=>d + ' in');
 
         // setAxis(axis);
         return axis;
