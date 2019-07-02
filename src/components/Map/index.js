@@ -122,7 +122,8 @@ export default class Map extends React.PureComponent {
                 id: config.FORECAST_POSITION_LAYERID,
                 url: layerUrl,
                 renderer,
-                labelingInfo: [labelClass]
+                labelsVisible:false
+                // labelingInfo: [labelClass]
             });
 
             this.mapView.map.add(layer);
@@ -270,7 +271,7 @@ export default class Map extends React.PureComponent {
 
             const markerSymbol = {
                 type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-                color: colors.pinDrop,
+                color: 'white',
                 size: '12px',
                 outline: { // autocasts as new SimpleLineSymbol()
                     color: [255, 242, 87, .5],
