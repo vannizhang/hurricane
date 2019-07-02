@@ -20,11 +20,15 @@ class StormInfoWindowListItem extends React.PureComponent {
     }
 
     render(){
+        const dateLabelParts = this.props.data.attributes.dateLabel.split(' ');
+
         return (   
             <div className='storm-info-list-item' onClick={this.onClickHandler} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.props.onMouseLeave}>
 
                 <div className='time-info-div'>
-                    <span className='font-size--3'>{this.props.data.attributes.dateLabel}</span>
+                    <span className='font-size--3'>{`${dateLabelParts[0]} ${dateLabelParts[1]}`}</span>
+                    <br></br>
+                    <span className='font-size--3'>{`${dateLabelParts[2]} ${dateLabelParts[3]}`}</span>
                 </div>
 
                 <div className='storm-info-div padding-left-1 padding-leader-quarter padding-trailer-quarter'>
@@ -38,7 +42,7 @@ class StormInfoWindowListItem extends React.PureComponent {
 
                     <div className='storm-info-additional font-size--3'>
                         <div>
-                            <span className='info-type'>maximum wind speed:</span>
+                            <span className='info-type'>Maximum Wind Speed:</span>
                             <span className='info-value'>{this.props.data.attributes.maxWind} MPH</span>
                         </div>
                         {/* <div>

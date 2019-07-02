@@ -98,17 +98,31 @@ export default class Map extends React.PureComponent {
         const layerUrl = this.props.isDemoMode ? AppConfig.demo.forecast_positions_layer_url : AppConfig.production.forecast_positions_layer_url;
 
         loadModules([
-            "esri/layers/FeatureLayer"
+            "esri/layers/FeatureLayer",
+            "esri/layers/support/LabelClass"
         ]).then(([
-            FeatureLayer
+            FeatureLayer,
+            LabelClass
         ])=>{
 
             const renderer = this.getRendererForForecastPositionLayer();
 
+            const labelClass = new LabelClass({
+                labelExpressionInfo: { expression: "$feature.DATELBL" },
+                labelPlacement: 'above-center',
+                symbol: {
+                    type: "text",  // autocasts as new TextSymbol()
+                    color: "white",
+                    haloSize: 2,
+                    haloColor: "#333"
+                }
+            });
+
             const layer = new FeatureLayer({
                 id: config.FORECAST_POSITION_LAYERID,
                 url: layerUrl,
-                renderer
+                renderer,
+                labelingInfo: [labelClass]
             });
 
             this.mapView.map.add(layer);
@@ -116,8 +130,8 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     }
 
-    getRendererForForecastPositionLayer(){
-        const size = 32;
+    getRendererForForecastPositionLayer(mapScale=0){
+        const size = mapScale && mapScale > 73957190 ? 20 : 32;
 
         const icons = [
             TropicalDepressionIcon,
@@ -207,6 +221,14 @@ export default class Map extends React.PureComponent {
             this.mapOnClickHandler(evt.mapPoint);
         });
 
+        this.mapView.map.layers.forEach(layer=>{
+            // console.log(layer);
+            const isObservedTrack = layer.title.includes('Observed Track');
+            if(layer.labelsVisible && isObservedTrack){
+                layer.labelsVisible = false;
+            }
+        })
+
         this.initAddressLocator();
 
         this.initForecastPostionPreviewLayer();
@@ -216,6 +238,11 @@ export default class Map extends React.PureComponent {
         if(this.props.onReady){
             this.props.onReady();
         }
+
+        this.mapView.watch("scale", function(newValue) {
+            // layer.renderer = newValue <= 72224 ? simpleRenderer : heatmapRenderer;
+            console.log(newValue);
+        });
     };
 
     mapOnClickHandler(mapPoint=null){
@@ -234,10 +261,10 @@ export default class Map extends React.PureComponent {
             const markerSymbol = {
                 type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
                 color: colors.pinDrop,
-                size: '15px',
+                size: '12px',
                 outline: { // autocasts as new SimpleLineSymbol()
-                    color: '#59450E',
-                    width: 1.5
+                    color: [255, 242, 87, .5],
+                    width: 10
                 }
             };
     
@@ -294,11 +321,21 @@ export default class Map extends React.PureComponent {
                 Point
             ])=>{
 
+                // const symbol = {
+                //     type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                //     url: forecastPositionPreviewSymbol,
+                //     width: "64px",
+                //     height: "64px"
+                // };
+
                 const symbol = {
-                    type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
-                    url: forecastPositionPreviewSymbol,
-                    width: "64px",
-                    height: "64px"
+                    type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+                    color: [255, 255, 255, .5],
+                    size: '40px',
+                    outline: { // autocasts as new SimpleLineSymbol()
+                        color: [0, 0, 0, 0],
+                        width: 0
+                    }
                 };
 
                 const geometry = new Point({

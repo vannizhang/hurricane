@@ -9,6 +9,8 @@ import TwoLineLabel from './TwoLineLabel';
 import HorizontalLegend from '../HorizontalLegend';
 import PercentBarChart from '../PercentBarChart';
 
+import { numberFns } from 'helper-toolkit-ts';
+
 const styles = {
     itemWrap: { 
         // height: '220px', 
@@ -97,7 +99,7 @@ class InfoPanel extends React.Component {
                                     isCenterTextVisible={true}
                                     shouldShowValueInCenterWhenMouseOver={true}
                                     data={this.props.populationData.filter(d=>{ return d.fieldAlias !== 'Total Population' })}
-                                    centerTextDefaultValue={this.props.populationData[0] ? this.props.populationData[0].fieldValue : ''}
+                                    centerTextDefaultValue={this.props.populationData[0] ? numberFns.numberWithCommas(this.props.populationData[0].fieldValue) : ''}
                                 />
                             </div>
                             <div className='fixed-item text-center' style={styles.sideLabel}>
