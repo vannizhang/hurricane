@@ -93,7 +93,7 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     }
 
-    initForecastPositionLayer(){
+    initForecastPositionLayer(mapScale=0){
 
         const layerUrl = this.props.isDemoMode ? AppConfig.demo.forecast_positions_layer_url : AppConfig.production.forecast_positions_layer_url;
 
@@ -105,7 +105,7 @@ export default class Map extends React.PureComponent {
             LabelClass
         ])=>{
 
-            const renderer = this.getRendererForForecastPositionLayer();
+            const renderer = this.getRendererForForecastPositionLayer(mapScale);
 
             const labelClass = new LabelClass({
                 labelExpressionInfo: { expression: "$feature.DATELBL" },
@@ -130,8 +130,17 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     }
 
+    updateForecastPositionRendererByScale(mapScale=0){
+        const forecastPositionLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_LAYERID);
+
+        if(forecastPositionLayer){
+            const newRenderer = this.getRendererForForecastPositionLayer(mapScale);
+            forecastPositionLayer.renderer = newRenderer;
+        }
+    }
+
     getRendererForForecastPositionLayer(mapScale=0){
-        const size = mapScale && mapScale > 73957190 ? 20 : 32;
+        const size = mapScale && mapScale > 73957190 ? 24 : 32;
 
         const icons = [
             TropicalDepressionIcon,
@@ -233,15 +242,16 @@ export default class Map extends React.PureComponent {
 
         this.initForecastPostionPreviewLayer();
 
-        this.initForecastPositionLayer();
+        this.initForecastPositionLayer(this.mapView.scale);
 
         if(this.props.onReady){
             this.props.onReady();
         }
 
-        this.mapView.watch("scale", function(newValue) {
+        this.mapView.watch("scale", (newValue)=>{
             // layer.renderer = newValue <= 72224 ? simpleRenderer : heatmapRenderer;
-            console.log(newValue);
+            // console.log(newValue);
+            this.updateForecastPositionRendererByScale(newValue)
         });
     };
 
