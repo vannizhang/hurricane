@@ -22,7 +22,7 @@ body,
   width: 395px;
   height: 100%;
   overflow-y: auto;
-  background: rgba(0, 48, 77, 0.75);
+  background: rgba(0, 48, 77, 0.9);
   color: #fff;
   z-index: 5; }
 
@@ -43,7 +43,7 @@ body,
     fill: #efefef; }
 
 .modal-content {
-  background: rgba(0, 48, 77, 0.75);
+  background: rgba(0, 48, 77, 0.9);
   color: #efefef; }
 
 .cursor-pointer {
@@ -52,6 +52,17 @@ body,
 @media (max-width: 480px) {
   .side-container {
     width: 100%; } }
+
+.storm-info-header {
+  display: flex; }
+  .storm-info-header .is-flexy {
+    flex-grow: 1;
+    flex-shrink: 0; }
+  .storm-info-header .breadcrumbs .crumb {
+    color: #ccc;
+    font-size: .75rem;
+    cursor: pointer;
+    line-height: 24px; }
 
 .storm-info-list-item {
   display: flex;
