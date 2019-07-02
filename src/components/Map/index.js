@@ -338,10 +338,14 @@ export default class Map extends React.PureComponent {
                 //     height: "64px"
                 // };
 
+                const mapScale = this.mapView.scale;
+
+                const size = mapScale && mapScale > 73957190 ? 30 : 40;
+
                 const symbol = {
                     type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
                     color: [255, 255, 255, .5],
-                    size: '40px',
+                    size: size + 'px',
                     outline: { // autocasts as new SimpleLineSymbol()
                         color: [0, 0, 0, 0],
                         width: 0
