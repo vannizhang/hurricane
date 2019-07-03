@@ -68,6 +68,7 @@ const HurricaneData = function(){
                 
                 const stormType = d.attributes[fieldNameStormType];
                 const dateLabel = d.attributes[fieldNameDateLabel];
+                // max wind in miles
                 const maxWind = (d.attributes[fieldNameMaxWind] * 1.15078).toFixed(0);
                 const gust = (d.attributes[fieldNameGust] * 1.15078).toFixed(0);
                 const basin = d.attributes[fieldNameBasin];

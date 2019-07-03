@@ -169,36 +169,36 @@ export default class Map extends React.PureComponent {
             classBreakInfos: [
                 {
                     minValue: 0,
-                    maxValue: 33,
+                    maxValue: 33/1.15078, // covert val to miles
                     symbol: symbols[0]
                 },
                 {
-                    minValue: 33.0000000001,
-                    maxValue: 63,
+                    minValue: 33.1/1.15078,
+                    maxValue: 63/1.15078,
                     symbol: symbols[1]
                 },
                 {
-                    minValue: 63.0000000001,
-                    maxValue: 82,
+                    minValue: 63.1/1.15078,
+                    maxValue: 82/1.15078,
                     symbol: symbols[2]
                 },
                 {
-                    minValue: 82.0000000001,
-                    maxValue: 95,
+                    minValue: 82.1/1.15078,
+                    maxValue: 95/1.15078,
                     symbol: symbols[3]
                 },
                 {
-                    minValue: 95.0000000001,
-                    maxValue: 112,
+                    minValue: 95.1/1.15078,
+                    maxValue: 112/1.15078,
                     symbol: symbols[4]
                 },
                 {
-                    minValue: 112.0000000001,
-                    maxValue: 136,
+                    minValue: 112.1/1.15078,
+                    maxValue: 136/1.15078,
                     symbol: symbols[5]
                 },
                 {
-                    minValue: 136.0000000001,
+                    minValue: 136.1/1.15078,
                     maxValue: 999,
                     symbol: symbols[6]
                 }
