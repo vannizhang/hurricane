@@ -12,13 +12,17 @@
     
     .pct-bar-wrap{
         position: relative;
-        background: #00a5a3;
+        background: #124566;
         width: 100%;
 
         .pct-bar-element {
-            width: 70%;
+            width: 0%;
             // height: 30px;
-            background: #025175;
+            background: #3DE0F2;
+        }
+
+        .pct-bar-value-text{
+            color: #333;
         }
     }
 
