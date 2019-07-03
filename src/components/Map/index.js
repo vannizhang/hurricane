@@ -2,8 +2,9 @@ import React from 'react';
 import { loadCss, loadModules } from 'esri-loader';
 
 import AppConfig from '../../data/AppConfig';
-import colors from '../../data/Colors';
-import forecastPositionPreviewSymbol from '../../static/Symbology_PNG_SVG/PNG/LightBlueOrb.png';
+// import colors from '../../data/Colors';
+// import forecastPositionPreviewSymbol from '../../static/Symbology_PNG_SVG/PNG/LightBlueOrb.png';
+import YellowDot from '../../static/YellowDot.png';
 
 import TropicalDepressionIcon from '../../static/Symbology_PNG_SVG/32x32/b_TropicalDepression.png';
 import TropicalStormIcon from '../../static/Symbology_PNG_SVG/32x32/c_TropicalStorm.png';
@@ -99,24 +100,24 @@ export default class Map extends React.PureComponent {
 
         loadModules([
             "esri/layers/FeatureLayer",
-            "esri/layers/support/LabelClass"
+            // "esri/layers/support/LabelClass"
         ]).then(([
             FeatureLayer,
-            LabelClass
+            // LabelClass
         ])=>{
 
             const renderer = this.getRendererForForecastPositionLayer(mapScale);
 
-            const labelClass = new LabelClass({
-                labelExpressionInfo: { expression: "$feature.DATELBL" },
-                labelPlacement: 'above-center',
-                symbol: {
-                    type: "text",  // autocasts as new TextSymbol()
-                    color: "white",
-                    haloSize: 2,
-                    haloColor: "#333"
-                }
-            });
+            // const labelClass = new LabelClass({
+            //     labelExpressionInfo: { expression: "$feature.DATELBL" },
+            //     labelPlacement: 'above-center',
+            //     symbol: {
+            //         type: "text",  // autocasts as new TextSymbol()
+            //         color: "white",
+            //         haloSize: 2,
+            //         haloColor: "#333"
+            //     }
+            // });
 
             const layer = new FeatureLayer({
                 id: config.FORECAST_POSITION_LAYERID,
@@ -269,19 +270,26 @@ export default class Map extends React.PureComponent {
             Graphic
         ])=>{
 
-            const markerSymbol = {
-                type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-                color: 'white',
-                size: '12px',
-                outline: { // autocasts as new SimpleLineSymbol()
-                    color: [255, 242, 87, .5],
-                    width: 10
-                }
+            // const markerSymbol = {
+            //     type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+            //     color: 'white',
+            //     size: '12px',
+            //     outline: { // autocasts as new SimpleLineSymbol()
+            //         color: [255, 242, 87, .5],
+            //         width: 10
+            //     }
+            // };
+
+            const pictureMarkerSymbol = {
+                type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+                url: YellowDot,
+                width: "24px",
+                height: "24px"
             };
     
             const pointGraphic = new Graphic({
                 geometry: mapPoint,
-                symbol: markerSymbol
+                symbol: pictureMarkerSymbol
             });
     
             this.mapView.graphics.removeAll();

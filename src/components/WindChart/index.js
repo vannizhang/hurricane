@@ -40,7 +40,7 @@ export default function WindChart({
     const initSvg = ()=>{
 
         const container = containerDivRef.current;
-        const margin = {top: 5, right: 20, bottom: 20, left: 80};
+        const margin = {top: 5, right: 20, bottom: 20, left: 50};
         const width = container.offsetWidth - margin.left - margin.right;
         setWidth(width);
 
@@ -290,9 +290,9 @@ export default function WindChart({
         if( tooltipData && tooltipData[fieldNameForXAxis] ){
             const formatTime = d3.timeFormat("%a %-I %p");
             const forecastTime = formatTime(tooltipData[fieldNameForXAxis]); // "June 30, 2015"
-            const label = decodeWindForce(tooltipData[fieldNameForYAxis], true);
+            // const label = decodeWindForce(tooltipData[fieldNameForYAxis], true);
 
-            tooltipContent = ( <span>{forecastTime}: {label}</span> );
+            tooltipContent = ( <span>{forecastTime}</span> );
         }
 
         return (

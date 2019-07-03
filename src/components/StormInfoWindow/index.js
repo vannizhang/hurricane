@@ -7,22 +7,22 @@ class StormInfoWindow extends React.PureComponent {
         super(props);
 
         this.state = {
-            // valide unites for wind speed: MAP | KPH
-            windSpeedUnit: 'MPH' 
+            // valide unites for wind speed: mph | km/h
+            windSpeedUnit: 'mph' 
         };
 
         this.toggleWindSpeedUnit = this.toggleWindSpeedUnit.bind(this);
     }
 
     toggleWindSpeedUnit(){
-        const newUnit = this.state.windSpeedUnit === 'MPH' ? 'KPH' : 'MPH';
+        const newUnit = this.state.windSpeedUnit === 'mph' ? 'km/h' : 'mph';
         this.setState({
             windSpeedUnit: newUnit
         });
     }
 
     getUnitSwitcher(){
-        const unites = ['MPH', 'KPH'];
+        const unites = ['mph', 'km/h'];
 
         const crumbs = unites.map((d,i)=>{
             const isActiveClass = d === this.state.windSpeedUnit ? 'is-active' : ''
