@@ -37,12 +37,12 @@ class InfoPanel extends React.Component {
                 <div className='info-panel-item-wrap' style={styles.itemWrap}>
 
                     <div className='location-info-dev trailer-1 leader-1 text-center'>
-                        <span className='avenir-light font-size-1'>Information for {this.props.locationName}</span>
+                        <span className='avenir-light font-size--0'>Information for {this.props.locationName}</span>
                     </div>
 
                     <div className='item-container'>
                         <div className='item-header'>
-                            <h5 className='avenir-light font-size-0'>PRECIPITATION</h5>
+                            <h5 className='avenir-light font-size--1'>PRECIPITATION</h5>
                         </div>
                         <div className='item-content'>
                             <PrecipChart 
@@ -60,7 +60,7 @@ class InfoPanel extends React.Component {
                 <div className='info-panel-item-wrap' style={styles.itemWrap}>
                     <div className='item-container'>
                         <div className='item-header'>
-                            <h5 className='avenir-light font-size-0'>WIND GUST</h5>
+                            <h5 className='avenir-light font-size--1'>WIND GUST</h5>
                         </div>
                         <div className='item-content'>
                             <WindChart 
@@ -79,7 +79,7 @@ class InfoPanel extends React.Component {
                     <div className='item-container'>
 
                         <div className='item-header'>
-                            <h5 className='avenir-light font-size-0'>POPULATION</h5>
+                            <h5 className='avenir-light font-size--1'>POPULATION</h5>
                         </div>
 
                         <div className='item-content flex-container'>
@@ -131,7 +131,7 @@ class InfoPanel extends React.Component {
                     <div className='item-container'>
 
                         <div className='item-header'>
-                            <h5 className='avenir-light font-size-0'>COMMUNICATION</h5>
+                            <h5 className='avenir-light font-size--1'>COMMUNICATION</h5>
                         </div>
 
                         <div className='item-content'>
