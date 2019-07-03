@@ -248,6 +248,8 @@ export default function PrecipChart({
 
     const drawBars = (data=[])=>{
 
+        console.log('precip data', data);
+
         const bars = svg.selectAll('.' + config.class_name.bar_rect);
 
         //select all bars on the graph, take them out, and exit the previous data set. 
@@ -359,9 +361,19 @@ export default function PrecipChart({
     };
 
     const getTooltipText = ()=>{
+
+        let tooltipContent = 'Hover chart to show tooltip';
+
+        if( tooltipData && tooltipData[0] && tooltipData[0][fieldNameForXAxis] ){
+            const formatTime = d3.timeFormat("%a %-I %p");
+            const forecastTime = formatTime(tooltipData[0][fieldNameForXAxis]); // "June 30, 2015"
+
+            tooltipContent = ( <span>{forecastTime}</span> );
+        }
+
         return (
             <div className='font-size--3 trailer-0 margin-right-1 text-right'>
-                Fri 11 PM: 1 inch of rain is expected, totally accumulation is 5 inch
+                <span>{tooltipContent}</span>
             </div>
         )
     };
@@ -422,7 +434,7 @@ export default function PrecipChart({
 
     return (
         <div>
-            {/* { getTooltipText() } */}
+            { getTooltipText() }
             <div id={containerID} ref={containerDivRef} style={{width: containerWidth , height: containerHeight}}></div>
         </div>
     );

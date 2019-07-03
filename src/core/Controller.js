@@ -18,7 +18,7 @@ const Controller = function(){
         weatherDataManager.init();
 
         const activeStorms = await hurricaneDataManager.fetchActiveHurricanes();
-        console.log(activeStorms);
+        // console.log(activeStorms);
 
         return {
             activeStorms
@@ -79,7 +79,7 @@ const Controller = function(){
         // };
 
         // console.log('weatherData', weatherData);
-        console.log('demographicData', demographicData);
+        // console.log('demographicData', demographicData);
 
         return {
             precip: weatherData.precip,

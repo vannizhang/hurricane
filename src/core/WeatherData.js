@@ -74,21 +74,29 @@ export default function(){
 
     const preparePrecipData = (features, timeInfo)=>{
 
-        let startTime = new Date(timeInfo.timeExtent[0]);
+        // console.log(features, timeInfo);
 
-        const startTimes = [
-            startTime.getTime()
-        ];
+        // let startTime = new Date(timeInfo.timeExtent[0]);
 
-        // the precip data covers next 72 hours with interval of 6 hours, so populate all 12 items into the start times array 
-        while (startTimes.length < 12){
-            startTime.setTime(startTime.getTime() + (6*60*60*1000));
-            startTimes.push(startTime.getTime() + 1000);
-        }
+        // const startTimes = features.map(feature=>{
+        //     return feature.attributes.fromdate
+        // });
+
+        // const startTimes = [
+        //     startTime.getTime()
+        // ];
+
+        // // the precip data covers next 72 hours with interval of 6 hours, so populate all 12 items into the start times array 
+        // while (startTimes.length < 12){
+        //     startTime.setTime(startTime.getTime() + (6*60*60*1000));
+        //     startTimes.push(startTime.getTime() + 1000);
+        // }
 
         // loop through all start time and find if the first item in features match the time  
-        return startTimes.map(t=>{
-            const data = features[0] && features[0].attributes.fromdate === t ? features[0].attributes : {};
+        return features.map(d=>{
+            const data = d.attributes;
+
+            const t = data.fromdate;
 
             const label = data.label ? data.label : '0 inches';
 
@@ -96,9 +104,9 @@ export default function(){
             const value = data.category !== undefined ? config['precipitation-layer'].category2value[data.category] : 0
 
             // remove the matched item from features
-            if(data){
-                features = features.slice(1);
-            }
+            // if(data){
+            //     features = features.slice(1);
+            // }
 
             return {
                 fromdate: t,
@@ -215,7 +223,7 @@ export default function(){
 
                 // console.log(precipData);
                 // console.log(precipAccumuData);
-                console.log(windGustData);
+                // console.log(windGustData);
 
                 resolve({
                     precip: precipData,

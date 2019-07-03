@@ -40,7 +40,7 @@ export default function WindChart({
     const initSvg = ()=>{
 
         const container = containerDivRef.current;
-        const margin = {top: 5, right: 20, bottom: 20, left: 50};
+        const margin = {top: 5, right: 20, bottom: 20, left: 55};
         const width = container.offsetWidth - margin.left - margin.right;
         setWidth(width);
 
