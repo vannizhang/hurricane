@@ -12,7 +12,7 @@ import { urlFns } from 'helper-toolkit-ts';
 // const SIDE_PANEL_WIDTH = 395;
 
 const config = {
-    SIDE_PANEL_WIDTH: 395,
+    SIDE_PANEL_WIDTH: 415,
     search_params_key: {
         storm: 'storm'
     }
@@ -287,7 +287,7 @@ class App extends React.Component {
                     isDemoMode={this.props.isDemoMode}
                 />
 
-                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`}>
+                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={{width: config.SIDE_PANEL_WIDTH}}>
 
                     <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
                         <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>

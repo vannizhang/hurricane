@@ -21,10 +21,12 @@ const config = {
         fields: {
             stormName: 'STORMNAME',
             stormType: 'TCDVLP',
-            dateLabel: 'FLDATELBL',
+            dateLabel: 'DATELBL',
+            flDateLabel: 'FLDATELBL',
             maxWind: 'MAXWIND',
             basin: 'BASIN',
-            gust: 'GUST'
+            gust: 'GUST',
+            timezone: 'TIMEZONE'
         }
     },
 
@@ -43,10 +45,12 @@ const HurricaneData = function(){
 
         const fieldNameStormName = config["forecast-position"].fields.stormName;
         const fieldNameStormType = config["forecast-position"].fields.stormType;
+        const fieldNameFlDateLabel = config["forecast-position"].fields.flDateLabel;
         const fieldNameDateLabel = config["forecast-position"].fields.dateLabel;
         const fieldNameMaxWind = config["forecast-position"].fields.maxWind;
         const fieldNameBasin= config["forecast-position"].fields.basin;
         const fieldNameGust= config["forecast-position"].fields.gust;
+        const fieldNameTimeZome = config["forecast-position"].fields.timezone;
 
         const requestUrl = config["forecast-position"].url + '/query';
 
@@ -64,28 +68,31 @@ const HurricaneData = function(){
 
             const data = features.map(d=>{
 
-                // console.log(`forecast location`, d);
+                console.log(`forecast location`, d);
                 
                 const stormType = d.attributes[fieldNameStormType];
+                const flDateLabel = d.attributes[fieldNameFlDateLabel];
                 const dateLabel = d.attributes[fieldNameDateLabel];
+                const timezone = d.attributes[fieldNameTimeZome];
                 // max wind in miles
                 const maxWind = (d.attributes[fieldNameMaxWind] * 1.15078).toFixed(0);
                 const gust = (d.attributes[fieldNameGust] * 1.15078).toFixed(0);
                 const basin = d.attributes[fieldNameBasin];
 
                 const category = getHurricaneCategory(maxWind, stormType);
-                const forecastTimeInLocal = convertForecastTimeInLocal(dateLabel);
+                const forecastTimeInLocal = convertForecastTimeInLocal(flDateLabel);
                 const localizedName = getLocalizedTropicalCycloneClassifications(maxWind, basin);
 
                 return {
                     attributes: {
                         stormType,
-                        dateLabel: forecastTimeInLocal.formattedDate,
+                        dateLabel, //forecastTimeInLocal.formattedDate,
                         forecastTime: forecastTimeInLocal.localDate,
                         maxWind,
                         gust,
                         category,
-                        localizedName
+                        localizedName,
+                        timezone
                     },
                     geometry: d.geometry
                 }
