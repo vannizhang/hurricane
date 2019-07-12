@@ -388,7 +388,7 @@ export default function PrecipChart({
             }
         }
 
-        return beautifiedVal || val;
+        return beautifiedVal || value;
     }
 
     useEffect(()=>{
