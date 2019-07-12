@@ -163,42 +163,84 @@ export default class Map extends React.PureComponent {
             };
         });
 
+        // const renderer = {
+        //     type: "class-breaks", // autocasts as new ClassBreaksRenderer()
+        //     field: "MAXWIND",
+        //     classBreakInfos: [
+        //         {
+        //             minValue: 0,
+        //             maxValue: 33/1.15078, // covert val to miles
+        //             symbol: symbols[0]
+        //         },
+        //         {
+        //             minValue: 33.1/1.15078,
+        //             maxValue: 63/1.15078,
+        //             symbol: symbols[1]
+        //         },
+        //         {
+        //             minValue: 63.1/1.15078,
+        //             maxValue: 82/1.15078,
+        //             symbol: symbols[2]
+        //         },
+        //         {
+        //             minValue: 82.1/1.15078,
+        //             maxValue: 95/1.15078,
+        //             symbol: symbols[3]
+        //         },
+        //         {
+        //             minValue: 95.1/1.15078,
+        //             maxValue: 112/1.15078,
+        //             symbol: symbols[4]
+        //         },
+        //         {
+        //             minValue: 112.1/1.15078,
+        //             maxValue: 136/1.15078,
+        //             symbol: symbols[5]
+        //         },
+        //         {
+        //             minValue: 136.1/1.15078,
+        //             maxValue: 999,
+        //             symbol: symbols[6]
+        //         }
+        //     ]
+        // };
+
         const renderer = {
             type: "class-breaks", // autocasts as new ClassBreaksRenderer()
             field: "MAXWIND",
             classBreakInfos: [
                 {
                     minValue: 0,
-                    maxValue: 33/1.15078, // covert val to miles
+                    maxValue: 33, // covert val to miles
                     symbol: symbols[0]
                 },
                 {
-                    minValue: 33.1/1.15078,
-                    maxValue: 63/1.15078,
+                    minValue: 34,
+                    maxValue: 63,
                     symbol: symbols[1]
                 },
                 {
-                    minValue: 63.1/1.15078,
-                    maxValue: 82/1.15078,
+                    minValue: 64,
+                    maxValue: 82,
                     symbol: symbols[2]
                 },
                 {
-                    minValue: 82.1/1.15078,
-                    maxValue: 95/1.15078,
+                    minValue: 83,
+                    maxValue: 95,
                     symbol: symbols[3]
                 },
                 {
-                    minValue: 95.1/1.15078,
-                    maxValue: 112/1.15078,
+                    minValue: 96,
+                    maxValue: 112,
                     symbol: symbols[4]
                 },
                 {
-                    minValue: 112.1/1.15078,
-                    maxValue: 136/1.15078,
+                    minValue: 113,
+                    maxValue: 136,
                     symbol: symbols[5]
                 },
                 {
-                    minValue: 136.1/1.15078,
+                    minValue: 137,
                     maxValue: 999,
                     symbol: symbols[6]
                 }

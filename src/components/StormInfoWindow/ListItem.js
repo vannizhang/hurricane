@@ -26,7 +26,7 @@ class StormInfoWindowListItem extends React.PureComponent {
         const weekofDay = dateLabelParts[2];
         const timezone = this.props.data.attributes.timezone;
 
-        const maxWind = this.props.windSpeedUnit === 'mph' ? this.props.data.attributes.maxWind : (this.props.data.attributes.maxWind * 1.60934).toFixed(0)
+        const maxWind = this.props.windSpeedUnit === 'mph' ? (this.props.data.attributes.maxWind * 1.151).toFixed(0) : (this.props.data.attributes.maxWind * 1.852).toFixed(0)
 
         return (   
             <div className='storm-info-list-item' onClick={this.onClickHandler} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.props.onMouseLeave}>

@@ -75,8 +75,10 @@ const HurricaneData = function(){
                 const dateLabel = d.attributes[fieldNameDateLabel];
                 const timezone = d.attributes[fieldNameTimeZome];
                 // max wind in miles
-                const maxWind = (d.attributes[fieldNameMaxWind] * 1.15078).toFixed(0);
-                const gust = (d.attributes[fieldNameGust] * 1.15078).toFixed(0);
+                // const maxWind = (d.attributes[fieldNameMaxWind] * 1.15078).toFixed(0);
+                // const gust = (d.attributes[fieldNameGust] * 1.15078).toFixed(0);
+                const maxWind = (d.attributes[fieldNameMaxWind]).toFixed(0);
+                const gust = (d.attributes[fieldNameGust]).toFixed(0);
                 const basin = d.attributes[fieldNameBasin];
 
                 const category = getHurricaneCategory(maxWind, stormType);
@@ -170,13 +172,15 @@ const HurricaneData = function(){
 
         return new Promise((resolve, reject)=>{
 
-            const formData = new FormData();
+            // const formData = new FormData();
 
-            Object.keys(params).forEach(key=>{
-                formData.append(key, params[key]);
-            });
+            // Object.keys(params).forEach(key=>{
+            //     formData.append(key, params[key]);
+            // });
 
-            axios.post(requestUrl, formData).then( (response)=>{
+            axios.get(requestUrl, {
+                params
+            }).then( (response)=>{
                 // console.log(response);
 
                 if(response.data){
