@@ -68,7 +68,7 @@ const HurricaneData = function(){
 
             const data = features.map(d=>{
 
-                console.log(`forecast location`, d);
+                // console.log(`forecast location`, d);
                 
                 const stormType = d.attributes[fieldNameStormType];
                 const flDateLabel = d.attributes[fieldNameFlDateLabel];

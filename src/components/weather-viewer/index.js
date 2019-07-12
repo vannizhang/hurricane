@@ -47,7 +47,7 @@ export default function(){
 
     const setWeatherDataFeatures = (key='', features=[])=>{
         weatherData[key].features = key === 'windGust' ? prepareWindGustData(features) : preparePrecipData(features, weatherData[key].timeInfo);
-        console.log('setWeatherDataFeatures', key, weatherData[key].features);
+        // console.log('setWeatherDataFeatures', key, weatherData[key].features);
     };
 
     const setWeatherDataTimeInfo = (key='', timeInfo={})=>{

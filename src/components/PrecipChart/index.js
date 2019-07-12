@@ -248,7 +248,7 @@ export default function PrecipChart({
 
     const drawBars = (data=[])=>{
 
-        console.log('precip data', data);
+        // console.log('precip data', data);
 
         const bars = svg.selectAll('.' + config.class_name.bar_rect);
 
