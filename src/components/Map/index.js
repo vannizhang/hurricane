@@ -20,7 +20,8 @@ const config ={
     CONTAINER_ID: 'mapViewDiv',
     // AGOL_ITEM_ID_WEB_MAP: webMapIdForDemo, //'6cd940d108414780ad0118f78e2a6fcd',
     FORECAST_POSITION_LAYERID: 'forecastPosition',
-    FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
+    FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview',
+    NOAA_SATELLITE_LAYERID: 'noaaSatellite'
 }
 
 export default class Map extends React.PureComponent {
@@ -128,6 +129,25 @@ export default class Map extends React.PureComponent {
             });
 
             this.mapView.map.add(layer);
+
+        }).catch(err=>console.error(err));
+    }
+
+    initNOAASatelliteLayer(){
+
+        loadModules([
+            "esri/layers/TileLayer"
+        ]).then(([
+            TileLayer
+        ])=>{
+            const layer = new TileLayer({
+                id: config.NOAA_SATELLITE_LAYERID,
+                url: AppConfig.production.noaa_infrared_layer_url,
+                opacity: 0.5,
+                maxScale: 9000000
+            });
+
+            this.mapView.map.add(layer, 0);
 
         }).catch(err=>console.error(err));
     }
@@ -304,6 +324,8 @@ export default class Map extends React.PureComponent {
         })
 
         this.initAddressLocator();
+
+        this.initNOAASatelliteLayer();
 
         this.initForecastPostionPreviewLayer();
 
