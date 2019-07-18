@@ -325,7 +325,7 @@ export default class Map extends React.PureComponent {
 
         this.initAddressLocator();
 
-        this.initNOAASatelliteLayer();
+        // this.initNOAASatelliteLayer();
 
         this.initForecastPostionPreviewLayer();
 

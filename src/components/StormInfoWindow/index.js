@@ -57,17 +57,25 @@ class StormInfoWindow extends React.PureComponent {
 
         return (            
             <div className={`leader-half ${isHide}`}>
-                <div className='storm-info-header trailer-half'>
-                    <div className='is-flexy'>
-                        <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
+                
+                <div className='phone-hide' data-view-type='desktop'>
+                    <div className='storm-info-header trailer-half'>
+                        <div className='is-flexy'>
+                            <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
+                        </div>
+
+                        <div className=''>
+                            {unitSwitcher}
+                        </div>
                     </div>
 
-                    <div className=''>
-                        {unitSwitcher}
-                    </div>
+                    {listItems}
                 </div>
 
-                {listItems}
+                <div className='phone-show' data-view-type='phone'>
+                    I am the storm info for phone view
+                </div>
+
             </div>
         )
     }
