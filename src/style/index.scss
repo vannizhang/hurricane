@@ -61,5 +61,9 @@ body,
 @media (max-width: 480px) { 
     .side-container {
         width: 100%;
+        height: auto;
+        top: unset;
+        bottom: 0;
     }
+
 }

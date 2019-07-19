@@ -21,7 +21,7 @@ const styles = {
     }
 };
 
-class ControlPanel extends React.Component {
+class ControlPanel extends React.PureComponent {
     
     constructor(props){
         super(props);
@@ -36,20 +36,22 @@ class ControlPanel extends React.Component {
 
         return (
             <div style={styles.controlPanelContent}>
-                <div className='trailer-half'>
-                    <span className='font-size-2'>HURRICANE AWARE</span>
-                    <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
+                <div className='phone-hide'>
+                    <div className='trailer-half'>
+                        <span className='font-size-2'>HURRICANE AWARE</span>
+                        <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
+                    </div>
+                    
+                    <p className='trailer-half font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</p>
+                    <div id='addressLocatorDiv' className='trailer-half' style={styles.addressLocatorDiv}></div>
+                    {/* <p className='trailer-half font-size--3'>Look up a specific storm to find out more information here.</p> */}
+                    
+                    <StormSelector
+                        data={this.props.activeStorms}
+                        activeStorm={this.props.activeStorm}
+                        onSelect={this.props.stormSelectorOnChange}
+                    />
                 </div>
-                
-                <p className='trailer-half font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</p>
-                <div id='addressLocatorDiv' className='trailer-half' style={styles.addressLocatorDiv}></div>
-                {/* <p className='trailer-half font-size--3'>Look up a specific storm to find out more information here.</p> */}
-                
-                <StormSelector
-                    data={this.props.activeStorms}
-                    activeStorm={this.props.activeStorm}
-                    onSelect={this.props.stormSelectorOnChange}
-                />
 
                 <StormInfoWindow
                     data={this.props.stormData}
@@ -66,7 +68,7 @@ class ControlPanel extends React.Component {
     render(){
         const componentJsx = this.getComponentJsx();
         return (
-            <div id='controlPanelDiv' className='trailer-1'>
+            <div id='controlPanelDiv' className='trailer-1 phone-trailer-0'>
                 {componentJsx}
             </div>
         );

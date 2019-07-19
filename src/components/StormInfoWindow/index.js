@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ListItem from './ListItem';
+import ListViewForPhone from './ListViewForPhone';
 
 class StormInfoWindow extends React.PureComponent {
     constructor(props){
@@ -56,7 +57,7 @@ class StormInfoWindow extends React.PureComponent {
         const unitSwitcher = this.getUnitSwitcher();
 
         return (            
-            <div className={`leader-half ${isHide}`}>
+            <div className={`leader-half phone-leader-0 ${isHide}`}>
                 
                 <div className='phone-hide' data-view-type='desktop'>
                     <div className='storm-info-header trailer-half'>
@@ -73,7 +74,11 @@ class StormInfoWindow extends React.PureComponent {
                 </div>
 
                 <div className='phone-show' data-view-type='phone'>
-                    I am the storm info for phone view
+                    {/* I am the storm info for phone view */}
+                    <ListViewForPhone 
+                        data={this.props.data}
+                        windSpeedUnit={this.state.windSpeedUnit}
+                    />
                 </div>
 
             </div>

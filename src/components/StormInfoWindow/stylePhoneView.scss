@@ -1,0 +1,32 @@
+@import './categoryIcon.scss';
+@import '../../style/colors.scss';
+
+.storm-info-list-view-phone{
+    display: flex;
+    flex-wrap: nowrap;
+    // background: #124578;
+    overflow-y: auto;
+
+    .storm-info-list-item-phone{
+        flex-grow: 1;
+        flex-shrink: 0;
+        flex-basis: 75px;
+        padding: .3rem;
+        padding-bottom: .5rem;
+        border-bottom: 2px solid rgba(188,218,237,.2);
+        box-sizing: border-box;
+
+        .category-icon {
+            // width: 50px;
+            height: 30px;
+        }
+
+        // .time-info-text-phone{
+        //     font-size: .7rem;
+        // }
+    }
+
+    .storm-info-list-item-phone.is-active {
+        border-bottom: 2px solid rgba(188,218,237,.75);
+    }
+}
