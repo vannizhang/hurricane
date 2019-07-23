@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './stylePhoneView.scss';
+import ListItemForPhone from './ListItemForPhone';
 
 class StormInfoWindowListViewPhone extends React.PureComponent {
     constructor(props){
@@ -14,41 +15,35 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
     }
 
     
-    onClickHandler(){
-        // console.log('storm list item on click', this.props.data);
-        // this.props.onClick(this.props.data);
+    onClickHandler(res={
+        data: null,
+        index: 0
+    }){
+        // console.log('storm list item on click', res);
+
+        this.setActiveItemIndex(res.index);
+
+        this.props.onClick(res.data);
+    }
+
+    setActiveItemIndex(index=0){
+        this.setState({
+            activeItemIndex: index
+        });
     }
 
     getListItems(){
         return this.props.data.map((d,i)=>{
 
-            const dateLabelParts = d.attributes.dateLabel.split(' ');
-            const hour = dateLabelParts[0].split(":")[0];
-            const ampm = dateLabelParts[1];
-            const weekofDay = dateLabelParts[2];
-            const timezone = d.attributes.timezone;
-    
-            // const maxWind = this.props.windSpeedUnit === 'mph' ? (d.attributes.maxWind * 1.151).toFixed(0) : (d.attributes.maxWind * 1.852).toFixed(0);
-
             const isActive = i === this.state.activeItemIndex ? 'is-active' : '';
     
-            return (   
-                <div key={`storm-info-list-item-phone-${i}`} className={`storm-info-list-item-phone ${isActive}`} onClick={this.onClickHandler}>
-    
-                    <div className='storm-info-div trailer-quarter'>
-                        <div className='category-icon' data-value={d.attributes.category}></div>
-                    </div>
-
-                    <div className='time-info-div font-size--3 avenir-light text-center'>
-                        <span className=''>{`${hour} ${ampm} ${timezone}`}</span>
-                        <br></br>
-                        <span className=''>{`${weekofDay}`}</span>
-                    </div>
-    
-
-                </div>
-    
-            );
+            return <ListItemForPhone 
+                key= {`list-item-for-phone-${i}`}
+                isActive = {isActive}
+                data = {d}
+                onClick = {this.onClickHandler}
+                itemIndex={i}
+            />
         });
     }
 
@@ -68,7 +63,7 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
 
         const listViewHeader = activeItem 
             ? (
-                <div className='font-size--2 trailer-half'>
+                <div className='font-size--1 trailer-half padding-left-half padding-right-half'>
                     <span>{headerText}</span>
                 </div>
             ) 

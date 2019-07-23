@@ -39,7 +39,7 @@ class StormInfoWindow extends React.PureComponent {
         )
     }
 
-    render(){
+    getStormInfoWindowForDesktop(){
 
         const listItems = this.props.data.map((d, i)=>{
             return <ListItem 
@@ -52,37 +52,48 @@ class StormInfoWindow extends React.PureComponent {
             />;
         });
 
+        const unitSwitcher = this.getUnitSwitcher();
+
+        return (
+            <div className='phone-hide' data-view-type='desktop'>
+                <div className='storm-info-header trailer-half'>
+                    <div className='is-flexy'>
+                        <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
+                    </div>
+
+                    <div className=''>
+                        {unitSwitcher}
+                    </div>
+                </div>
+
+                {listItems}
+            </div>
+        );
+    }
+
+    getStormInfoWindowForMobile(){
+        return (
+            <div className='phone-show' data-view-type='phone'>
+                <ListViewForPhone 
+                    data={this.props.data}
+                    windSpeedUnit={this.state.windSpeedUnit}
+                    onClick={this.props.onClick} 
+                />
+            </div>
+        );
+    }
+
+    render(){
+
         const isHide = !this.props.data.length ? 'hide' : '';
 
-        const unitSwitcher = this.getUnitSwitcher();
+        const stormListView = this.props.isMobile ? this.getStormInfoWindowForMobile() : this.getStormInfoWindowForDesktop();
 
         return (            
             <div className={`leader-half phone-leader-0 ${isHide}`}>
-                
-                <div className='phone-hide' data-view-type='desktop'>
-                    <div className='storm-info-header trailer-half'>
-                        <div className='is-flexy'>
-                            <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
-                        </div>
-
-                        <div className=''>
-                            {unitSwitcher}
-                        </div>
-                    </div>
-
-                    {listItems}
-                </div>
-
-                <div className='phone-show' data-view-type='phone'>
-                    {/* I am the storm info for phone view */}
-                    <ListViewForPhone 
-                        data={this.props.data}
-                        windSpeedUnit={this.state.windSpeedUnit}
-                    />
-                </div>
-
+                {stormListView}
             </div>
-        )
+        );
     }
 }
 

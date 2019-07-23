@@ -143,7 +143,8 @@ export default class Map extends React.PureComponent {
             const layer = new TileLayer({
                 id: config.NOAA_SATELLITE_LAYERID,
                 url: AppConfig.production.noaa_infrared_layer_url,
-                opacity: 0.5,
+                // url: AppConfig.production.noaa_colorized_layer_url,
+                opacity: .5,
                 maxScale: 9000000
             });
 

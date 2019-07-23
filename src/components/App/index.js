@@ -7,7 +7,7 @@ import InfoPanel from '../InfoPanel';
 // import Colors from '../../data/Colors';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 
-import { urlFns } from 'helper-toolkit-ts';
+import { urlFns, miscFns } from 'helper-toolkit-ts';
 
 // const SIDE_PANEL_WIDTH = 395;
 
@@ -18,7 +18,7 @@ const config = {
     }
 }
 
-class App extends React.Component {
+class App extends React.PureComponent {
     
     constructor(props){
         super(props);
@@ -273,6 +273,13 @@ class App extends React.Component {
     }
 
     render(){
+        const isMobile = miscFns.isMobileDevice();
+        // console.log('isMobile', isMobile);
+
+        const sideContainerStyle ={
+            width: isMobile ? '100%' : config.SIDE_PANEL_WIDTH
+        };
+
         return (
             <div id='appContentDiv'>
                 <Map 
@@ -282,16 +289,16 @@ class App extends React.Component {
                     activeStormExtent={this.state.activeStormExtent}
                     forecastPositionPreview={this.state.forecastPositionPreview}
                     forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={window.outerWidth <= 480 ? 0 : config.SIDE_PANEL_WIDTH}
+                    rightPadding={isMobile ? 0 : config.SIDE_PANEL_WIDTH}
 
                     isDemoMode={this.props.isDemoMode}
                 />
 
-                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={{width: config.SIDE_PANEL_WIDTH}}>
+                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={sideContainerStyle}>
 
-                    <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
+                    {/* <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
                         <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
-                    </div>
+                    </div> */}
 
                     <div className='content-wrap' style={{ padding: '1rem' }}>
                         <ControlPanel 
@@ -303,6 +310,8 @@ class App extends React.Component {
                             activeStorms={this.props.activeStorms}
                             activeStorm={this.state.activeStorm}
                             stormData={this.state.stormData}
+
+                            isMobile = {isMobile}
                         />
 
                         <InfoPanel 
