@@ -9,6 +9,22 @@
 
     width: 100%;
 
+    .info-panel-items-container.is-mobile{
+        display: flex;
+        overflow-y: auto;
+
+        .info-panel-item-wrap{
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 100%;
+        }
+
+        .item-container {
+            width: 100%;
+            height: auto;
+        }
+    }
+
     .item-container {
         display: flex;
         flex-flow: column;

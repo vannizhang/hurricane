@@ -1,5 +1,7 @@
 .pct-bar-chart-container {
 
+    margin-bottom: 1rem;
+
     .pct-bar-labels {
         display: flex;
 
@@ -19,11 +21,25 @@
             width: 0%;
             // height: 30px;
             background: #3DE0F2;
+            padding: .25rem 0;
         }
 
         .pct-bar-value-text{
             color: #333;
         }
     }
+
+}
+
+.pct-bar-chart-container.is-mobile {
+    margin-bottom: .5rem;
+
+    .pct-bar-wrap{
+        .pct-bar-element {
+            padding: .1rem 0;
+        }
+    }
+
+    
 
 }

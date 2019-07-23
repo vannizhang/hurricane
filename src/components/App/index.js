@@ -325,6 +325,8 @@ class App extends React.PureComponent {
                             disabilityData={this.state.disabilityData}
                             internetData={this.state.internetData}
                             mobilePhoneData={this.state.mobilePhoneData}
+
+                            isMobile = {isMobile}
                         />
                     </div>
 
