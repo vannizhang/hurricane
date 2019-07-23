@@ -81,8 +81,14 @@ export default class Map extends React.PureComponent {
                 view: this.mapView,
                 resultGraphicEnabled: false,
                 popupEnabled: false,
-                container: 'addressLocatorDiv'
+                container: this.props.isMobile ? 'addressLocatorMobileDiv' : 'addressLocatorDiv'
             });
+
+            // if(this.props.isMobile){
+            //     this.mapView.ui.add(searchWidget, {
+            //         position: "top-right"
+            //     });
+            // } 
 
             searchWidget.on('search-complete', evt=>{
                 // make the search equvelent to map click

@@ -25,12 +25,12 @@ export default class DrawerMenu extends React.PureComponent {
             <div className="drawer drawer-right js-drawer" data-drawer="drawer-menu">
                 <nav className="drawer-nav" role="navigation">
                     <aside className="side-nav">
+                        <div id='addressLocatorMobileDiv' style={{width: '100%'}}></div>
+                    </aside>
+                    <aside className="side-nav">
                         <h2 className="side-nav-title">Active Storms</h2>
                         {stormOptions}
                     </aside>
-                    {/* <aside className="side-nav">
-                        <h4 className="side-nav-title">About</h4>
-                    </aside> */}
                 </nav>
           </div>
         )

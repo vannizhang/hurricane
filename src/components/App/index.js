@@ -329,6 +329,7 @@ class App extends React.PureComponent {
                 stormData={this.state.stormData}
 
                 isMobile = {isMobile}
+                openDrawerMenuOnClick={this.toggleDrawerMenu}
             />
             : null
 
@@ -384,6 +385,7 @@ class App extends React.PureComponent {
                         topPadding={isMobile ? 45 : 0 }
 
                         isDemoMode={this.props.isDemoMode}
+                        isMobile = {isMobile}
                     />
 
                     <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={sideContainerStyle}>
