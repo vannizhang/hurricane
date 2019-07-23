@@ -4,6 +4,7 @@ import * as calcite from 'calcite-web';
 import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
+import TabNavControl from '../TabNavControl';
 // import Colors from '../../data/Colors';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 
@@ -46,7 +47,10 @@ class App extends React.PureComponent {
             mobilePhoneData: null,
             locationName: '',
 
-            isSidebarMinimized: false
+            isSidebarMinimized: false,
+            // in mobile view, the storm panel and community info panel cannot be displayed together
+            // therefore we need to toggle the visibility of these two panels, the value for visiblePanelForMobileDevice could be 'storm' | 'info'
+            visiblePanelForMobileDevice: 'storm'
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -59,6 +63,7 @@ class App extends React.PureComponent {
         this.stormListOnMouseEnter = this.stormListOnMouseEnter.bind(this);
         this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.updateVisiblePanelForMobileDevice = this.updateVisiblePanelForMobileDevice.bind(this);
 
     };
 
@@ -175,6 +180,13 @@ class App extends React.PureComponent {
         });
     }
 
+    updateVisiblePanelForMobileDevice(val='storm'){
+        // console.log('updateVisiblePanelForMobileDevice', val);
+        this.setState({
+            visiblePanelForMobileDevice: val
+        });
+    }
+
     async mapOnClick(mapPoint){
         // console.log('mapOnClickHandler', mapPoint);
         try {
@@ -280,6 +292,58 @@ class App extends React.PureComponent {
             width: isMobile ? '100%' : config.SIDE_PANEL_WIDTH
         };
 
+        const isControlPanelVisible = !isMobile  ? true  : ( this.state.visiblePanelForMobileDevice === 'storm' ? true : false );
+
+        const isInfoPanelVisible = !isMobile ? true : ( this.state.visiblePanelForMobileDevice === 'community' ? true : false );
+
+        const controlPanel = isControlPanelVisible
+            ? <ControlPanel 
+                stormSelectorOnChange={this.stormSelectorOnChange}
+                stormListOnClick={this.stormListOnClick}
+                stormListOnMouseEnter={this.stormListOnMouseEnter}
+                stormListOnMouseLeave={this.stormListOnMouseLeave}
+
+                activeStorms={this.props.activeStorms}
+                activeStorm={this.state.activeStorm}
+                stormData={this.state.stormData}
+
+                isMobile = {isMobile}
+            />
+            : null
+
+        const infoPanel = isInfoPanelVisible 
+            ? <InfoPanel 
+                locationName={this.state.locationName}
+                isVisible={this.state.isInfoPanelVisible}
+                precipData={this.state.precipData}
+                windGustData={this.state.windGustData}
+                populationData={this.state.populationData}
+                languageData={this.state.languageData}
+                vehicleData={this.state.vehicleData}
+                disabilityData={this.state.disabilityData}
+                internetData={this.state.internetData}
+                mobilePhoneData={this.state.mobilePhoneData}
+
+                isMobile = {isMobile}
+            />
+            : null;
+
+        const tabNavControl = isMobile
+            ? <TabNavControl 
+                data={[
+                    {
+                        label: 'Storm Info',
+                        value: 'storm'
+                    },
+                    {
+                        label: 'Community Info',
+                        value: 'community'
+                    }
+                ]}
+                onClick={this.updateVisiblePanelForMobileDevice}
+            /> 
+            :null;
+
         return (
             <div id='appContentDiv'>
                 <Map 
@@ -301,33 +365,9 @@ class App extends React.PureComponent {
                     </div> */}
 
                     <div className='content-wrap' style={{ padding: '1rem' }}>
-                        <ControlPanel 
-                            stormSelectorOnChange={this.stormSelectorOnChange}
-                            stormListOnClick={this.stormListOnClick}
-                            stormListOnMouseEnter={this.stormListOnMouseEnter}
-                            stormListOnMouseLeave={this.stormListOnMouseLeave}
-
-                            activeStorms={this.props.activeStorms}
-                            activeStorm={this.state.activeStorm}
-                            stormData={this.state.stormData}
-
-                            isMobile = {isMobile}
-                        />
-
-                        <InfoPanel 
-                            locationName={this.state.locationName}
-                            isVisible={this.state.isInfoPanelVisible}
-                            precipData={this.state.precipData}
-                            windGustData={this.state.windGustData}
-                            populationData={this.state.populationData}
-                            languageData={this.state.languageData}
-                            vehicleData={this.state.vehicleData}
-                            disabilityData={this.state.disabilityData}
-                            internetData={this.state.internetData}
-                            mobilePhoneData={this.state.mobilePhoneData}
-
-                            isMobile = {isMobile}
-                        />
+                        { controlPanel }
+                        { infoPanel }
+                        { tabNavControl }
                     </div>
 
                 </div>

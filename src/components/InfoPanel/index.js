@@ -29,18 +29,31 @@ class InfoPanel extends React.Component {
             sideLabel: {width: '100px'}
         };
 
-        const chartContainerHeight = this.props.isMobile ? '150px' : '180px';
+        const chartContainerHeight = this.props.isMobile ? '165px' : '180px';
 
-        return (
-            <div id='infoPanelDiv' className={`${isHide}`}>
+        // { this.props.isMobile && !this.props.locationName
+        //     ?  <div className='alert-message-no-selected-community'>
+        //         <span className='font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</span>
+        //     </div> 
+        //     :  null
+        // }
 
-                <hr className='info-panel-divider'/>
+        const alertMessage = (
+            <div className='alert-message-no-selected-community trailer-half'>
+                 <span className='font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</span>
+            </div> 
+        );
 
-                <div className='location-info-dev trailer-1 leader-1 text-center'>
+        const infoPanelComponent = (        
+            <div id='infoPanelDiv' className={`${isHide} ${this.props.isMobile ? 'is-mobile' : ''}`}>
+
+                { !this.props.isMobile ? <hr className='info-panel-divider'/> : null }
+
+                <div className='location-info-dev text-center'>
                     <span className='avenir-light font-size--0'>Information for {this.props.locationName}</span>
                 </div>
 
-                <div className={`info-panel-items-container ${this.props.isMobile ? 'is-mobile' : ''}`}>
+                <div className={`info-panel-items-container`}>
 
                     <div className='info-panel-item-wrap' style={styles.itemWrap}>
 
@@ -171,10 +184,10 @@ class InfoPanel extends React.Component {
 
                 </div>
 
-
-
             </div>
         );
+
+        return this.props.isMobile && !this.props.locationName ? alertMessage : infoPanelComponent;
     }
 };
 

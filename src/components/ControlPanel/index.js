@@ -81,9 +81,20 @@ class ControlPanel extends React.PureComponent {
 
     render(){
         const componentJsx = this.getComponentJsx();
+
+        const alertMessage = (
+            <div className='alert-message-no-active-storm trailer-half'>
+                 <span className='font-size--3'>Select an active storm to view detailed information</span>
+            </div> 
+        );
+
         return (
             <div id='controlPanelDiv' className='trailer-1 phone-trailer-0'>
-                {componentJsx}
+                {
+                    this.props.isMobile && !this.props.stormData.length 
+                    ? alertMessage
+                    : componentJsx
+                }
             </div>
         );
     }
