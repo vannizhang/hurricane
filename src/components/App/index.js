@@ -5,6 +5,8 @@ import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
 import TabNavControl from '../TabNavControl';
+import TopNavForPhone from '../TopNav';
+import DrawerMenu from '../DrawerMenu';
 // import Colors from '../../data/Colors';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 
@@ -64,6 +66,7 @@ class App extends React.PureComponent {
         this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.updateVisiblePanelForMobileDevice = this.updateVisiblePanelForMobileDevice.bind(this);
+        this.toggleDrawerMenu = this.toggleDrawerMenu.bind(this);
 
     };
 
@@ -279,6 +282,10 @@ class App extends React.PureComponent {
         });
     }
 
+    toggleDrawerMenu(){
+        calcite.bus.emit('drawer:open', {id: "drawer-menu"})
+    }
+
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
@@ -295,6 +302,20 @@ class App extends React.PureComponent {
         const isControlPanelVisible = !isMobile  ? true  : ( this.state.visiblePanelForMobileDevice === 'storm' ? true : false );
 
         const isInfoPanelVisible = !isMobile ? true : ( this.state.visiblePanelForMobileDevice === 'community' ? true : false );
+
+        const topNav = isMobile
+            ? <TopNavForPhone 
+                activeStorm={this.state.activeStorm}
+                menuBtnOnClick={this.toggleDrawerMenu}
+            />
+            : null;
+
+        const drawerMenu = isMobile
+            ? <DrawerMenu
+                activeStorms={this.props.activeStorms}
+                stormOnChange={this.stormSelectorOnChange}
+            />
+            : null;
 
         const controlPanel = isControlPanelVisible
             ? <ControlPanel 
@@ -346,31 +367,41 @@ class App extends React.PureComponent {
 
         return (
             <div id='appContentDiv'>
-                <Map 
-                    onClick={this.mapOnClick}
-                    onReady={this.mapOnReady}
+                { drawerMenu }
 
-                    activeStormExtent={this.state.activeStormExtent}
-                    forecastPositionPreview={this.state.forecastPositionPreview}
-                    forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={isMobile ? 0 : config.SIDE_PANEL_WIDTH}
+                <div className='wrapper'>
 
-                    isDemoMode={this.props.isDemoMode}
-                />
+                    { topNav }
 
-                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={sideContainerStyle}>
+                    <Map 
+                        onClick={this.mapOnClick}
+                        onReady={this.mapOnReady}
 
-                    {/* <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
-                        <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
-                    </div> */}
+                        activeStormExtent={this.state.activeStormExtent}
+                        forecastPositionPreview={this.state.forecastPositionPreview}
+                        forecastPositionSelected={this.state.forecastPositionSelected}
+                        rightPadding={isMobile ? 0 : config.SIDE_PANEL_WIDTH}
+                        topPadding={isMobile ? 45 : 0 }
 
-                    <div className='content-wrap' style={{ padding: '1rem' }}>
-                        { controlPanel }
-                        { infoPanel }
-                        { tabNavControl }
+                        isDemoMode={this.props.isDemoMode}
+                    />
+
+                    <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={sideContainerStyle}>
+
+                        {/* <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
+                            <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
+                        </div> */}
+
+                        <div className='content-wrap' style={{ padding: '1rem' }}>
+                            { controlPanel }
+                            { infoPanel }
+                            { tabNavControl }
+                        </div>
+
                     </div>
 
                 </div>
+
 
 
             </div>

@@ -51,7 +51,8 @@ export default class Map extends React.PureComponent {
                 }),
                 container: config.CONTAINER_ID,
                 padding: {
-                    right: this.props.rightPadding || 0
+                    right: this.props.rightPadding || 0,
+                    top: this.props.topPadding || 0
                 }
             });
 
