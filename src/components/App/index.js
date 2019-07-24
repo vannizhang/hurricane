@@ -10,7 +10,7 @@ import DrawerMenu from '../DrawerMenu';
 // import Colors from '../../data/Colors';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 
-import { urlFns, miscFns } from 'helper-toolkit-ts';
+import { urlFns } from 'helper-toolkit-ts';
 
 // const SIDE_PANEL_WIDTH = 395;
 
@@ -292,7 +292,7 @@ class App extends React.PureComponent {
     }
 
     render(){
-        const isMobile = miscFns.isMobileDevice();
+        const isMobile = this.props.isMobile; //miscFns.isMobileDevice();
         // console.log('isMobile', isMobile);
 
         const sideContainerStyle ={

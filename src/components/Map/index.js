@@ -413,17 +413,23 @@ export default class Map extends React.PureComponent {
 
             this.mapView.goTo(point);
 
+            if(this.props.isMobile){
+                this.togglePreviewForecastPosition();
+            }
+
         }).catch(err=>console.error(err));
     };
 
     togglePreviewForecastPosition(){
         const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
 
+        const forecastPosition = this.props.isMobile ? this.props.forecastPositionSelected : this.props.forecastPositionPreview;
+
         if(targetLayer){
             targetLayer.removeAll();
         }
 
-        if(this.props.forecastPositionPreview && targetLayer){
+        if(forecastPosition && targetLayer){
 
             loadModules([
                 "esri/Graphic",
@@ -455,8 +461,8 @@ export default class Map extends React.PureComponent {
                 };
 
                 const geometry = new Point({
-                    x: this.props.forecastPositionPreview.geometry.x,
-                    y: this.props.forecastPositionPreview.geometry.y,
+                    x: forecastPosition.geometry.x,
+                    y: forecastPosition.geometry.y,
                     spatialReference: {
                         latestWkid: 4326,
                         wkid: 4326
