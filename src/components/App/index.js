@@ -67,6 +67,7 @@ class App extends React.PureComponent {
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.updateVisiblePanelForMobileDevice = this.updateVisiblePanelForMobileDevice.bind(this);
         this.toggleDrawerMenu = this.toggleDrawerMenu.bind(this);
+        this.openAboutModalInMobileView = this.openAboutModalInMobileView.bind(this);
 
     };
 
@@ -286,6 +287,11 @@ class App extends React.PureComponent {
         calcite.bus.emit('drawer:open', {id: "drawer-menu"})
     }
 
+    openAboutModalInMobileView(){
+        calcite.bus.emit('drawer:close', {id: "drawer-menu"});
+        calcite.bus.emit('modal:open', {id: "about-this-app"})
+    }
+
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
@@ -318,6 +324,7 @@ class App extends React.PureComponent {
             ? <DrawerMenu
                 activeStorms={this.props.activeStorms}
                 stormOnChange={this.stormSelectorOnChange}
+                openAboutModal={this.openAboutModalInMobileView}
             />
             : null;
 

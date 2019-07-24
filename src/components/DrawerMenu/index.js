@@ -31,6 +31,13 @@ export default class DrawerMenu extends React.PureComponent {
                         <h2 className="side-nav-title">Active Storms</h2>
                         {stormOptions}
                     </aside>
+                    <aside className="side-nav">
+                        <h2 className="side-nav-title">
+                            <span onClick={this.props.openAboutModal}>
+                                About this app
+                            </span>
+                        </h2>
+                    </aside>
                 </nav>
           </div>
         )
