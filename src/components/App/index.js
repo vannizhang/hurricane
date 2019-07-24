@@ -299,6 +299,10 @@ class App extends React.PureComponent {
             width: isMobile ? '100%' : config.SIDE_PANEL_WIDTH
         };
 
+        const contentWrapStyle = {
+            padding: isMobile ? '0 1rem 1rem' :'1rem'
+        }
+
         const isControlPanelVisible = !isMobile  ? true  : ( this.state.visiblePanelForMobileDevice === 'storm' ? true : false );
 
         const isInfoPanelVisible = !isMobile ? true : ( this.state.visiblePanelForMobileDevice === 'community' ? true : false );
@@ -366,6 +370,16 @@ class App extends React.PureComponent {
             /> 
             :null;
 
+        const sideContainerModifierClasses = [];
+
+        if(this.state.isSidebarMinimized){
+            sideContainerModifierClasses.push('is-minimized');
+        }
+
+        if(isMobile){
+            sideContainerModifierClasses.push('is-mobile');
+        }
+
         return (
             <div id='appContentDiv'>
                 { drawerMenu }
@@ -388,13 +402,13 @@ class App extends React.PureComponent {
                         isMobile = {isMobile}
                     />
 
-                    <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={sideContainerStyle}>
+                    <div className={`side-container ${sideContainerModifierClasses.join(' ')}`} style={sideContainerStyle}>
 
-                        {/* <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
-                            <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
-                        </div> */}
+                        <div className={`phone-show text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
+                            <span className={`${this.state.isSidebarMinimized ? 'icon-ui-up': 'icon-ui-down'}`}></span>
+                        </div>
 
-                        <div className='content-wrap' style={{ padding: '1rem' }}>
+                        <div className='content-wrap' style={contentWrapStyle}>
                             { controlPanel }
                             { infoPanel }
                             { tabNavControl }
