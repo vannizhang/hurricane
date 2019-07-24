@@ -55,7 +55,7 @@ class StormInfoWindow extends React.PureComponent {
         const unitSwitcher = this.getUnitSwitcher();
 
         return (
-            <div className='phone-hide' data-view-type='desktop'>
+            <div className='' data-view-type='desktop'>
                 <div className='storm-info-header trailer-half'>
                     <div className='is-flexy'>
                         <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
@@ -73,7 +73,7 @@ class StormInfoWindow extends React.PureComponent {
 
     getStormInfoWindowForMobile(){
         return (
-            <div className='phone-show' data-view-type='phone'>
+            <div className='' data-view-type='phone'>
                 <ListViewForPhone 
                     data={this.props.data}
                     windSpeedUnit={this.state.windSpeedUnit}

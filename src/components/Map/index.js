@@ -43,7 +43,7 @@ export default class Map extends React.PureComponent {
             MapView, WebMap,
         ])=>{
 
-            this.mapView = new MapView({
+            const mapViewOptions = {
                 map: new WebMap({
                     portalItem: { 
                         id: webMapId
@@ -54,7 +54,22 @@ export default class Map extends React.PureComponent {
                     right: this.props.rightPadding || 0,
                     top: this.props.topPadding || 0
                 }
-            });
+            };
+
+            if(this.props.isMobile){
+                mapViewOptions.popup = {
+                    dockEnabled: true,
+                    dockOptions: {
+                        position: 'top-right',
+                        // Disables the dock button from the popup
+                        buttonEnabled: false,
+                        // Ignore the default sizes that trigger responsive docking
+                        // breakpoint: false
+                    }
+                }
+            }
+
+            this.mapView = new MapView(mapViewOptions);
 
             this.mapView.when(()=>{
                 this.mapViewOnReadyHandler();

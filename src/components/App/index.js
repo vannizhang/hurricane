@@ -370,6 +370,14 @@ class App extends React.PureComponent {
             /> 
             :null;
 
+        const toggleBtn = isMobile
+        ? (
+            <div className={`text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
+                <span className={`${this.state.isSidebarMinimized ? 'icon-ui-up': 'icon-ui-down'}`}></span>
+            </div>
+        )
+        : null;
+
         const sideContainerModifierClasses = [];
 
         if(this.state.isSidebarMinimized){
@@ -404,9 +412,11 @@ class App extends React.PureComponent {
 
                     <div className={`side-container ${sideContainerModifierClasses.join(' ')}`} style={sideContainerStyle}>
 
-                        <div className={`phone-show text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
+                        {/* <div className={`phone-show text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
                             <span className={`${this.state.isSidebarMinimized ? 'icon-ui-up': 'icon-ui-down'}`}></span>
-                        </div>
+                        </div> */}
+
+                        { toggleBtn }
 
                         <div className='content-wrap' style={contentWrapStyle}>
                             { controlPanel }
