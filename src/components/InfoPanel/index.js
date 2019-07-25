@@ -8,6 +8,7 @@ import DonutChart from '../DonutChart';
 import TwoLineLabel from './TwoLineLabel';
 import HorizontalLegend from '../HorizontalLegend';
 import PercentBarChart from '../PercentBarChart';
+import DotNavControl from '../DotNavControl';
 
 import { numberFns } from 'helper-toolkit-ts';
 
@@ -15,7 +16,48 @@ class InfoPanel extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            activeChartIndex: 0
+        };
+
+        this.precipChartContainerRef = React.createRef();
+
+        this.infoPanelOnScroll = this.infoPanelOnScroll.bind(this);
     };
+
+    updateActiveChartIndex(index=0){
+        this.setState({
+            activeChartIndex: index
+        });
+    };
+
+    infoPanelOnScroll(){
+
+        if(this.props.isMobile){
+            const container = this.precipChartContainerRef.current;
+
+            const boundingClientRect = container.getBoundingClientRect();
+
+            const xPos = Math.abs(boundingClientRect.x);
+
+            const breakPoints = [0, 300, 650, 1000];
+
+            let activeChartIndex = 0;
+
+            breakPoints.forEach((val,i)=>{
+                const nextVal = breakPoints[i + 1] || Number.POSITIVE_INFINITY;
+                if(xPos >= val && xPos < nextVal){
+                    activeChartIndex = i;
+                }
+            });
+
+            this.updateActiveChartIndex(activeChartIndex)
+    
+            // console.log('i am scrolling', activeChartIndex);
+        }
+
+    }
 
     render(){
         const isHide = !this.props.isVisible ? 'hide' : '';
@@ -44,6 +86,17 @@ class InfoPanel extends React.Component {
             </div> 
         );
 
+        // indicate which chart is currently in view
+        // also work as a cue so user know they can scroll horizontally
+        const dotNavControl = this.props.isMobile 
+        ? (
+            <DotNavControl 
+                data={[0,1,2,3]}
+                activeIndex={this.state.activeChartIndex}
+            />
+        ) 
+        : null;
+
         const infoPanelComponent = (        
             <div id='infoPanelDiv' className={`${isHide} ${this.props.isMobile ? 'is-mobile' : ''}`}>
 
@@ -53,9 +106,9 @@ class InfoPanel extends React.Component {
                     <span className='avenir-light font-size--0'>Information for {this.props.locationName}</span>
                 </div>
 
-                <div className={`info-panel-items-container`}>
+                <div className={`info-panel-items-container`} onScroll={this.infoPanelOnScroll}>
 
-                    <div className='info-panel-item-wrap' style={styles.itemWrap}>
+                    <div className='info-panel-item-wrap' style={styles.itemWrap} ref={this.precipChartContainerRef} >
 
                         <div className='item-container'>
                             <div className='item-header'>
@@ -183,7 +236,8 @@ class InfoPanel extends React.Component {
                     </div>
 
                 </div>
-
+                
+                { dotNavControl }
             </div>
         );
 
