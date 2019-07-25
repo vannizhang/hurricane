@@ -59,7 +59,7 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
             : (activeItem.attributes.maxWind * 1.852).toFixed(0)
         )
         : '';
-        const headerText = `${stormCategory} (${maxWind}${this.props.windSpeedUnit})`;
+        const headerText = `${stormCategory} (${maxWind} ${this.props.windSpeedUnit})`;
 
         const listViewHeader = activeItem 
             ? (

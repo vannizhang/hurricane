@@ -14,10 +14,11 @@ export default class TopNav extends React.PureComponent {
         return (
             <div className='top-nav-for-phone-view'>
                 <div className='app-title'>
-                    <span className='text-white font-size-0 avenir-light'> {appTitleText} </span>
+                    <span className='font-size-1 avenir-light'> {appTitleText} </span>
                 </div>
                 <div className='top-nav-btn' onClick={this.props.menuBtnOnClick}>
-                    <span className='text-white icon-ui-menu'></span>
+                    {/* <span className='icon-ui-menu'></span> */}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M21 6H3V5h18zm0 6H3v1h18zm0 7H3v1h18z"/></svg>
                 </div>
             </div>
         )

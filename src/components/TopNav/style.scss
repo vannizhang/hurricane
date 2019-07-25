@@ -12,11 +12,19 @@
     background: $theme_color;
     z-index: 10;
     box-sizing: border-box;
+    color: rgba(255,255,255,.85);
 
     .app-title{
         flex-grow: 1;
         flex-shrink: 0;
         flex-basis: 0px;
+    }
+
+    .top-nav-btn{
+        display: flex;
+        svg {
+            fill: rgba(255,255,255,.85);
+        }
     }
 
     [class^="icon-ui-"]:before, [class*=" icon-ui-"]:before {

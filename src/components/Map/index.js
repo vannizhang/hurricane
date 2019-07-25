@@ -73,6 +73,10 @@ export default class Map extends React.PureComponent {
 
             this.mapView = new MapView(mapViewOptions);
 
+            if(this.props.isMobile){
+                this.mapView.ui.remove("zoom");
+            }
+
             this.mapView.when(()=>{
                 this.mapViewOnReadyHandler();
                 // console.log('map view is ready');
