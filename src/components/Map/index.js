@@ -57,6 +57,8 @@ export default class Map extends React.PureComponent {
             };
 
             if(this.props.isMobile){
+                mapViewOptions.center = [-100, 20];
+                mapViewOptions.zoom = 2;
                 mapViewOptions.popup = {
                     dockEnabled: true,
                     dockOptions: {
@@ -146,7 +148,8 @@ export default class Map extends React.PureComponent {
                 id: config.FORECAST_POSITION_LAYERID,
                 url: layerUrl,
                 renderer,
-                labelsVisible:false
+                labelsVisible: false,
+                popupEnabled : false
                 // labelingInfo: [labelClass]
             });
 

@@ -1,3 +1,5 @@
+import './style.scss';
+
 import React from 'react';
 
 import StormOption from './StormOption';
@@ -22,7 +24,7 @@ export default class DrawerMenu extends React.PureComponent {
         });
 
         return (
-            <div className="drawer drawer-right js-drawer" data-drawer="drawer-menu">
+            <div className="drawer drawer-right drawer-hurricane-theme js-drawer" data-drawer="drawer-menu">
                 <nav className="drawer-nav" role="navigation">
                     <aside className="side-nav">
                         <div id='addressLocatorMobileDiv' style={{width: '100%'}}></div>

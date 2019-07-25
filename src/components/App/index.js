@@ -358,6 +358,7 @@ class App extends React.PureComponent {
                 mobilePhoneData={this.state.mobilePhoneData}
 
                 isMobile = {isMobile}
+                openDrawerMenuOnClick={this.toggleDrawerMenu}
             />
             : null;
 

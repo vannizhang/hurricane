@@ -82,7 +82,7 @@ class InfoPanel extends React.Component {
 
         const alertMessage = (
             <div className='alert-message-no-selected-community trailer-half'>
-                 <span className='font-size--3'>For community awareness within the US about a hurricane in your area, click on the map or search below</span>
+                 <span className='font-size--3'>For community awareness within the USA about a hurricane in your area, click on the map or <a className='link-light-blue' onClick={this.props.openDrawerMenuOnClick}>open the search above</a>.</span>
             </div> 
         );
 
