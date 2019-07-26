@@ -23,10 +23,10 @@ export default class PercentBarChart extends React.PureComponent {
             <div className={`pct-bar-chart-container ${this.props.isMobile ? 'is-mobile' : ''}`}>
                 <div className='pct-bar-labels' style={{color: colors.chartLabelText}}>
                     <div className='pct-bar-label text-ellipsis'>
-                        <span className='avenir-light font-size--2'>{labelOnLeft}</span>
+                        <span className='avenir-light font-size--3'>{labelOnLeft}</span>
                     </div>
                     <div className='pct-bar-label text-ellipsis text-right'>
-                        <span className='avenir-light font-size--2'>{labelOnRight}</span>
+                        <span className='avenir-light font-size--3'>{labelOnRight}</span>
                     </div>
                 </div>
                 <div className='pct-bar-wrap leader-quarter'>

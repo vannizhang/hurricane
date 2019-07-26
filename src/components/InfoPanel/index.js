@@ -71,7 +71,8 @@ class InfoPanel extends React.Component {
             sideLabel: {width: '100px'}
         };
 
-        const chartContainerHeight = this.props.isMobile ? '165px' : '180px';
+        const chartContainerHeight = this.props.isMobile ? '190px' : '180px';
+        const donutChartContainerHeight = this.props.isMobile ? '165px' : '180px';
 
         // { this.props.isMobile && !this.props.locationName
         //     ?  <div className='alert-message-no-selected-community'>
@@ -123,6 +124,7 @@ class InfoPanel extends React.Component {
                                     fieldNameForXAxis={'fromdate'}
                                     fieldNameForYAxis={'value'}
                                     data={this.props.precipData}
+                                    isMobile={this.props.isMobile}
                                 />
                             </div>
                         </div>
@@ -141,6 +143,7 @@ class InfoPanel extends React.Component {
                                     fieldNameForXAxis={'fromdate'}
                                     fieldNameForYAxis={'force'}
                                     data={this.props.windGustData}
+                                    isMobile={this.props.isMobile}
                                 />
                             </div>
                         </div>
@@ -164,7 +167,7 @@ class InfoPanel extends React.Component {
                                     <DonutChart 
                                         containerID={'popuChartDiv'}
                                         containerWidth={'100%'}
-                                        containerHeight={chartContainerHeight}
+                                        containerHeight={donutChartContainerHeight}
                                         thicknessRatio={.7}
                                         fieldName={'fieldValue'}
                                         isCenterTextVisible={true}

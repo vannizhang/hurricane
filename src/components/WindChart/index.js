@@ -23,7 +23,8 @@ export default function WindChart({
 
     fieldNameForXAxis = '',
     fieldNameForYAxis = '',
-    data = []
+    data = [],
+    isMobile = false
 }={}){
 
     const containerDivRef = useRef(null);
@@ -285,18 +286,38 @@ export default function WindChart({
 
     const getTooltipText = ()=>{
 
-        let tooltipContent = 'Hover chart to show tooltip';
+        const containerWidth = containerDivRef.current ? containerDivRef.current.offsetWidth : 0;
+
+        const leftPos = (tooltipData && verticalRefLineXPos < containerWidth/2) 
+            ? verticalRefLineXPos + 65 
+            : 'unset';
+
+        const reightPos = (tooltipData && verticalRefLineXPos > containerWidth/2) 
+            ? ((containerWidth - verticalRefLineXPos) - 65) 
+            : 'unset';
+
+        const tooltipContainerStyle = {
+            position: 'absolute',
+            top: 0,
+            left: leftPos,
+            // by default, alight tooltip to right if there is no tooltipData
+            right: tooltipData ? reightPos : 0,
+            color: 'rgba(255,255,255,.7)',
+            pointerEvents: 'none'
+        }
+
+        let tooltipContent = isMobile ? 'Click on chart to show value' : '';
 
         if( tooltipData && tooltipData[fieldNameForXAxis] ){
             const formatTime = d3.timeFormat("%a %-I %p");
             const forecastTime = formatTime(tooltipData[fieldNameForXAxis]); // "June 30, 2015"
-            // const label = decodeWindForce(tooltipData[fieldNameForYAxis], true);
+            const forecastVal = decodeWindForce(tooltipData[fieldNameForYAxis]);
 
-            tooltipContent = ( <span>{forecastTime}</span> );
+            tooltipContent = ( <span>{forecastTime}: {forecastVal}</span> );
         }
 
         return (
-            <div className='font-size--3 trailer-0 margin-right-1 text-right'>
+            <div className='font-size--3 trailer-0 margin-right-1 text-right' style={tooltipContainerStyle}>
                 {tooltipContent}
             </div>
         )
@@ -314,7 +335,7 @@ export default function WindChart({
     }
 
     useEffect(()=>{
-        // console.log('component did mount', containerDivRef);
+        console.log('component did mount', containerDivRef);
     },[]);
 
     // svg is ready, draw chart if data is available
