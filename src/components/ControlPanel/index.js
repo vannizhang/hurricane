@@ -84,7 +84,7 @@ class ControlPanel extends React.PureComponent {
 
         const alertMessage = (
             <div className='alert-message-no-active-storm trailer-half'>
-                 <span className='font-size--3'><a className='link-light-blue' onClick={this.props.openDrawerMenuOnClick}>Select an active storm</a> to view detailed information.</span>
+                 <span className='font-size-1'><a className='link-light-blue avenir-demi' onClick={this.props.openDrawerMenuOnClick}>Select an active storm</a> to view detailed information.</span>
             </div> 
         );
 

@@ -82,7 +82,8 @@ class InfoPanel extends React.Component {
 
         const alertMessage = (
             <div className='alert-message-no-selected-community trailer-half'>
-                 <span className='font-size--3'>For community awareness within the USA about a hurricane in your area, click on the map or <a className='link-light-blue' onClick={this.props.openDrawerMenuOnClick}>open the search above</a>.</span>
+                 {/* <span className='font-size--3'>For community awareness within the USA about a hurricane in your area, click on the map or <a className='link-light-blue' onClick={this.props.openDrawerMenuOnClick}>open the search above</a>.</span> */}
+                 <span className='font-size-1'>Click on the map to view community information or <a className='link-light-blue' onClick={this.props.openDrawerMenuOnClick}>search above</a>.</span>
             </div> 
         );
 
@@ -103,7 +104,7 @@ class InfoPanel extends React.Component {
                 { !this.props.isMobile ? <hr className='info-panel-divider'/> : null }
 
                 <div className='location-info-dev text-center'>
-                    <span className='avenir-light font-size--0'>Information for {this.props.locationName}</span>
+                    <span className='avenir-light font-size--1'>Information for {this.props.locationName}</span>
                 </div>
 
                 <div className={`info-panel-items-container`} onScroll={this.infoPanelOnScroll}>
@@ -216,7 +217,7 @@ class InfoPanel extends React.Component {
 
                                 <PercentBarChart 
                                     key={'PercentBarChart-2'} 
-                                    labelOnLeft={this.props.mobilePhoneData ? 'Has mobile phone' : ''}
+                                    labelOnLeft={this.props.mobilePhoneData ? 'Has Mobile Phone' : ''}
                                     labelOnRight={this.props.mobilePhoneData ? this.props.mobilePhoneData.fieldLabel : ''}
                                     value={this.props.mobilePhoneData? (100 - this.props.mobilePhoneData.fieldValue) : 0}
                                     isMobile={this.props.isMobile}
@@ -224,7 +225,7 @@ class InfoPanel extends React.Component {
 
                                 <PercentBarChart 
                                     key={'PercentBarChart-3'} 
-                                    labelOnLeft={this.props.internetData ? 'Has internet' : ''}
+                                    labelOnLeft={this.props.internetData ? 'Has Internet' : ''}
                                     labelOnRight={this.props.internetData ? this.props.internetData.fieldLabel : ''}
                                     value={this.props.internetData? (100 - this.props.internetData.fieldValue) : 0}
                                     isMobile={this.props.isMobile}
