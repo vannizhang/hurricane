@@ -2,6 +2,7 @@ import React from 'react';
 
 import './stylePhoneView.scss';
 import ListItemForPhone from './ListItemForPhone';
+import { parseForecastTime } from './utils';
 
 class StormInfoWindowListViewPhone extends React.PureComponent {
     constructor(props){
@@ -59,11 +60,14 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
             : (activeItem.attributes.maxWind * 1.852).toFixed(0)
         )
         : '';
-        const headerText = `${stormCategory} (${maxWind} ${this.props.windSpeedUnit})`;
+        const forecastTimeData = activeItem ? parseForecastTime(activeItem.attributes.dateLabel) : '';
+        const timezone = activeItem ? activeItem.attributes.timezone : '';
+        const forecastTime = `${forecastTimeData.hour} ${forecastTimeData.ampm} ${timezone} ${forecastTimeData.weekofDay}`
+        const headerText = `${forecastTime}: ${stormCategory} (${maxWind} ${this.props.windSpeedUnit})`;
 
         const listViewHeader = activeItem 
             ? (
-                <div className='font-size--1 trailer-half padding-left-half padding-right-half'>
+                <div className='font-size--1 trailer-half padding-left-half padding-right-half avenir-light'>
                     <span>{headerText}</span>
                 </div>
             ) 
