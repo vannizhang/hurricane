@@ -335,7 +335,7 @@ export default function WindChart({
     }
 
     useEffect(()=>{
-        console.log('component did mount', containerDivRef);
+        // console.log('component did mount', containerDivRef);
     },[]);
 
     // svg is ready, draw chart if data is available

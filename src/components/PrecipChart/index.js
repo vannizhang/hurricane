@@ -364,7 +364,7 @@ export default function PrecipChart({
     const getTooltipText = ()=>{
         const containerWidth = containerDivRef.current ? containerDivRef.current.offsetWidth : 0;
 
-        const leftPos = (tooltipData && verticalRefLineXPos < containerWidth/2) 
+        const leftPos = (tooltipData && verticalRefLineXPos <= containerWidth/2) 
             ? verticalRefLineXPos + 50 
             : 'unset';
 
