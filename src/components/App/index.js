@@ -175,10 +175,12 @@ class App extends React.PureComponent {
 
     updateLocationName(addressData=null){
 
-        const newLocationName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
+        const neighborhoodName = (addressData && addressData.Neighborhood) ? addressData.Neighborhood : '';
+        const cityName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
+        const newlocationName = [neighborhoodName, cityName].filter(d=>d).join(', ');
 
         this.setState({
-            locationName: newLocationName
+            locationName: newlocationName
         }, ()=>{
             // console.log(this.state.locationName)
         });

@@ -306,7 +306,7 @@ export default function WindChart({
             pointerEvents: 'none'
         }
 
-        let tooltipContent = isMobile ? 'Click on chart to show value' : '';
+        let tooltipContent = isMobile ? 'Click the chart to show a value' : '';
 
         if( tooltipData && tooltipData[fieldNameForXAxis] ){
             const formatTime = d3.timeFormat("%a %-I %p");
