@@ -40,7 +40,7 @@ class App extends React.PureComponent {
             // state for info panel
             isInfoPanelVisible: false,
             precipData: [],
-            windGustData: [],
+            windGustData: null,
             populationData: [],
             languageData: [],
             vehicleData: null,
@@ -200,6 +200,8 @@ class App extends React.PureComponent {
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
             // console.log('data for info panel', data);
 
+            this.updateVisiblePanelForMobileDevice('community');
+
             this.updateIsInfoPanelVisible(true);
 
             if(data.precip && data.precipAccumulation){
@@ -262,6 +264,7 @@ class App extends React.PureComponent {
 
     stormSelectorOnChange(stormName=''){
         // console.log('stormSelectorOnChange', stormName);
+        this.updateVisiblePanelForMobileDevice('storm');
         this.updateActiveStorm(stormName);
     }
 
@@ -377,6 +380,7 @@ class App extends React.PureComponent {
                     }
                 ]}
                 onClick={this.updateVisiblePanelForMobileDevice}
+                visiblePanel={this.state.visiblePanelForMobileDevice}
             /> 
             :null;
 

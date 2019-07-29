@@ -158,6 +158,8 @@ export default function WindChart({
 
     const draw = ()=>{
 
+        console.log('draw wind chart')
+
         const parseDate = d3.isoParse;
 
         data = data.map(d=>{
@@ -340,7 +342,7 @@ export default function WindChart({
 
     // svg is ready, draw chart if data is available
     useEffect(()=>{
-        if(svg && data.length){
+        if(svg){
             // console.log('svg is ready, call init scales');
             draw();
         }
@@ -349,7 +351,7 @@ export default function WindChart({
     // draw chart when data is updated
     useEffect(()=>{
 
-        if(!data || !data.length){
+        if(!data){
             return;
         }
 

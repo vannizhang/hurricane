@@ -128,7 +128,7 @@ class InfoPanel extends React.Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
                     <div className='info-panel-item-wrap' style={styles.itemWrap}>
                         <div className='item-container'>

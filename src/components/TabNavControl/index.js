@@ -40,7 +40,7 @@ export default class TabNavControl extends React.PureComponent {
                 label={d.label}
                 value={d.value}
                 onClick={this.onClickHandeler}
-                isActive={ i===this.state.activeItemIndex ? true : false }
+                isActive={ d.value===this.props.visiblePanel ? true : false }
             />;
         });
 
