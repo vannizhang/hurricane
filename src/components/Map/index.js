@@ -442,6 +442,14 @@ export default class Map extends React.PureComponent {
         }).catch(err=>console.error(err));
     };
 
+    removePreviewForecastPosition(){
+        const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
+
+        if(targetLayer){
+            targetLayer.removeAll();
+        }
+    }
+
     togglePreviewForecastPosition(){
         const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
 
@@ -505,16 +513,18 @@ export default class Map extends React.PureComponent {
 
     zoomToActiveStormExtent(){
 
+        this.removePreviewForecastPosition();
+
         loadModules([
             "esri/geometry/Extent"
         ]).then(([
             Extent
         ])=>{
-            
+            const zoom = this.props.isMobile ? 4: 6;
             const activeStormExtent = new Extent(this.props.activeStormExtent);
             this.mapView.goTo({
                 target: activeStormExtent,
-                zoom: 6
+                zoom
             });
 
         }).catch(err=>console.error(err));

@@ -48,6 +48,12 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
         });
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.data !== this.props.data){
+            this.setActiveItemIndex(0);
+        }
+    }
+
     render(){
         const listItems = this.getListItems();
 
