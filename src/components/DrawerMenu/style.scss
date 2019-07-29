@@ -1,0 +1,28 @@
+@import '../../style/colors.scss';
+
+.drawer.drawer-hurricane-theme{
+    
+
+    .drawer-nav {
+        background: $theme_color;
+
+        .side-nav{
+            background: rgba(0,0,0,0);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .side-nav-title{
+            background: rgba(0,0,0,0.15);
+            border-top: 1px solid rgba(255,255,255,0);
+            color: #efefef;
+        }
+
+        .side-nav-link{
+            background: rgba(0,0,0,0);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            color: #dfdfdf;
+            font-size: 0.8rem;
+        }
+
+    }
+}

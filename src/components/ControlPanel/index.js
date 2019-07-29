@@ -21,7 +21,7 @@ const styles = {
     }
 };
 
-class ControlPanel extends React.Component {
+class ControlPanel extends React.PureComponent {
     
     constructor(props){
         super(props);
@@ -32,10 +32,12 @@ class ControlPanel extends React.Component {
 
     };
 
-    getComponentJsx(){
+    getStormSelectorWindow(){
 
-        return (
-            <div style={styles.controlPanelContent}>
+        return this.props.isMobile 
+        ? null 
+        : (
+            <div className='phone-hide'>
                 <div className='trailer-half'>
                     <span className='font-size-2'>HURRICANE AWARE</span>
                     <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
@@ -50,12 +52,26 @@ class ControlPanel extends React.Component {
                     activeStorm={this.props.activeStorm}
                     onSelect={this.props.stormSelectorOnChange}
                 />
+            </div>
+        );
 
+    }
+
+    getComponentJsx(){
+
+        const stormSelectorWindow = this.getStormSelectorWindow();
+
+        return (
+            <div style={styles.controlPanelContent}>
+
+                {stormSelectorWindow}
+                
                 <StormInfoWindow
                     data={this.props.stormData}
                     onClick={this.props.stormListOnClick}
                     onMouseEnter={this.props.stormListOnMouseEnter}
                     onMouseLeave={this.props.stormListOnMouseLeave}
+                    isMobile = {this.props.isMobile}
                 />
 
             </div>
@@ -65,9 +81,20 @@ class ControlPanel extends React.Component {
 
     render(){
         const componentJsx = this.getComponentJsx();
+
+        const alertMessage = (
+            <div className='alert-message-no-active-storm trailer-half'>
+                 <span className='font-size-1'><a className='link-light-blue avenir-demi' onClick={this.props.openDrawerMenuOnClick}>Select an active storm</a> to view detailed information.</span>
+            </div> 
+        );
+
         return (
-            <div id='controlPanelDiv' className='trailer-1'>
-                {componentJsx}
+            <div id='controlPanelDiv' className='trailer-1 phone-trailer-0'>
+                {
+                    this.props.isMobile && !this.props.stormData.length 
+                    ? alertMessage
+                    : componentJsx
+                }
             </div>
         );
     }

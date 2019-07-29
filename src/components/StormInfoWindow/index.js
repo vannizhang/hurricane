@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ListItem from './ListItem';
+import ListViewForPhone from './ListViewForPhone';
 
 class StormInfoWindow extends React.PureComponent {
     constructor(props){
@@ -38,7 +39,7 @@ class StormInfoWindow extends React.PureComponent {
         )
     }
 
-    render(){
+    getStormInfoWindowForDesktop(){
 
         const listItems = this.props.data.map((d, i)=>{
             return <ListItem 
@@ -51,12 +52,10 @@ class StormInfoWindow extends React.PureComponent {
             />;
         });
 
-        const isHide = !this.props.data.length ? 'hide' : '';
-
         const unitSwitcher = this.getUnitSwitcher();
 
-        return (            
-            <div className={`leader-half ${isHide}`}>
+        return (
+            <div className='' data-view-type='desktop'>
                 <div className='storm-info-header trailer-half'>
                     <div className='is-flexy'>
                         <span className='font-size--1 avenir-light'>FORECASTED STORM INTENSITY</span>
@@ -69,7 +68,32 @@ class StormInfoWindow extends React.PureComponent {
 
                 {listItems}
             </div>
-        )
+        );
+    }
+
+    getStormInfoWindowForMobile(){
+        return (
+            <div className='' data-view-type='phone'>
+                <ListViewForPhone 
+                    data={this.props.data}
+                    windSpeedUnit={this.state.windSpeedUnit}
+                    onClick={this.props.onClick} 
+                />
+            </div>
+        );
+    }
+
+    render(){
+
+        const isHide = !this.props.data.length ? 'hide' : '';
+
+        const stormListView = this.props.isMobile ? this.getStormInfoWindowForMobile() : this.getStormInfoWindowForDesktop();
+
+        return (            
+            <div className={`leader-half phone-leader-0 ${isHide}`}>
+                {stormListView}
+            </div>
+        );
     }
 }
 

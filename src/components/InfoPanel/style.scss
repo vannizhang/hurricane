@@ -9,6 +9,11 @@
 
     width: 100%;
 
+    .location-info-dev {
+        margin: 1rem 0;
+        color: rgba(255,255,255,.8);
+    }
+
     .item-container {
         display: flex;
         flex-flow: column;
@@ -62,5 +67,28 @@
         margin: .75rem 0;
         border: none;
         border-top: 1px solid rgba(255,255,255,.2);
+    }
+}
+
+#infoPanelDiv.is-mobile {
+    .location-info-dev {
+        margin: 0;
+        margin-bottom: .75rem;
+    }
+
+    .info-panel-items-container{
+        display: flex;
+        overflow-y: auto;
+    
+        .info-panel-item-wrap{
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 100%;
+        }
+    
+        .item-container {
+            width: 100%;
+            height: auto;
+        }
     }
 }

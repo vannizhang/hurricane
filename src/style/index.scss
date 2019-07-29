@@ -27,12 +27,19 @@ body,
 
 .side-container.is-minimized {
     top: unset;
-    bottom: 0;
+    bottom: 15px;;
     height: auto;
 
     .content-wrap {
         display: none;
     }
+}
+
+.side-container.is-mobile {
+    width: 100%;
+    height: auto;
+    top: unset;
+    bottom: 15px;
 }
 
 #chartDiv {
@@ -58,8 +65,12 @@ body,
     cursor: pointer;
 }
 
-@media (max-width: 480px) { 
-    .side-container {
-        width: 100%;
-    }
-}
+// @media (max-width: 480px) { 
+//     .side-container {
+//         width: 100%;
+//         height: auto;
+//         top: unset;
+//         bottom: 0;
+//     }
+
+// }

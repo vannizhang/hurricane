@@ -1,0 +1,18 @@
+.tab-nav-control {
+    display: flex;
+    padding: 0 .5rem;
+
+
+    .tab-nav-btn {
+        padding: 0 .5rem;
+        flex-grow: 1;
+        flex-shrink: 0;
+        flex-basis: 50px;
+        opacity: .65;
+        // border-bottom: 1.5px solid rgba(255,255,255,.5);
+    }
+
+    .tab-nav-btn.is-active {
+        opacity: 1;
+    }
+}

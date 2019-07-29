@@ -21,7 +21,8 @@ export default function PrecipChart({
 
     fieldNameForXAxis = '',
     fieldNameForYAxis = '',
-    data = []
+    data = [],
+    isMobile = false
 }={}){
 
     const containerDivRef = useRef(null);
@@ -361,18 +362,38 @@ export default function PrecipChart({
     };
 
     const getTooltipText = ()=>{
+        const containerWidth = containerDivRef.current ? containerDivRef.current.offsetWidth : 0;
 
-        let tooltipContent = 'Hover chart to show tooltip';
+        const leftPos = (tooltipData && verticalRefLineXPos <= containerWidth/2) 
+            ? verticalRefLineXPos + 50 
+            : 'unset';
+
+        const reightPos = (tooltipData && verticalRefLineXPos > containerWidth/2) 
+            ? ((containerWidth - verticalRefLineXPos) - 30) 
+            : 'unset';
+
+        const tooltipContainerStyle = {
+            position: 'absolute',
+            top: 0,
+            left: leftPos,
+             // by default, alight tooltip to right if there is no tooltipData
+            right: tooltipData ? reightPos : 0,
+            color: 'rgba(255,255,255,.7)',
+            pointerEvents: 'none'
+        };
+
+        let tooltipContent = isMobile ? 'Click the chart to show a value' : '';
 
         if( tooltipData && tooltipData[0] && tooltipData[0][fieldNameForXAxis] ){
             const formatTime = d3.timeFormat("%a %-I %p");
             const forecastTime = formatTime(tooltipData[0][fieldNameForXAxis]); // "June 30, 2015"
+            const forecastVal = tooltipData[0][fieldNameForYAxis] || '0 mph';
 
-            tooltipContent = ( <span>{forecastTime}</span> );
+            tooltipContent = ( <span>{forecastTime}: {forecastVal} in</span> );
         }
 
         return (
-            <div className='font-size--3 trailer-0 margin-right-1 text-right'>
+            <div className='font-size--3 trailer-0' style={tooltipContainerStyle}>
                 <span>{tooltipContent}</span>
             </div>
         )
@@ -433,9 +454,9 @@ export default function PrecipChart({
     }, [verticalRefLineXPos, tooltipData]);
 
     return (
-        <div>
+        <div style={{position: 'relative'}}>
             { getTooltipText() }
-            <div id={containerID} ref={containerDivRef} style={{width: containerWidth , height: containerHeight}}></div>
+            <div id={containerID} ref={containerDivRef} style={{position: 'relative', width: containerWidth , height: containerHeight}}></div>
         </div>
     );
 };

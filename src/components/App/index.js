@@ -4,6 +4,9 @@ import * as calcite from 'calcite-web';
 import Map from '../Map';
 import ControlPanel from '../ControlPanel';
 import InfoPanel from '../InfoPanel';
+import TabNavControl from '../TabNavControl';
+import TopNavForPhone from '../TopNav';
+import DrawerMenu from '../DrawerMenu';
 // import Colors from '../../data/Colors';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 
@@ -18,7 +21,7 @@ const config = {
     }
 }
 
-class App extends React.Component {
+class App extends React.PureComponent {
     
     constructor(props){
         super(props);
@@ -37,7 +40,7 @@ class App extends React.Component {
             // state for info panel
             isInfoPanelVisible: false,
             precipData: [],
-            windGustData: [],
+            windGustData: null,
             populationData: [],
             languageData: [],
             vehicleData: null,
@@ -46,7 +49,10 @@ class App extends React.Component {
             mobilePhoneData: null,
             locationName: '',
 
-            isSidebarMinimized: false
+            isSidebarMinimized: false,
+            // in mobile view, the storm panel and community info panel cannot be displayed together
+            // therefore we need to toggle the visibility of these two panels, the value for visiblePanelForMobileDevice could be 'storm' | 'info'
+            visiblePanelForMobileDevice: 'storm'
         };
 
         this.mapOnClick = this.mapOnClick.bind(this);
@@ -59,6 +65,9 @@ class App extends React.Component {
         this.stormListOnMouseEnter = this.stormListOnMouseEnter.bind(this);
         this.stormListOnMouseLeave = this.stormListOnMouseLeave.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.updateVisiblePanelForMobileDevice = this.updateVisiblePanelForMobileDevice.bind(this);
+        this.toggleDrawerMenu = this.toggleDrawerMenu.bind(this);
+        this.openAboutModalInMobileView = this.openAboutModalInMobileView.bind(this);
 
     };
 
@@ -166,12 +175,21 @@ class App extends React.Component {
 
     updateLocationName(addressData=null){
 
-        const newLocationName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
+        const neighborhoodName = (addressData && addressData.Neighborhood) ? addressData.Neighborhood : '';
+        const cityName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
+        const newlocationName = [neighborhoodName, cityName].filter(d=>d).join(', ');
 
         this.setState({
-            locationName: newLocationName
+            locationName: newlocationName
         }, ()=>{
             // console.log(this.state.locationName)
+        });
+    }
+
+    updateVisiblePanelForMobileDevice(val='storm'){
+        // console.log('updateVisiblePanelForMobileDevice', val);
+        this.setState({
+            visiblePanelForMobileDevice: val
         });
     }
 
@@ -181,6 +199,8 @@ class App extends React.Component {
             
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
             // console.log('data for info panel', data);
+
+            this.updateVisiblePanelForMobileDevice('community');
 
             this.updateIsInfoPanelVisible(true);
 
@@ -244,6 +264,7 @@ class App extends React.Component {
 
     stormSelectorOnChange(stormName=''){
         // console.log('stormSelectorOnChange', stormName);
+        this.updateVisiblePanelForMobileDevice('storm');
         this.updateActiveStorm(stormName);
     }
 
@@ -267,59 +288,160 @@ class App extends React.Component {
         });
     }
 
+    toggleDrawerMenu(){
+        calcite.bus.emit('drawer:open', {id: "drawer-menu"})
+    }
+
+    openAboutModalInMobileView(){
+        calcite.bus.emit('drawer:close', {id: "drawer-menu"});
+        calcite.bus.emit('modal:open', {id: "about-this-app"})
+    }
+
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
     }
 
     render(){
+        const isMobile = this.props.isMobile; //miscFns.isMobileDevice();
+        // console.log('isMobile', isMobile);
+
+        const sideContainerStyle ={
+            width: isMobile ? '100%' : config.SIDE_PANEL_WIDTH
+        };
+
+        const contentWrapStyle = {
+            padding: isMobile ? '0 1rem 1rem' :'1rem'
+        }
+
+        const isControlPanelVisible = !isMobile  ? true  : ( this.state.visiblePanelForMobileDevice === 'storm' ? true : false );
+
+        const isInfoPanelVisible = !isMobile ? true : ( this.state.visiblePanelForMobileDevice === 'community' ? true : false );
+
+        const topNav = isMobile
+            ? <TopNavForPhone 
+                activeStorm={this.state.activeStorm}
+                menuBtnOnClick={this.toggleDrawerMenu}
+            />
+            : null;
+
+        const drawerMenu = isMobile
+            ? <DrawerMenu
+                activeStorms={this.props.activeStorms}
+                stormOnChange={this.stormSelectorOnChange}
+                openAboutModal={this.openAboutModalInMobileView}
+            />
+            : null;
+
+        const controlPanel = isControlPanelVisible
+            ? <ControlPanel 
+                stormSelectorOnChange={this.stormSelectorOnChange}
+                stormListOnClick={this.stormListOnClick}
+                stormListOnMouseEnter={this.stormListOnMouseEnter}
+                stormListOnMouseLeave={this.stormListOnMouseLeave}
+
+                activeStorms={this.props.activeStorms}
+                activeStorm={this.state.activeStorm}
+                stormData={this.state.stormData}
+
+                isMobile = {isMobile}
+                openDrawerMenuOnClick={this.toggleDrawerMenu}
+            />
+            : null
+
+        const infoPanel = isInfoPanelVisible 
+            ? <InfoPanel 
+                locationName={this.state.locationName}
+                isVisible={this.state.isInfoPanelVisible}
+                precipData={this.state.precipData}
+                windGustData={this.state.windGustData}
+                populationData={this.state.populationData}
+                languageData={this.state.languageData}
+                vehicleData={this.state.vehicleData}
+                disabilityData={this.state.disabilityData}
+                internetData={this.state.internetData}
+                mobilePhoneData={this.state.mobilePhoneData}
+
+                isMobile = {isMobile}
+                openDrawerMenuOnClick={this.toggleDrawerMenu}
+            />
+            : null;
+
+        const tabNavControl = isMobile
+            ? <TabNavControl 
+                data={[
+                    {
+                        label: 'Storm Info',
+                        value: 'storm'
+                    },
+                    {
+                        label: 'Community Info',
+                        value: 'community'
+                    }
+                ]}
+                onClick={this.updateVisiblePanelForMobileDevice}
+                visiblePanel={this.state.visiblePanelForMobileDevice}
+            /> 
+            :null;
+
+        const toggleBtn = isMobile
+        ? (
+            <div className={`text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
+                <span className={`${this.state.isSidebarMinimized ? 'icon-ui-up': 'icon-ui-down'}`}></span>
+            </div>
+        )
+        : null;
+
+        const sideContainerModifierClasses = [];
+
+        if(this.state.isSidebarMinimized){
+            sideContainerModifierClasses.push('is-minimized');
+        }
+
+        if(isMobile){
+            sideContainerModifierClasses.push('is-mobile');
+        }
+
         return (
             <div id='appContentDiv'>
-                <Map 
-                    onClick={this.mapOnClick}
-                    onReady={this.mapOnReady}
+                { drawerMenu }
 
-                    activeStormExtent={this.state.activeStormExtent}
-                    forecastPositionPreview={this.state.forecastPositionPreview}
-                    forecastPositionSelected={this.state.forecastPositionSelected}
-                    rightPadding={window.outerWidth <= 480 ? 0 : config.SIDE_PANEL_WIDTH}
+                <div className='wrapper'>
 
-                    isDemoMode={this.props.isDemoMode}
-                />
+                    { topNav }
 
-                <div className={`side-container ${this.state.isSidebarMinimized ? 'is-minimized': ''}`} style={{width: config.SIDE_PANEL_WIDTH}}>
+                    <Map 
+                        onClick={this.mapOnClick}
+                        onReady={this.mapOnReady}
 
-                    <div className='phone-show text-center padding-leader-quarter ladding-trailer-quarter' onClick={this.toggleSidebar}>
-                        <span className={`${this.state.isSidebarMinimized ? 'icon-ui-plus': 'icon-ui-minus'}`}></span>
-                    </div>
+                        activeStormExtent={this.state.activeStormExtent}
+                        forecastPositionPreview={this.state.forecastPositionPreview}
+                        forecastPositionSelected={this.state.forecastPositionSelected}
+                        rightPadding={isMobile ? 0 : config.SIDE_PANEL_WIDTH}
+                        topPadding={isMobile ? 45 : 0 }
 
-                    <div className='content-wrap' style={{ padding: '1rem' }}>
-                        <ControlPanel 
-                            stormSelectorOnChange={this.stormSelectorOnChange}
-                            stormListOnClick={this.stormListOnClick}
-                            stormListOnMouseEnter={this.stormListOnMouseEnter}
-                            stormListOnMouseLeave={this.stormListOnMouseLeave}
+                        isDemoMode={this.props.isDemoMode}
+                        isMobile = {isMobile}
+                    />
 
-                            activeStorms={this.props.activeStorms}
-                            activeStorm={this.state.activeStorm}
-                            stormData={this.state.stormData}
-                        />
+                    <div className={`side-container ${sideContainerModifierClasses.join(' ')}`} style={sideContainerStyle}>
 
-                        <InfoPanel 
-                            locationName={this.state.locationName}
-                            isVisible={this.state.isInfoPanelVisible}
-                            precipData={this.state.precipData}
-                            windGustData={this.state.windGustData}
-                            populationData={this.state.populationData}
-                            languageData={this.state.languageData}
-                            vehicleData={this.state.vehicleData}
-                            disabilityData={this.state.disabilityData}
-                            internetData={this.state.internetData}
-                            mobilePhoneData={this.state.mobilePhoneData}
-                        />
+                        {/* <div className={`phone-show text-center font-size--3 padding-leader-quarter padding-trailer-quarter`} onClick={this.toggleSidebar}>
+                            <span className={`${this.state.isSidebarMinimized ? 'icon-ui-up': 'icon-ui-down'}`}></span>
+                        </div> */}
+
+                        { toggleBtn }
+
+                        <div className='content-wrap' style={contentWrapStyle}>
+                            { controlPanel }
+                            { infoPanel }
+                            { tabNavControl }
+                        </div>
+
                     </div>
 
                 </div>
+
 
 
             </div>

@@ -83,8 +83,8 @@ export default function DonutChart({
             .attr("text-anchor", "middle")
                 .attr('font-size', '.9rem')
                 .attr('y', 7)
-            .attr('fill', 'rgba(255,255,255,.8)')
-            .text(centerTextDefaultValue);
+            .text(centerTextDefaultValue)
+            .style('fill', 'rgba(255,255,255,.4)');
         }
 
 

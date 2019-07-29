@@ -7,12 +7,13 @@ import ReactDOM from 'react-dom';
 
 import App from './components/App';
 import Controller from './core/Controller';
-import { urlFns } from 'helper-toolkit-ts';
+import { urlFns, miscFns } from 'helper-toolkit-ts';
 
 (async function initApp(){
 
     try {
 
+        const isMobile = miscFns.isMobileDevice();
         const searchParams = urlFns.parseQuery();
         const isDemoMode = searchParams.demoMode ? true : false;
         // console.log(searchParams, isDemoMode);
@@ -25,6 +26,7 @@ import { urlFns } from 'helper-toolkit-ts';
                 controller={controller}
                 activeStorms={dataToLaunchApp.activeStorms || []}
                 isDemoMode={isDemoMode}
+                isMobile={isMobile}
             />, 
             document.getElementById('appRootDiv')
         );

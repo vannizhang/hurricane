@@ -20,7 +20,8 @@ const config ={
     CONTAINER_ID: 'mapViewDiv',
     // AGOL_ITEM_ID_WEB_MAP: webMapIdForDemo, //'6cd940d108414780ad0118f78e2a6fcd',
     FORECAST_POSITION_LAYERID: 'forecastPosition',
-    FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview'
+    FORECAST_POSITION_PREVIEW_LAYERID: 'forecastPositionPreview',
+    NOAA_SATELLITE_LAYERID: 'noaaSatellite'
 }
 
 export default class Map extends React.PureComponent {
@@ -42,7 +43,7 @@ export default class Map extends React.PureComponent {
             MapView, WebMap,
         ])=>{
 
-            this.mapView = new MapView({
+            const mapViewOptions = {
                 map: new WebMap({
                     portalItem: { 
                         id: webMapId
@@ -50,9 +51,31 @@ export default class Map extends React.PureComponent {
                 }),
                 container: config.CONTAINER_ID,
                 padding: {
-                    right: this.props.rightPadding || 0
+                    right: this.props.rightPadding || 0,
+                    top: this.props.topPadding || 0
                 }
-            });
+            };
+
+            if(this.props.isMobile){
+                mapViewOptions.center = [-100, 20];
+                mapViewOptions.zoom = 2;
+                mapViewOptions.popup = {
+                    dockEnabled: true,
+                    dockOptions: {
+                        position: 'top-right',
+                        // Disables the dock button from the popup
+                        buttonEnabled: false,
+                        // Ignore the default sizes that trigger responsive docking
+                        // breakpoint: false
+                    }
+                }
+            }
+
+            this.mapView = new MapView(mapViewOptions);
+
+            if(this.props.isMobile){
+                this.mapView.ui.remove("zoom");
+            }
 
             this.mapView.when(()=>{
                 this.mapViewOnReadyHandler();
@@ -79,8 +102,14 @@ export default class Map extends React.PureComponent {
                 view: this.mapView,
                 resultGraphicEnabled: false,
                 popupEnabled: false,
-                container: 'addressLocatorDiv'
+                container: this.props.isMobile ? 'addressLocatorMobileDiv' : 'addressLocatorDiv'
             });
+
+            // if(this.props.isMobile){
+            //     this.mapView.ui.add(searchWidget, {
+            //         position: "top-right"
+            //     });
+            // } 
 
             searchWidget.on('search-complete', evt=>{
                 // make the search equvelent to map click
@@ -123,11 +152,32 @@ export default class Map extends React.PureComponent {
                 id: config.FORECAST_POSITION_LAYERID,
                 url: layerUrl,
                 renderer,
-                labelsVisible:false
+                labelsVisible: false,
+                popupEnabled : false
                 // labelingInfo: [labelClass]
             });
 
             this.mapView.map.add(layer);
+
+        }).catch(err=>console.error(err));
+    }
+
+    initNOAASatelliteLayer(){
+
+        loadModules([
+            "esri/layers/TileLayer"
+        ]).then(([
+            TileLayer
+        ])=>{
+            const layer = new TileLayer({
+                id: config.NOAA_SATELLITE_LAYERID,
+                url: AppConfig.production.noaa_infrared_layer_url,
+                // url: AppConfig.production.noaa_colorized_layer_url,
+                opacity: .5,
+                maxScale: 9000000
+            });
+
+            this.mapView.map.add(layer, 0);
 
         }).catch(err=>console.error(err));
     }
@@ -305,6 +355,8 @@ export default class Map extends React.PureComponent {
 
         this.initAddressLocator();
 
+        // this.initNOAASatelliteLayer();
+
         this.initForecastPostionPreviewLayer();
 
         this.initForecastPositionLayer(this.mapView.scale);
@@ -383,17 +435,23 @@ export default class Map extends React.PureComponent {
 
             this.mapView.goTo(point);
 
+            if(this.props.isMobile){
+                this.togglePreviewForecastPosition();
+            }
+
         }).catch(err=>console.error(err));
     };
 
     togglePreviewForecastPosition(){
         const targetLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_PREVIEW_LAYERID);
 
+        const forecastPosition = this.props.isMobile ? this.props.forecastPositionSelected : this.props.forecastPositionPreview;
+
         if(targetLayer){
             targetLayer.removeAll();
         }
 
-        if(this.props.forecastPositionPreview && targetLayer){
+        if(forecastPosition && targetLayer){
 
             loadModules([
                 "esri/Graphic",
@@ -425,8 +483,8 @@ export default class Map extends React.PureComponent {
                 };
 
                 const geometry = new Point({
-                    x: this.props.forecastPositionPreview.geometry.x,
-                    y: this.props.forecastPositionPreview.geometry.y,
+                    x: forecastPosition.geometry.x,
+                    y: forecastPosition.geometry.y,
                     spatialReference: {
                         latestWkid: 4326,
                         wkid: 4326
