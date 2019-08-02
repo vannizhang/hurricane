@@ -197,7 +197,7 @@ class App extends React.PureComponent {
         // console.log('mapOnClickHandler', mapPoint);
         try {
             
-            const data = await this.props.controller.fetchDataForInfoPanel(mapPoint.toJSON());
+            const data = await this.props.controller.fetchDataForInfoPanel(mapPoint);
             // console.log('data for info panel', data);
 
             this.updateVisiblePanelForMobileDevice('community');

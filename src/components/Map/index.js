@@ -320,29 +320,37 @@ export default class Map extends React.PureComponent {
     }
 
     mapViewOnReadyHandler(){
+
         this.mapView.on('click', async(evt)=>{
-            
-            // search features at clicked location first
-            const queryResponse = await this.mapView.hitTest(evt);
-            // console.log(queryResponse);
 
-            if(queryResponse.results.length){
+            try {
+                // search features at clicked location first
+                const queryResponse = await this.mapView.hitTest(evt);
+                // console.log(queryResponse);
 
-                const forecastPositionLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_LAYERID);
+                if(queryResponse.results.length){
 
-                // check if query response include any feature from the forecast position layer or not
-                const isForecastPositionInQueryResponse = queryResponse.results.filter(d=>{
-                    return d.graphic.layer === forecastPositionLayer;
-                })[0] ? true : false;
+                    const forecastPositionLayer = this.mapView.map.findLayerById(config.FORECAST_POSITION_LAYERID);
 
-                // trigger map click handler if forecast position is not found in the query response
-                if(!isForecastPositionInQueryResponse){
+                    // check if query response include any feature from the forecast position layer or not
+                    const isForecastPositionInQueryResponse = queryResponse.results.filter(d=>{
+                        return d.graphic.layer === forecastPositionLayer;
+                    })[0] ? true : false;
+
+                    // trigger map click handler if forecast position is not found in the query response
+                    if(!isForecastPositionInQueryResponse){
+                        this.mapOnClickHandler(evt.mapPoint);
+                    }
+                    
+                } else {
                     this.mapOnClickHandler(evt.mapPoint);
                 }
-                
-            } else {
+
+            } catch(err){
+                console.error(err);
                 this.mapOnClickHandler(evt.mapPoint);
             }
+
         });
 
         this.mapView.map.layers.forEach(layer=>{
@@ -372,9 +380,21 @@ export default class Map extends React.PureComponent {
         });
     };
 
-    mapOnClickHandler(mapPoint=null){
+    async mapOnClickHandler(mapPoint=null){
+
+        const [ webMercatorUtils ] = await loadModules([ "esri/geometry/support/webMercatorUtils" ]);
+
+        const xy = webMercatorUtils.lngLatToXY(mapPoint.longitude, mapPoint.latitude);
+
+        const mapPointJson = {
+            spatialReference: {latestWkid: 3857, wkid: 102100},
+            x: xy[0],
+            y: xy[1]
+        };
+
         this.addPointToMap(mapPoint);
-        this.props.onClick(mapPoint);
+
+        this.props.onClick(mapPointJson);
     };
 
     addPointToMap(mapPoint){
