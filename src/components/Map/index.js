@@ -389,7 +389,9 @@ export default class Map extends React.PureComponent {
         const mapPointJson = {
             spatialReference: {latestWkid: 3857, wkid: 102100},
             x: xy[0],
-            y: xy[1]
+            y: xy[1],
+            longitude: mapPoint.longitude,
+            latitude: mapPoint.latitude
         };
 
         this.addPointToMap(mapPoint);
