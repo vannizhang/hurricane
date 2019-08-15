@@ -158,7 +158,7 @@ export default function WindChart({
 
     const draw = ()=>{
 
-        console.log('draw wind chart')
+        // console.log('draw wind chart')
 
         const parseDate = d3.isoParse;
 

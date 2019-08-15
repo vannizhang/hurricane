@@ -66,9 +66,15 @@ const Controller = function(){
 
     const fetchDataForInfoPanel = async(mapPoint=null)=>{
 
-        const weatherData = await weatherDataManager.queryByLocation(mapPoint);
+        const geometry = {
+            spatialReference: mapPoint.spatialReference,
+            x: mapPoint.x,
+            y:mapPoint.y
+        };
 
-        const demographicData = await demographicDataManager.queryByLocation(mapPoint);
+        const weatherData = await weatherDataManager.queryByLocation(geometry);
+
+        const demographicData = await demographicDataManager.queryByLocation(geometry);
 
         // if(state.actionHandlers.precipDataOnReceive){
         //     state.actionHandlers.precipDataOnReceive(weatherData.precip);

@@ -194,7 +194,7 @@ class App extends React.PureComponent {
     }
 
     async mapOnClick(mapPoint){
-        console.log('mapOnClickHandler', mapPoint);
+        // console.log('mapOnClickHandler', mapPoint);
         try {
             
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint);
