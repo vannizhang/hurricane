@@ -13,7 +13,7 @@ import { urlFns, miscFns } from 'helper-toolkit-ts';
 
     try {
 
-        const isNarrowScreen = window.outerWidth <= 900;
+        const isNarrowScreen = window.innerWidth <= 900;
         const isMobileDevice = miscFns.isMobileDevice();
         const isMobile = isMobileDevice || isNarrowScreen;
         const searchParams = urlFns.parseQuery();
