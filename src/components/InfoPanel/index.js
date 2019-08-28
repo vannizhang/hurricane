@@ -21,9 +21,11 @@ class InfoPanel extends React.Component {
             activeChartIndex: 0
         };
 
+        this.infoItemsContainerRef = React.createRef();
         this.precipChartContainerRef = React.createRef();
 
         this.infoPanelOnScroll = this.infoPanelOnScroll.bind(this);
+        this.scrollHorizontally = this.scrollHorizontally.bind(this);
     };
 
     updateActiveChartIndex(index=0){
@@ -31,6 +33,12 @@ class InfoPanel extends React.Component {
             activeChartIndex: index
         });
     };
+
+    scrollHorizontally(index=0){
+        const container = this.infoItemsContainerRef.current;
+        const leftPx = index * container.offsetWidth;
+        container.scrollLeft = leftPx;
+    }
 
     infoPanelOnScroll(){
 
@@ -95,6 +103,7 @@ class InfoPanel extends React.Component {
             <DotNavControl 
                 data={[0,1,2,3]}
                 activeIndex={this.state.activeChartIndex}
+                onClick={this.scrollHorizontally}
             />
         ) 
         : null;
@@ -108,7 +117,7 @@ class InfoPanel extends React.Component {
                     <span className='avenir-light font-size--1'>Information for {this.props.locationName}</span>
                 </div>
 
-                <div className={`info-panel-items-container fancy-scrollbar`} onScroll={this.infoPanelOnScroll}>
+                <div className={`info-panel-items-container fancy-scrollbar`} ref={this.infoItemsContainerRef} onScroll={this.infoPanelOnScroll}>
 
                     <div className='info-panel-item-wrap' style={styles.itemWrap} ref={this.precipChartContainerRef} >
 

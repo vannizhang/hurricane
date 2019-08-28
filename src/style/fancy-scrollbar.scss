@@ -2,7 +2,7 @@
 
 .fancy-scrollbar::-webkit-scrollbar {
     width: 5px;
-    height: 6px;
+    height: 5px;
 }
 
 .fancy-scrollbar::-webkit-scrollbar-track {
@@ -10,7 +10,7 @@
 }
 
 .fancy-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,.25); 
+    background: rgba(0,0,0,.2); 
 }
 
 .fancy-scrollbar::-webkit-scrollbar-thumb:hover {

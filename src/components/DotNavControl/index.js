@@ -18,7 +18,7 @@ export default class DotNavControl extends React.PureComponent {
         const data = this.props.data || [];
         const dotNavControlItems = data.map((d,i)=>{
             const isActive = ( i === activeIndex ) ? 'is-active' : '';
-            return <div key={`dot-nav-control-item-${i}`} className={`dot-nav-control-item ${isActive}`} data-item-index={i}></div>;
+            return <div key={`dot-nav-control-item-${i}`} className={`dot-nav-control-item ${isActive}`} data-item-index={i} onClick={this.props.onClick.bind(this, i)}></div>;
         });
 
         return (
