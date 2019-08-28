@@ -13,10 +13,11 @@ import { urlFns, miscFns } from 'helper-toolkit-ts';
 
     try {
 
-        const isMobile = miscFns.isMobileDevice();
+        const isNarrowScreen = window.outerWidth <= 900;
+        const isMobileDevice = miscFns.isMobileDevice();
+        const isMobile = isMobileDevice || isNarrowScreen;
         const searchParams = urlFns.parseQuery();
         const isDemoMode = searchParams.demoMode ? true : false;
-        // console.log(searchParams, isDemoMode);
 
         const controller = new Controller();
         const dataToLaunchApp = await controller.init();

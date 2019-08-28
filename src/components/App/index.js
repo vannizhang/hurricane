@@ -1,5 +1,5 @@
 import React from 'react';
-import * as calcite from 'calcite-web';
+import * as calcite from 'calcite-web/dist/js/calcite-web';
 
 import Map from '../Map';
 import ControlPanel from '../ControlPanel';
@@ -266,6 +266,8 @@ class App extends React.PureComponent {
         // console.log('stormSelectorOnChange', stormName);
         this.updateVisiblePanelForMobileDevice('storm');
         this.updateActiveStorm(stormName);
+
+        this.toggleDrawerMenu(false);
     }
 
     stormListOnClick(data=null){
@@ -288,8 +290,9 @@ class App extends React.PureComponent {
         });
     }
 
-    toggleDrawerMenu(){
-        calcite.bus.emit('drawer:open', {id: "drawer-menu"})
+    toggleDrawerMenu(isOpening){
+        const action = isOpening ? 'open' : 'close';
+        calcite.bus.emit(`drawer:${action}`, {id: "drawer-menu"})
     }
 
     openAboutModalInMobileView(){
@@ -321,7 +324,7 @@ class App extends React.PureComponent {
         const topNav = isMobile
             ? <TopNavForPhone 
                 activeStorm={this.state.activeStorm}
-                menuBtnOnClick={this.toggleDrawerMenu}
+                menuBtnOnClick={this.toggleDrawerMenu.bind(this, true)}
             />
             : null;
 
@@ -345,7 +348,7 @@ class App extends React.PureComponent {
                 stormData={this.state.stormData}
 
                 isMobile = {isMobile}
-                openDrawerMenuOnClick={this.toggleDrawerMenu}
+                openDrawerMenuOnClick={this.toggleDrawerMenu.bind(this, true)}
             />
             : null
 
@@ -363,7 +366,7 @@ class App extends React.PureComponent {
                 mobilePhoneData={this.state.mobilePhoneData}
 
                 isMobile = {isMobile}
-                openDrawerMenuOnClick={this.toggleDrawerMenu}
+                openDrawerMenuOnClick={this.toggleDrawerMenu.bind(this, true)}
             />
             : null;
 

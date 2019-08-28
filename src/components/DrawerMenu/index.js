@@ -12,7 +12,7 @@ export default class DrawerMenu extends React.PureComponent {
 
     render(){
 
-        console.log(this.props.activeStorms)
+        // console.log(this.props.activeStorms)
 
         const stormOptions = this.props.activeStorms.map((d,i)=>{
             return <StormOption 

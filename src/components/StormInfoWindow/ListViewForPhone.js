@@ -82,7 +82,7 @@ class StormInfoWindowListViewPhone extends React.PureComponent {
         return (
             <div className='storm-info-list-view-wrap-phone trailer-half'>
                 {listViewHeader}
-                <div className='storm-info-list-view-phone'>
+                <div className='storm-info-list-view-phone fancy-scrollbar'>
                     {listItems}
                 </div>
             </div>

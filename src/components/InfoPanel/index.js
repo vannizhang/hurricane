@@ -108,7 +108,7 @@ class InfoPanel extends React.Component {
                     <span className='avenir-light font-size--1'>Information for {this.props.locationName}</span>
                 </div>
 
-                <div className={`info-panel-items-container`} onScroll={this.infoPanelOnScroll}>
+                <div className={`info-panel-items-container fancy-scrollbar`} onScroll={this.infoPanelOnScroll}>
 
                     <div className='info-panel-item-wrap' style={styles.itemWrap} ref={this.precipChartContainerRef} >
 
