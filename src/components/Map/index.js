@@ -1,3 +1,4 @@
+import style from './style.scss';
 import React from 'react';
 import { loadCss, loadModules } from 'esri-loader';
 
@@ -52,7 +53,8 @@ export default class Map extends React.PureComponent {
                 container: config.CONTAINER_ID,
                 padding: {
                     right: this.props.rightPadding || 0,
-                    top: this.props.topPadding || 0
+                    top: this.props.topPadding || 0,
+                    bottom: this.props.bottomPadding || 0
                 }
             };
 
@@ -573,7 +575,7 @@ export default class Map extends React.PureComponent {
 
     render(){
         return(
-            <div id={config.CONTAINER_ID} style={{
+            <div id={config.CONTAINER_ID} className={`${this.props.isMobile ? 'is-mobile' : ''}`} style={{
                 position: 'absolute',
                 top: 0,
                 bottom: 0,
