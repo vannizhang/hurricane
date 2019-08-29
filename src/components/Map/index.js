@@ -542,7 +542,7 @@ export default class Map extends React.PureComponent {
         ]).then(([
             Extent
         ])=>{
-            const zoom = this.props.isMobile ? 4: 6;
+            const zoom = this.props.isMobile ? 5: 6;
             const activeStormExtent = new Extent(this.props.activeStormExtent);
             this.mapView.goTo({
                 target: activeStormExtent,
