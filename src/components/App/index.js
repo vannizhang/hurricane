@@ -421,8 +421,8 @@ class App extends React.PureComponent {
                         forecastPositionPreview={this.state.forecastPositionPreview}
                         forecastPositionSelected={this.state.forecastPositionSelected}
                         rightPadding={isMobile ? 0 : config.SIDE_PANEL_WIDTH}
-                        topPadding={isMobile ? 10 : 0 }
-                        bottomPadding={isMobile ? 150 : 0}
+                        topPadding={isMobile ? 50 : 0 }
+                        bottomPadding={isMobile ? 240 : 0}
 
                         isDemoMode={this.props.isDemoMode}
                         isMobile = {isMobile}
