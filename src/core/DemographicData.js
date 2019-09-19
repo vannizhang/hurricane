@@ -12,7 +12,7 @@ const config = {
                 {
                     name: 'B16007_calc_pctEngOnlyE',
                     alias: 'Percent of Total Population Age 5+ Who Only Speaks English at Home',
-                    label: 'Speaks English'
+                    label: 'Speaks Only English'
                 }
                 // {
                 //     name: 'B16007_calc_pctSpanE',
@@ -169,7 +169,7 @@ export default function(){
 
             const pctSpeakOtherLanguage = {
                 fieldAlias: 'Percent of Total Population Age 5+ Who Speaks Other Languages at Home',
-                fieldLabel: 'Does Not Speak English',
+                fieldLabel: 'Speaks Other Languages',
                 fieldValue: 100 - beautifiedData['Language'][0].fieldValue,
                 color: colors['Other Languages']
             };
