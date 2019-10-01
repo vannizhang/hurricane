@@ -39,7 +39,7 @@ class ControlPanel extends React.PureComponent {
         : (
             <div className='phone-hide'>
                 <div className='trailer-half'>
-                    <span className='font-size-2'>HURRICANE AWARE</span>
+                    <span className='font-size-2'>Hurricane Aware</span>
                     <span className='right icon-ui-question cursor-pointer js-modal-toggle' data-modal='about-this-app'></span>
                 </div>
                 

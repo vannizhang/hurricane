@@ -9,7 +9,7 @@ export default class TopNav extends React.PureComponent {
 
     render(){
 
-        const appTitleText = this.props.activeStorm ? `HURRICANE AWARE (${this.props.activeStorm})` : 'HURRICANE AWARE';
+        const appTitleText = this.props.activeStorm ? `Hurricane Aware (${this.props.activeStorm})` : 'Hurricane Aware';
 
         return (
             <div className='top-nav-for-phone-view'>
