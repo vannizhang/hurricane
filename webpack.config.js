@@ -2,6 +2,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssets = require('optimize-css-assets-webpack-plugin');
 
 module.exports =  (env, options)=> {
 
@@ -11,7 +13,8 @@ module.exports =  (env, options)=> {
 
     return {
         output: {
-            filename: 'bundle.[hash].js'
+            filename: '[name].[contenthash].js',
+            chunkFilename: '[name].[contenthash].js',
         },
         module: {
             rules: [
@@ -43,16 +46,34 @@ module.exports =  (env, options)=> {
                 { test: /\.woff$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
                 { test: /\.ttf$/,  loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
                 { test: /\.eot$/,  loader: "file-loader" },
-                { test: /\.svg$/,  loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-                { test: /\.(png|jpg|gif)$/,  loader: "file-loader" },
+                { 
+                    test: /\.svg$/,  
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        fallback: {
+                            loader: "file-loader"
+                        }
+                    }
+                },
+                {   
+                    test: /\.(png|jpg|gif)$/,  
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        fallback: {
+                            loader: "file-loader"
+                        }
+                    }
+                },
             ]
         },
         plugins: [
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: devMode ? '[name].css' : '[name].[hash].css',
-                chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+                filename: devMode ? '[name].css' : '[name].[contenthash].css',
+                chunkFilename: devMode ? '[name].css' : '[name].[contenthash].css',
             }),
             new HtmlWebpackPlugin({
                 // inject: false,
@@ -74,7 +95,34 @@ module.exports =  (env, options)=> {
                     useShortDoctype                : true
                 }
             })
-        ]
+        ],
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+                    default: false,
+                    vendors: false,
+                    // vendor chunk
+                    vendor: {
+                        // sync + async chunks
+                        chunks: 'all',
+                        name: 'vendor',
+                        // import file path containing node_modules
+                        test: /node_modules/
+                    }
+                }
+            },
+            minimizer: [
+                new TerserPlugin({
+                    extractComments: true,
+                    terserOptions: {
+                        compress: {
+                            drop_console: true,
+                        }
+                    }
+                }), 
+                new OptimizeCSSAssets({})
+            ],
+        },
     }
 
 };
