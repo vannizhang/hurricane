@@ -7,12 +7,13 @@ const config = {
     layers: [
         {
             title: 'Language',
-            url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Language_by_Age_Boundaries/FeatureServer/2',
+            // url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Language_by_Age_Boundaries/FeatureServer/2',
+            url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_English_Ability_and_Lingusitic_Isolation_Households_Boundaries/FeatureServer/2',
             fields: [
                 {
-                    name: 'B16007_calc_pctEngOnlyE',
-                    alias: 'Percent of Total Population Age 5+ Who Only Speaks English at Home',
-                    label: 'Speaks Only English'
+                    name: 'B16003_calc_pctLEHE',
+                    alias: 'Percent of population age 5 years and over in limited English households',
+                    label: 'Limited English Ability'
                 }
                 // {
                 //     name: 'B16007_calc_pctSpanE',
@@ -167,14 +168,14 @@ export default function(){
 
         if(beautifiedData['Language']){
 
-            const pctSpeakOtherLanguage = {
-                fieldAlias: 'Percent of Total Population Age 5+ Who Speaks Other Languages at Home',
-                fieldLabel: 'Speaks Other Languages',
+            const pctSpeakEnglish = {
+                fieldAlias: 'Percent of Total Population Age 5+ Who Speaks English very well',
+                fieldLabel: 'Speaks English',
                 fieldValue: 100 - beautifiedData['Language'][0].fieldValue,
                 color: colors['Other Languages']
             };
 
-            beautifiedData['Language'].push(pctSpeakOtherLanguage);
+            beautifiedData['Language'].unshift(pctSpeakEnglish);
         }
 
         if(beautifiedData['Population']){
