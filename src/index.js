@@ -16,7 +16,7 @@ import { urlFns, miscFns } from 'helper-toolkit-ts';
         const isNarrowScreen = window.innerWidth <= 900;
         const isMobileDevice = miscFns.isMobileDevice();
         const isMobile = isMobileDevice || isNarrowScreen;
-        const searchParams = urlFns.parseQuery();
+        const searchParams = urlFns.parseHash();
         const isDemoMode = searchParams.demoMode ? true : false;
 
         const controller = new Controller();

@@ -7,7 +7,7 @@ import { getLocalizedTropicalCycloneClassifications } from '../utils/localizeTro
 import { urlFns } from 'helper-toolkit-ts';
 import AppConfig from '../data/AppConfig';
 
-const searchParams = urlFns.parseQuery();
+const searchParams = urlFns.parseHash();
 const isDemoMode = searchParams.demoMode ? true : false;
 
 // const URL_HURRICANE_LAYER = 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Active_Hurricanes_v1/FeatureServer';

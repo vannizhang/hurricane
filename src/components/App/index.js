@@ -163,7 +163,7 @@ class App extends React.PureComponent {
             this.updateActiveStormExtent(queryResponse.errorConeExtent);
         });
 
-        urlFns.updateQueryParam({key: config.search_params_key.storm, value: stormName});
+        urlFns.updateHashParam({key: config.search_params_key.storm, value: stormName});
     }
 
     updateActiveStormExtent(data=null){
@@ -254,7 +254,7 @@ class App extends React.PureComponent {
     }
 
     mapOnReady(){
-        const searchParams = urlFns.parseQuery();
+        const searchParams = urlFns.parseHash();
         const stormName = searchParams[config.search_params_key.storm];
 
         if(stormName){
