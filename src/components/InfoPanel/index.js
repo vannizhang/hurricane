@@ -229,7 +229,7 @@ class InfoPanel extends React.Component {
 
                                 <PercentBarChart 
                                     key={'PercentBarChart-2'} 
-                                    labelOnLeft={this.props.mobilePhoneData ? 'Has Mobile Phone' : ''}
+                                    labelOnLeft={this.props.mobilePhoneData ? 'Has Smartphone' : ''}
                                     labelOnRight={this.props.mobilePhoneData ? this.props.mobilePhoneData.fieldLabel : ''}
                                     value={this.props.mobilePhoneData? (100 - this.props.mobilePhoneData.fieldValue) : 0}
                                     isMobile={this.props.isMobile}

@@ -83,12 +83,12 @@ const config = {
         },
         {
             title: 'Mobile Phone Availability',
-            url: 'https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/Household_Demographics_HurricaneAware/FeatureServer/0',
+            url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/ACS_Highlights_Emergency_Response_Boundaries/FeatureServer/2',
             fields: [
                 {
-                    name: 'E_HHCellPer',
-                    alias: 'Has Mobile Phone',
-                    label: 'Has Mobile Phone'
+                    name: 'B28001_calc_pctNoSPE',
+                    alias: 'No Mobile Phone',
+                    label: 'No Mobile Phone'
                 }
             ]
         }
@@ -215,13 +215,13 @@ export default function(){
 
         if(beautifiedData['Mobile Phone Availability']){
 
-            const pctHasNoMobilePhone= {
-                fieldAlias: 'Percent of Household without Mobile Phone',
-                fieldLabel: 'No Mobile Phone',
-                fieldValue: (100 - beautifiedData['Mobile Phone Availability'][0].fieldValue)
+            const pctHasMobilePhone= {
+                fieldAlias: 'Percent of Household has no Mobile Phone',
+                fieldLabel: 'No Samrtphone',
+                fieldValue: (beautifiedData['Mobile Phone Availability'][0].fieldValue)
             };
 
-            beautifiedData['Mobile Phone Availability'].push(pctHasNoMobilePhone);
+            beautifiedData['Mobile Phone Availability'].push(pctHasMobilePhone);
         }
 
         return beautifiedData;
