@@ -184,11 +184,16 @@ class App extends React.PureComponent {
         });
     }
 
-    updateLocationName(addressData=null){
+    updateLocationName(addressData=null, showCountyName=false){
 
         const neighborhoodName = (addressData && addressData.Neighborhood) ? addressData.Neighborhood : '';
         const cityName = (addressData && addressData.City && addressData.Region) ? `${addressData.City}, ${addressData.Region}` : '';
-        const newlocationName = [neighborhoodName, cityName].filter(d=>d).join(', ');
+        const countyName = `${addressData.Subregion}, ${addressData.Region}`
+        const newlocationName = showCountyName 
+            ? countyName
+            : [neighborhoodName, cityName].filter(d=>d).join(', ');
+
+        // console.log(addressData)
 
         this.setState({
             locationName: newlocationName
@@ -253,7 +258,7 @@ class App extends React.PureComponent {
             // console.log('reverseGeocodeResult', reverseGeocodeResult);
 
             if(reverseGeocodeResult && reverseGeocodeResult.address){
-                this.updateLocationName(reverseGeocodeResult.address);
+                this.updateLocationName(reverseGeocodeResult.address, shouldFetchCountyLevelData);
             }
 
         } catch(err){
