@@ -64,7 +64,7 @@ const Controller = function(){
         };
     }
 
-    const fetchDataForInfoPanel = async(mapPoint=null)=>{
+    const fetchDataForInfoPanel = async(mapPoint=null, shouldFetchCountyLevelData=false)=>{
 
         const geometry = {
             spatialReference: mapPoint.spatialReference,
@@ -74,7 +74,7 @@ const Controller = function(){
 
         const weatherData = await weatherDataManager.queryByLocation(geometry);
 
-        const demographicData = await demographicDataManager.queryByLocation(geometry);
+        const demographicData = await demographicDataManager.queryByLocation(geometry, shouldFetchCountyLevelData);
 
         // if(state.actionHandlers.precipDataOnReceive){
         //     state.actionHandlers.precipDataOnReceive(weatherData.precip);

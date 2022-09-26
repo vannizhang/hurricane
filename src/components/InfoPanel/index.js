@@ -163,6 +163,7 @@ class InfoPanel extends React.Component {
 
                             <div className='item-header'>
                                 <h5 className='avenir-light font-size--1'>POPULATION</h5>
+                                <h5 onClick={this.props.shouldFetchCountyLevelDataOnChange.bind(this, true)}>toggle county level data</h5>
                             </div>
 
                             <div className='item-content flex-container'>

@@ -52,10 +52,13 @@ class App extends React.PureComponent {
             isSidebarMinimized: false,
             // in mobile view, the storm panel and community info panel cannot be displayed together
             // therefore we need to toggle the visibility of these two panels, the value for visiblePanelForMobileDevice could be 'storm' | 'info'
-            visiblePanelForMobileDevice: 'storm'
+            visiblePanelForMobileDevice: 'storm',
+
+            showDemographicDataAtCountyLevel: false,
+            queryLocation: null,
         };
 
-        this.mapOnClick = this.mapOnClick.bind(this);
+        this.queryInfoGraphicData = this.queryInfoGraphicData.bind(this);
         this.mapOnReady = this.mapOnReady.bind(this);
         this.stormSelectorOnChange = this.stormSelectorOnChange.bind(this);
         this.updateStormData = this.updateStormData.bind(this);
@@ -68,7 +71,15 @@ class App extends React.PureComponent {
         this.updateVisiblePanelForMobileDevice = this.updateVisiblePanelForMobileDevice.bind(this);
         this.toggleDrawerMenu = this.toggleDrawerMenu.bind(this);
         this.openAboutModalInMobileView = this.openAboutModalInMobileView.bind(this);
+        this.updateQueryLocation = this.updateQueryLocation.bind(this);
 
+    };
+
+    updateQueryLocation(mapPoint){
+        // console.log('calling updateQueryLocation', data);
+        this.setState({
+            queryLocation: mapPoint
+        });
     };
 
     updateStormData(data){
@@ -193,11 +204,11 @@ class App extends React.PureComponent {
         });
     }
 
-    async mapOnClick(mapPoint){
+    async queryInfoGraphicData(mapPoint, shouldFetchCountyLevelData){
         // console.log('mapOnClickHandler', mapPoint);
         try {
             
-            const data = await this.props.controller.fetchDataForInfoPanel(mapPoint);
+            const data = await this.props.controller.fetchDataForInfoPanel(mapPoint, shouldFetchCountyLevelData);
             // console.log('data for info panel', data);
 
             this.updateVisiblePanelForMobileDevice('community');
@@ -290,6 +301,12 @@ class App extends React.PureComponent {
         });
     }
 
+    shouldFetchCountyLevelDataOnChange(newVal){
+        this.setState({
+            shouldFetchCountyLevelData: newVal
+        });
+    }
+
     toggleDrawerMenu(isOpening){
         const action = isOpening ? 'open' : 'close';
         calcite.bus.emit(`drawer:${action}`, {id: "drawer-menu"})
@@ -303,6 +320,15 @@ class App extends React.PureComponent {
     componentDidMount(){
         // console.log('app is mounted');
         calcite.init();
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(
+            prevState.queryLocation !== this.state.queryLocation ||
+            prevState.showDemographicDataAtCountyLevel !== this.state.showDemographicDataAtCountyLevel
+        ){
+            this.queryInfoGraphicData(this.state.queryLocation, this.state.showDemographicDataAtCountyLevel)
+        }
     }
 
     render(){
@@ -367,6 +393,7 @@ class App extends React.PureComponent {
 
                 isMobile = {isMobile}
                 openDrawerMenuOnClick={this.toggleDrawerMenu.bind(this, true)}
+                shouldFetchCountyLevelDataOnChange={this.shouldFetchCountyLevelDataOnChange}
             />
             : null;
 
@@ -414,7 +441,7 @@ class App extends React.PureComponent {
                     { topNav }
 
                     <Map 
-                        onClick={this.mapOnClick}
+                        onClick={this.updateQueryLocation}
                         onReady={this.mapOnReady}
 
                         activeStormExtent={this.state.activeStormExtent}

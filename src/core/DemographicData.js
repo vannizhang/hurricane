@@ -7,8 +7,8 @@ const config = {
     layers: [
         {
             title: 'Language',
-            // url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Language_by_Age_Boundaries/FeatureServer/2',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_English_Ability_and_Lingusitic_Isolation_Households_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_English_Ability_and_Lingusitic_Isolation_Households_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B16003_calc_pctLEHE',
@@ -25,6 +25,7 @@ const config = {
         {
             title: 'Internet Connectivity',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Internet_Connectivity_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Internet_Connectivity_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B28002_calc_pctNoIntE',
@@ -36,6 +37,7 @@ const config = {
         {
             title: 'Vehicle Avialability',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Vehicle_Availability_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Vehicle_Availability_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B08201_calc_pctNoVehE',
@@ -47,6 +49,7 @@ const config = {
         {
             title: 'Disability Status',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Disability_by_Age_and_Sex_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Disability_by_Age_and_Sex_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B18101_calc_pctMDE',
@@ -63,6 +66,7 @@ const config = {
         {
             title: 'Population',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Total_Population_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Total_Population_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B01001_001E',
@@ -84,6 +88,7 @@ const config = {
         {
             title: 'Mobile Phone Availability',
             url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/ACS_Highlights_Emergency_Response_Boundaries/FeatureServer/2',
+            urlCountyLevelData: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/ACS_Highlights_Emergency_Response_Boundaries/FeatureServer/1',
             fields: [
                 {
                     name: 'B28001_calc_pctNoSPE',
@@ -107,11 +112,13 @@ const config = {
 
 export default function(){
 
-    const queryByLocation = (mapPoint=null)=>{
+    const queryByLocation = (mapPoint=null, shouldFetchCountyLevelData=false)=>{
 
         const promises = config.layers.map(d=>{
 
-            const requestUrl = d.url + '/query';
+            const requestUrl = shouldFetchCountyLevelData 
+                ? d.urlCountyLevelData + '/query'    
+                : d.url + '/query';
 
             const params = {
                 where: '1=1',
