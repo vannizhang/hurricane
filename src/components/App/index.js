@@ -209,7 +209,6 @@ class App extends React.PureComponent {
         try {
             
             const data = await this.props.controller.fetchDataForInfoPanel(mapPoint, shouldFetchCountyLevelData);
-            // console.log('data for info panel', data);
 
             this.updateVisiblePanelForMobileDevice('community');
 
@@ -301,9 +300,9 @@ class App extends React.PureComponent {
         });
     }
 
-    shouldFetchCountyLevelDataOnChange(newVal){
+    updateShowDemographicDataAtCountyLevel(newVal){
         this.setState({
-            shouldFetchCountyLevelData: newVal
+            showDemographicDataAtCountyLevel: newVal
         });
     }
 
@@ -323,6 +322,9 @@ class App extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState){
+
+        console.log(prevState.showDemographicDataAtCountyLevel,this.state.showDemographicDataAtCountyLevel)
+
         if(
             prevState.queryLocation !== this.state.queryLocation ||
             prevState.showDemographicDataAtCountyLevel !== this.state.showDemographicDataAtCountyLevel
@@ -393,7 +395,9 @@ class App extends React.PureComponent {
 
                 isMobile = {isMobile}
                 openDrawerMenuOnClick={this.toggleDrawerMenu.bind(this, true)}
-                shouldFetchCountyLevelDataOnChange={this.shouldFetchCountyLevelDataOnChange}
+                shouldFetchCountyLevelDataOnChange={(val)=>{
+                    this.updateShowDemographicDataAtCountyLevel(val)
+                }}
             />
             : null;
 
