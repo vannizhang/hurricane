@@ -323,8 +323,6 @@ class App extends React.PureComponent {
 
     componentDidUpdate(prevProps, prevState){
 
-        console.log(prevState.showDemographicDataAtCountyLevel,this.state.showDemographicDataAtCountyLevel)
-
         if(
             prevState.queryLocation !== this.state.queryLocation ||
             prevState.showDemographicDataAtCountyLevel !== this.state.showDemographicDataAtCountyLevel
@@ -395,6 +393,7 @@ class App extends React.PureComponent {
 
                 isMobile = {isMobile}
                 openDrawerMenuOnClick={this.toggleDrawerMenu.bind(this, true)}
+                showDemographicDataAtCountyLevel={this.state.showDemographicDataAtCountyLevel}
                 shouldFetchCountyLevelDataOnChange={(val)=>{
                     this.updateShowDemographicDataAtCountyLevel(val)
                 }}

@@ -8,13 +8,13 @@
         flex-grow: 1;
         flex-shrink: 0;
     }
+}
 
-    .breadcrumbs .crumb{
-        color:#ccc;
-        font-size: .75rem;
-        cursor: pointer;
-        line-height: 24px;
-    }
+.breadcrumbs .crumb{
+    color:#ccc;
+    font-size: .75rem;
+    cursor: pointer;
+    line-height: 24px;
 }
 
 .storm-info-list-item {

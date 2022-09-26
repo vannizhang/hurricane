@@ -163,7 +163,21 @@ class InfoPanel extends React.Component {
 
                             <div className='item-header'>
                                 <h5 className='avenir-light font-size--1'>POPULATION</h5>
-                                <h5 onClick={this.props.shouldFetchCountyLevelDataOnChange.bind(this, true)}>toggle county level data</h5>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end'
+                                }}>
+                                    <nav className="breadcrumbs">
+                                        <span 
+                                            className={`crumb ${this.props.showDemographicDataAtCountyLevel === false ? 'is-active' : ''}`}
+                                            onClick={this.props.shouldFetchCountyLevelDataOnChange.bind(this, false)}
+                                        >Census Tract</span>
+                                        <span 
+                                            className={`crumb ${this.props.showDemographicDataAtCountyLevel ? 'is-active' : ''}`}
+                                            onClick={this.props.shouldFetchCountyLevelDataOnChange.bind(this, true)}
+                                        >County</span>
+                                    </nav>
+                                </div>
                             </div>
 
                             <div className='item-content flex-container'>
