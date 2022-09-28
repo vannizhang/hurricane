@@ -224,7 +224,7 @@ export default function(){
 
             const pctHasMobilePhone= {
                 fieldAlias: 'Percent of Household has no Mobile Phone',
-                fieldLabel: 'No Samrtphone',
+                fieldLabel: 'No Smartphone',
                 fieldValue: (beautifiedData['Mobile Phone Availability'][0].fieldValue)
             };
 
