@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/vannizhang/hurricane#readme",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.2",
     "calcite-web": "github:Esri/calcite-web#v1.2.0",
     "d3": "^5.9.2",
     "date-fns": "^1.30.1",
